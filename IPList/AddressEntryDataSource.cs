@@ -9,11 +9,8 @@ namespace IPList
 {
     public class AddressEntryDataSource : NSTableViewDataSource
     {
-        #region Public Variables
         public List<AddressEntry> AddressEntries = new List<AddressEntry>();
-        #endregion
 
-        #region Constructors
         public AddressEntryDataSource()
         {
         }
@@ -43,9 +40,7 @@ namespace IPList
                     break;
             }
         }
-        #endregion
 
-        #region Override Methods
         public override nint GetRowCount(NSTableView tableView)
         {
             return AddressEntries.Count;
@@ -63,6 +58,5 @@ namespace IPList
             }
             tableView.ReloadData();
         }
-        #endregion
     }
 }

@@ -9,22 +9,15 @@ namespace IPList
 {
     public class AddressEntryDelegate : NSTableViewDelegate
     {
-        #region Constants
         private const string CellIdentifier = "AddressCell";
-        #endregion
 
-        #region Private Variables
         public static AddressEntryDataSource DataSource;
-        #endregion
 
-        #region Constructors
         public AddressEntryDelegate(AddressEntryDataSource datasource)
         {
             DataSource = datasource;
         }
-        #endregion
 
-        #region Override Methods
         public override NSView GetViewForItem(NSTableView tableView, NSTableColumn tableColumn, nint row)
         {
             NSTextField view = (NSTextField)tableView.MakeView(CellIdentifier, this);
@@ -56,6 +49,5 @@ namespace IPList
             Globals.CurrentIP = DataSource.AddressEntries[(int)row].Address;
             return true;
         }
-        #endregion
     }
 }
