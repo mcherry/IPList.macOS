@@ -14,13 +14,13 @@ namespace IPList
         #endregion
 
         #region Private Variables
-        private AddressEntryDataSource DataSource;
+        public static AddressEntryDataSource DataSource;
         #endregion
 
         #region Constructors
         public AddressEntryDelegate(AddressEntryDataSource datasource)
         {
-            this.DataSource = datasource;
+            DataSource = datasource;
         }
         #endregion
 

@@ -13,7 +13,6 @@ namespace IPList
     public partial class ViewController : NSViewController
     {
         private bool StopPings = false;
-        private List<string> ipList = new List<string>();
         private Thread[] ThreadList = null;
 
         public ViewController(IntPtr handle) : base(handle)
@@ -62,7 +61,6 @@ namespace IPList
                 {
                     // successful ping, add IP and status to tableview datasource and IP list
                     DataSource.AddressEntries.Add(new AddressEntry(ip, "UP"));
-                    ipList.Add(ip);
                 }
                 else
                 {
@@ -70,7 +68,6 @@ namespace IPList
                     {
                         // listing unpingable hosts, add to tableview datasource and IP list
                         DataSource.AddressEntries.Add(new AddressEntry(ip, "DOWN"));
-                        ipList.Add(ip);
                     }
                 }
 
@@ -89,6 +86,7 @@ namespace IPList
         private void ThreadMonitor(NSObject sender, ref AddressEntryDataSource DataSource)
         {
             int cleanup = 0;
+            string label;
 
             while (true)
             {
@@ -104,14 +102,14 @@ namespace IPList
             }
 
             DataSource.Sort("IP", true);
-            ipList.Sort(ExtensionMethods.CompareTo);
+            label = DataSource.AddressEntries.Count.ToString() + " IP addresses found";
 
             InvokeOnMainThread(() =>
             {
-                prgSpinner.StopAnimation(sender);
                 tblList.ReloadData();
+                prgSpinner.StopAnimation(sender);
 
-                lblStatus.StringValue = ipList.Count.ToString() + " IP addresses found";
+                lblStatus.StringValue = label;
                 ToggleGUI(true);
             });
 
@@ -156,9 +154,10 @@ namespace IPList
                     break;
             }
 
-            foreach (string ip in ipList)
+            
+            foreach (AddressEntry ip in AddressEntryDelegate.DataSource.AddressEntries)
             {
-                clip_val += ip + delim;
+                clip_val += ip.Address + delim;
             }
 
             CrossClipboard.Current.SetText(clip_val.TrimEnd());
@@ -216,10 +215,11 @@ namespace IPList
                 {
                     prgSpinner.StartAnimation(sender);
 
-                    ipList.Clear();
-                    AddressEntryDataSource DataSource = new AddressEntryDataSource();
-                    tblList.Delegate = new AddressEntryDelegate(DataSource);
-                    tblList.DataSource = DataSource;
+                    AddressEntryDelegate.DataSource = new AddressEntryDataSource();
+                    tblList.ReloadData();
+
+                    tblList.Delegate = new AddressEntryDelegate(AddressEntryDelegate.DataSource);
+                    tblList.DataSource = AddressEntryDelegate.DataSource;
 
                     if (chkPIng.IntValue == 1)
                     {
@@ -236,7 +236,7 @@ namespace IPList
 
                             ThreadList[a] = new Thread(() =>
                             {
-                                PingThread(ref DataSource, sublist);
+                                PingThread(ref AddressEntryDelegate.DataSource, sublist);
                             });
                             ThreadList[a].Start();
 
@@ -245,7 +245,7 @@ namespace IPList
 
                         Thread threadMonitor = new Thread(() =>
                         {
-                            ThreadMonitor(sender, ref DataSource);
+                            ThreadMonitor(sender, ref AddressEntryDelegate.DataSource);
                         });
                         threadMonitor.Start();
 
@@ -258,17 +258,15 @@ namespace IPList
                             string[] split_ip = ip.ToString().Split(".");
                             if (split_ip[3] != "0" && split_ip[3] != "255")
                             {
-                                DataSource.AddressEntries.Add(new AddressEntry(ip.ToString(), "Unknown"));
-                                ipList.Add(ip.ToString());
+                                AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip.ToString(), "Unknown"));
                             }
                         }
 
-                        DataSource.Sort("IP", true);
-                        ipList.Sort(ExtensionMethods.CompareTo);
+                        AddressEntryDelegate.DataSource.Sort("IP", true);
                         tblList.ReloadData();
 
                         ToggleGUI(true);
-                        lblStatus.StringValue = ipList.Count.ToString() + " IP addresses found";
+                        lblStatus.StringValue = tblList.RowCount + " IP addresses found";
                     }
                 } else
                 {
@@ -283,8 +281,6 @@ namespace IPList
                     alert.RunModal();
                     alert.Dispose();
                 }
-
-                prgSpinner.StopAnimation(sender);
             }
         }
 
