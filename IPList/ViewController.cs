@@ -97,11 +97,7 @@ namespace IPList
                     if (thread.IsAlive == true) cleanup++;
                 }
 
-                if (cleanup == 0)
-                {
-                    foreach (Thread thread in ThreadList) thread.Abort();
-                    break;
-                }
+                if (cleanup == 0) break;
 
                 Thread.Sleep(500);
             }
