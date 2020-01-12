@@ -1,4 +1,5 @@
-﻿using System.Net.NetworkInformation;
+﻿using AppKit;
+using System.Net.NetworkInformation;
 
 namespace IPList
 {
@@ -34,6 +35,15 @@ namespace IPList
             }
 
             return pingable;
+        }
+
+        public static void CopyString(string text)
+        {
+            NSPasteboard clipboard = NSPasteboard.GeneralPasteboard;
+            string[] types = { "NSStringPboardType" };
+
+            clipboard.DeclareTypes(types, null);
+            clipboard.SetStringForType(text, types[0]);
         }
     }
 }

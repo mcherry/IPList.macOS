@@ -2,7 +2,6 @@
 using AppKit;
 using Foundation;
 using LukeSkywalker.IPNetwork;
-using Plugin.Clipboard;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading;
@@ -138,6 +137,7 @@ namespace IPList
         {
             string delim = "";
             string clip_val = "";
+            
 
             switch (cmbDelimiter.SelectedItem.Title)
             {
@@ -155,13 +155,12 @@ namespace IPList
                     break;
             }
 
-            
             foreach (AddressEntry ip in AddressEntryDelegate.DataSource.AddressEntries)
             {
                 clip_val += ip.Address + delim;
             }
 
-            CrossClipboard.Current.SetText(clip_val.TrimEnd());
+            Warehouse.CopyString(clip_val.TrimEnd());
         }
 
         private void ToggleGUI(bool enabled)
@@ -287,7 +286,7 @@ namespace IPList
 
         partial void CopyMenuAction(NSObject sender)
         {
-            CrossClipboard.Current.SetText(Globals.CurrentIP);
+            Warehouse.CopyString(Globals.CurrentIP);
         }
     }
 }
