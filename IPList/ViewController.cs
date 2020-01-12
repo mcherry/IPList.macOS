@@ -217,10 +217,9 @@ namespace IPList
                     prgSpinner.StartAnimation(sender);
 
                     AddressEntryDelegate.DataSource = new AddressEntryDataSource();
-                    tblList.ReloadData();
-
                     tblList.Delegate = new AddressEntryDelegate(AddressEntryDelegate.DataSource);
                     tblList.DataSource = AddressEntryDelegate.DataSource;
+                    tblList.ReloadData();
 
                     if (chkPIng.IntValue == 1)
                     {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace IPList
+﻿namespace IPList
 {
     public class AddressEntry
     {

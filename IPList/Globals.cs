@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-namespace IPList
+﻿namespace IPList
 {
     public class Globals
     {
