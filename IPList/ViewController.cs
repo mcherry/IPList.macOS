@@ -42,7 +42,7 @@ namespace IPList
             }
         }
 
-        private void PingThread(ref AddressEntryDataSource DataSource, List<string> IPList)
+        private void PingThread(List<string> IPList)
         {
             bool pingHosts = true;
             bool listPingable = true;
@@ -60,14 +60,14 @@ namespace IPList
                 if (Warehouse.Ping(ip) == true)
                 {
                     // successful ping, add IP and status to tableview datasource and IP list
-                    DataSource.AddressEntries.Add(new AddressEntry(ip, "UP"));
+                    AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip, "UP"));
                 }
                 else
                 {
                     if (listPingable != true)
                     {
                         // listing unpingable hosts, add to tableview datasource and IP list
-                        DataSource.AddressEntries.Add(new AddressEntry(ip, "DOWN"));
+                        AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip, "DOWN"));
                     }
                 }
 
@@ -83,7 +83,7 @@ namespace IPList
             return;
         }
 
-        private void ThreadMonitor(NSObject sender, ref AddressEntryDataSource DataSource)
+        private void ThreadMonitor(NSObject sender)
         {
             int cleanup = 0;
             string label;
@@ -101,8 +101,8 @@ namespace IPList
                 Thread.Sleep(500);
             }
 
-            DataSource.Sort("IP", true);
-            label = DataSource.AddressEntries.Count.ToString() + " IP addresses found";
+            AddressEntryDelegate.DataSource.Sort("IP", true);
+            label = AddressEntryDelegate.DataSource.AddressEntries.Count.ToString() + " IP addresses found";
 
             InvokeOnMainThread(() =>
             {
@@ -236,7 +236,7 @@ namespace IPList
 
                             ThreadList[a] = new Thread(() =>
                             {
-                                PingThread(ref AddressEntryDelegate.DataSource, sublist);
+                                PingThread(sublist);
                             });
                             ThreadList[a].Start();
 
@@ -245,7 +245,7 @@ namespace IPList
 
                         Thread threadMonitor = new Thread(() =>
                         {
-                            ThreadMonitor(sender, ref AddressEntryDelegate.DataSource);
+                            ThreadMonitor(sender);
                         });
                         threadMonitor.Start();
 

@@ -15,6 +15,6 @@ namespace IPList
         {
             this.Address = address;
             this.Status = status;
-        }
+        }   
     }
 }
