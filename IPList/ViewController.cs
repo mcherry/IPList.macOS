@@ -97,7 +97,12 @@ namespace IPList
                     if (thread.IsAlive == true) cleanup++;
                 }
 
-                if (cleanup == 0) break;
+                if (cleanup == 0)
+                {
+                    foreach (Thread thread in ThreadList) thread.Abort();
+                    break;
+                }
+
                 Thread.Sleep(500);
             }
 
@@ -267,6 +272,7 @@ namespace IPList
 
                         ToggleGUI(true);
                         lblStatus.StringValue = tblList.RowCount + " IP addresses found";
+                        prgSpinner.StopAnimation(sender);
                     }
                 } else
                 {
