@@ -69,6 +69,9 @@ namespace IPList
 		[Action ("CopyMenuAction:")]
 		partial void CopyMenuAction (Foundation.NSObject sender);
 
+		[Action ("mnuPingAction:")]
+		partial void mnuPingAction (Foundation.NSObject sender);
+
 		[Action ("PortscanMenuAction:")]
 		partial void PortscanMenuAction (Foundation.NSObject sender);
 

@@ -83,7 +83,7 @@ namespace IPList
             return;
         }
 
-        private void ThreadMonitor(NSObject sender)
+        private void ThreadMonitor()
         {
             int cleanup = 0;
             string label;
@@ -134,7 +134,7 @@ namespace IPList
                 lblStatus.StringValue = label;
                 ToggleGUI(true);
 
-                prgSpinner.StopAnimation(sender);
+                prgSpinner.StopAnimation(this);
             });
 
             return;
@@ -268,7 +268,7 @@ namespace IPList
 
                         Thread threadMonitor = new Thread(() =>
                         {
-                            ThreadMonitor(sender);
+                            ThreadMonitor();
                         });
                         threadMonitor.Start();
 
@@ -311,6 +311,12 @@ namespace IPList
         partial void CopyMenuAction(NSObject sender)
         {
             Warehouse.CopyString(Globals.CurrentIP);
+        }
+
+        partial void mnuPingAction(NSObject sender)
+        {
+            PingWindowController pingWindow = new PingWindowController(Globals.CurrentIP);
+            pingWindow.ShowWindow(this);
         }
     }
 }
