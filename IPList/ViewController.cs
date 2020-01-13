@@ -290,7 +290,7 @@ namespace IPList
 
                         ToggleGUI(true);
                         lblStatus.StringValue = tblList.RowCount + " IP addresses found";
-                        prgSpinner.StopAnimation(sender);
+                        prgSpinner.StopAnimation(this);
                     }
                 } else
                 {
