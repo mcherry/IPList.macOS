@@ -35,6 +35,12 @@ namespace IPList
                 case "Status":
                     view.StringValue = DataSource.AddressEntries[(int)row].Status;
                     break;
+                case "Latency":
+                    view.StringValue = DataSource.AddressEntries[(int)row].Latency;
+                    break;
+                case "TTL":
+                    view.StringValue = DataSource.AddressEntries[(int)row].TTL;
+                    break;
             }
 
             return view;

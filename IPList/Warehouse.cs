@@ -9,17 +9,16 @@ namespace IPList
         {
         }
 
-        public static bool Ping(string host, int timeout = 500)
+        public static PingReply Ping(string host, int timeout = 500)
         {
-            bool pingable = false;
             Ping pinger = null;
+            PingReply reply = null;
 
             try
             {
                 // ping host
                 pinger = new Ping();
-                PingReply reply = pinger.Send(host, timeout);
-                pingable = reply.Status == IPStatus.Success;
+                reply = pinger.Send(host, timeout);
             }
             catch (PingException)
             {
@@ -34,7 +33,7 @@ namespace IPList
                 }
             }
 
-            return pingable;
+            return reply;
         }
 
         public static void CopyString(string text)

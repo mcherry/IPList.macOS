@@ -36,6 +36,26 @@ namespace IPList
                         AddressEntries.Sort((x, y) => -1 * string.Compare(x.Status, y.Status, StringComparison.Ordinal));
                     }
                     break;
+                case "Latency":
+                    if (ascending)
+                    {
+                        AddressEntries.Sort((x, y) => string.Compare(x.Latency, y.Latency, StringComparison.Ordinal));
+                    }
+                    else
+                    {
+                        AddressEntries.Sort((x, y) => -1 * string.Compare(x.Latency, y.Latency, StringComparison.Ordinal));
+                    }
+                    break;
+                case "TTL":
+                    if (ascending)
+                    {
+                        AddressEntries.Sort((x, y) => string.Compare(x.TTL, y.TTL, StringComparison.Ordinal));
+                    }
+                    else
+                    {
+                        AddressEntries.Sort((x, y) => -1 * string.Compare(x.TTL, y.TTL, StringComparison.Ordinal));
+                    }
+                    break;
             }
         }
 

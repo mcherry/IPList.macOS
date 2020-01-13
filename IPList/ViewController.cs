@@ -5,6 +5,7 @@ using LukeSkywalker.IPNetwork;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading;
+using System.Net.NetworkInformation;
 using IPAddressCollection = LukeSkywalker.IPNetwork.IPAddressCollection;
 
 namespace IPList
@@ -55,18 +56,18 @@ namespace IPList
 
             foreach (string ip in IPList)
             {
-               
-                if (Warehouse.Ping(ip) == true)
+                PingReply pinger = Warehouse.Ping(ip);
+                if (pinger.Status == IPStatus.Success)
                 {
                     // successful ping, add IP and status to tableview datasource and IP list
-                    AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip, "UP"));
+                    AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip, "UP", pinger.RoundtripTime.ToString() + "ms", pinger.Options.Ttl.ToString()));
                 }
                 else
                 {
                     if (listPingable != true)
                     {
                         // listing unpingable hosts, add to tableview datasource and IP list
-                        AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip, "DOWN"));
+                        AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip, "DOWN", "Unknown", "Unknown"));
                     }
                 }
 
@@ -86,6 +87,8 @@ namespace IPList
         {
             int cleanup = 0;
             string label;
+            int hostUp = 0;
+            int hostDown = 0;
 
             while (true)
             {
@@ -102,7 +105,21 @@ namespace IPList
             }
 
             AddressEntryDelegate.DataSource.Sort("IP", true);
-            label = AddressEntryDelegate.DataSource.AddressEntries.Count.ToString() + " IP addresses found";
+
+            foreach (AddressEntry ip in AddressEntryDelegate.DataSource.AddressEntries)
+            {
+                switch (ip.Status)
+                {
+                    case "UP":
+                        hostUp++;
+                        break;
+                    case "DOWN":
+                        hostDown++;
+                        break;
+                }
+            }
+
+            label = AddressEntryDelegate.DataSource.AddressEntries.Count.ToString() + " IP addresses found (" + hostUp.ToString() + " up, " + hostDown.ToString() + " down)";
 
             InvokeOnMainThread(() =>
             {
@@ -257,7 +274,7 @@ namespace IPList
                             string[] split_ip = ip.ToString().Split(".");
                             if (split_ip[3] != "0" && split_ip[3] != "255")
                             {
-                                AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip.ToString(), "Unknown"));
+                                AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip.ToString(), "Unknown", "Unknown", "Unknown"));
                             }
                         }
 
