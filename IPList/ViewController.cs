@@ -105,11 +105,6 @@ namespace IPList
                 Thread.Sleep(500);
             }
 
-            foreach (Thread thread in ThreadList)
-            {
-                thread.Abort();
-            }
-
             ipCount = AddressEntryDelegate.DataSource.AddressEntries.Count;
             AddressEntryDelegate.DataSource.Sort("IP", true);
 
