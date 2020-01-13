@@ -11,7 +11,7 @@
         {
         }
 
-        public AddressEntry(string address, string status, string latency, string ttl)
+        public AddressEntry(string address, string status = "", string latency = "", string ttl = "")
         {
             this.Address = address;
             this.Status = status;

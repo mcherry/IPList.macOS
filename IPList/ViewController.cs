@@ -67,7 +67,7 @@ namespace IPList
                     if (listPingable != true)
                     {
                         // listing unpingable hosts, add to tableview datasource and IP list
-                        AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip, "DOWN", "Unknown", "Unknown"));
+                        AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip, "DOWN"));
                     }
                 }
 
@@ -89,6 +89,7 @@ namespace IPList
             string label;
             int hostUp = 0;
             int hostDown = 0;
+            int ipCount = 0;
 
             while (true)
             {
@@ -104,6 +105,12 @@ namespace IPList
                 Thread.Sleep(500);
             }
 
+            foreach (Thread thread in ThreadList)
+            {
+                thread.Abort();
+            }
+
+            ipCount = AddressEntryDelegate.DataSource.AddressEntries.Count;
             AddressEntryDelegate.DataSource.Sort("IP", true);
 
             foreach (AddressEntry ip in AddressEntryDelegate.DataSource.AddressEntries)
@@ -119,15 +126,20 @@ namespace IPList
                 }
             }
 
-            label = AddressEntryDelegate.DataSource.AddressEntries.Count.ToString() + " IP addresses found (" + hostUp.ToString() + " up, " + hostDown.ToString() + " down)";
+            InvokeOnMainThread(() =>
+            {
+                if (chkList.IntValue == 1) hostDown = ipCount - hostUp;
+            });
+
+            label = ipCount.ToString() + " IP addresses found (" + hostUp.ToString() + " up, " + hostDown.ToString() + " down)";
 
             InvokeOnMainThread(() =>
             {
                 tblList.ReloadData();
-                prgSpinner.StopAnimation(sender);
-
                 lblStatus.StringValue = label;
                 ToggleGUI(true);
+
+                prgSpinner.StopAnimation(sender);
             });
 
             return;
@@ -274,7 +286,7 @@ namespace IPList
                             string[] split_ip = ip.ToString().Split(".");
                             if (split_ip[3] != "0" && split_ip[3] != "255")
                             {
-                                AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip.ToString(), "Unknown", "Unknown", "Unknown"));
+                                AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip.ToString()));
                             }
                         }
 
