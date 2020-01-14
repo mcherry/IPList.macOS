@@ -14,7 +14,7 @@ namespace IPList
         {
         }
 
-        public static PingReply Ping(string host, int timeout = 750)
+        public static PingReply Ping(string host, int timeout = 500)
         {
             Ping pinger = null;
             PingReply reply = null;

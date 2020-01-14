@@ -143,15 +143,18 @@ namespace IPList
                 {
                     lblStatus.StringValue = "Scanning " + PortList.Count + " common ports";
                 });
-                
+
+                TcpClient Scan;
                 foreach (int port in portList)
                 {
-                    TcpClient Scan = new TcpClient();
+                    Scan = new TcpClient();
                     IAsyncResult result = Scan.BeginConnect(this.IPAddress, port, null, null);
                     bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(250));
 
                     if (success)
                     {
+                        Scan.EndConnect(result);
+
                         InvokeOnMainThread(() =>
                         {
                             PortEntryDelegate.DataSource.Ports.Add(new PortEntry(port.ToString(), Warehouse.Services[port.ToString()]));
@@ -159,8 +162,8 @@ namespace IPList
                         });
                     }
 
-                    Scan.EndConnect(result);
                     Scan.Close();
+                    Scan.Dispose();
 
                     if (this.StopScan == true) break;
                 }
@@ -219,6 +222,12 @@ namespace IPList
 
         private void StartScan()
         {
+            btnStart.Enabled = false;
+            btnStart.Hidden = true;
+            btnStop.Enabled = true;
+            btnStop.Hidden = false;
+            prgStatus.Hidden = false;
+
             prgStatus.StartAnimation(this);
             this.StopScan = false;
             lblIP.StringValue = this.IPAddress;
