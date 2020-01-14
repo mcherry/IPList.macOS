@@ -9,7 +9,6 @@ namespace IPList
     public partial class PingWindowController : NSWindowController
     {
         private string IPAddress;
-        private bool StopPing = false;
         private Thread Pinger = null;
 
         public PingWindowController(IntPtr handle) : base(handle)
@@ -49,10 +48,6 @@ namespace IPList
                     });
                 }
 
-                if (this.StopPing == true)
-                {
-                    break;
-                }
                 Thread.Sleep(1000);
             }
         }

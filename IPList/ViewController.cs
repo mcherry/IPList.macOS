@@ -4,6 +4,7 @@ using Foundation;
 using LukeSkywalker.IPNetwork;
 using System.Collections.Generic;
 using System.Net;
+using System.IO;
 using System.Threading;
 using System.Net.NetworkInformation;
 using IPAddressCollection = LukeSkywalker.IPNetwork.IPAddressCollection;
@@ -13,7 +14,8 @@ namespace IPList
     public partial class ViewController : NSViewController
     {
         private bool StopPings = false;
-        private Thread[] ThreadList = null;
+        private int runningTasks = 0;
+        private object locker = new object();
 
         public ViewController(IntPtr handle) : base(handle)
         {
@@ -27,6 +29,8 @@ namespace IPList
             // default state of GUI
             btnCopy.Enabled = false;
             cmbDelimiter.Enabled = false;
+
+            Warehouse.LoadServices();
         }
 
         public override NSObject RepresentedObject
@@ -42,8 +46,12 @@ namespace IPList
             }
         }
 
-        private void PingThread(List<string> IPList)
+        private void PingThread(object state)
         {
+            //List<string> IPList
+            object[] array = state as object[];
+            List<string> ipList = (List<string>)array[0];
+
             bool pingHosts = true;
             bool listPingable = true;
 
@@ -54,7 +62,7 @@ namespace IPList
                 listPingable &= chkList.IntValue == 1;
             });
 
-            foreach (string ip in IPList)
+            foreach (string ip in ipList)
             {
                 PingReply pinger = Warehouse.Ping(ip);
                 if (pinger.Status == IPStatus.Success)
@@ -80,58 +88,40 @@ namespace IPList
                 if (this.StopPings == true) break;
             }
 
+            lock (locker)
+            {
+                runningTasks--;
+                Monitor.Pulse(locker);
+            }
+
             return;
         }
 
-        private void ThreadMonitor()
+        private void MonitorThread(List<List<string>> ipList)
         {
-            int cleanup = 0;
-            string label;
-            int hostUp = 0;
-            int hostDown = 0;
-            int ipCount = 0;
+            ThreadPool.SetMinThreads(3, 0);
+            ThreadPool.SetMaxThreads(3, 0);
 
-            while (true)
+            foreach (List<string> sublist in ipList)
             {
-                cleanup = 0;
-
-                foreach (Thread thread in ThreadList)
-                {
-                    if (thread.IsAlive == true) cleanup++;
-                }
-
-                if (cleanup == 0) break;
-
-                Thread.Sleep(500);
+                lock (locker) runningTasks++;
+                ThreadPool.QueueUserWorkItem(new WaitCallback(PingThread), new object[] { sublist });
             }
 
-            ipCount = AddressEntryDelegate.DataSource.AddressEntries.Count;
+            lock (locker)
+            {
+                while (runningTasks > 0)
+                {
+                    Monitor.Wait(locker);
+                }
+            }
+
             AddressEntryDelegate.DataSource.Sort("IP", true);
-
-            foreach (AddressEntry ip in AddressEntryDelegate.DataSource.AddressEntries)
-            {
-                switch (ip.Status)
-                {
-                    case "UP":
-                        hostUp++;
-                        break;
-                    case "DOWN":
-                        hostDown++;
-                        break;
-                }
-            }
-
-            InvokeOnMainThread(() =>
-            {
-                if (chkList.IntValue == 1) hostDown = ipCount - hostUp;
-            });
-
-            label = ipCount.ToString() + " IP addresses found (" + hostUp.ToString() + " up, " + hostDown.ToString() + " down)";
 
             InvokeOnMainThread(() =>
             {
                 tblList.ReloadData();
-                lblStatus.StringValue = label;
+                lblStatus.StringValue = AddressEntryDelegate.DataSource.AddressEntries.Count.ToString() + " IP addresses found";
                 ToggleGUI(true);
 
                 prgSpinner.StopAnimation(this);
@@ -222,7 +212,7 @@ namespace IPList
             if (network != null)
             {
                 IPAddressCollection subnet = null;
-                List<List<string>> IPList = null;
+                List<List<string>> ipList = null;
                 bool invalid = false;
 
                 try
@@ -248,32 +238,17 @@ namespace IPList
                     {
                         this.StopPings = false;
 
-                        IPList = Lists.Split<string>(subnet);
-                        ThreadList = new Thread[IPList.Count];
+                        ipList = Lists.Split<string>(subnet);
 
-                        int a = 0;
-                        int ip_count = 0;
-                        foreach (List<string> sublist in IPList)
+                        Thread monitor = new Thread(() =>
                         {
-                            ip_count += sublist.Count;
+                            MonitorThread(ipList);
 
-                            ThreadList[a] = new Thread(() =>
-                            {
-                                PingThread(sublist);
-                            });
-                            ThreadList[a].Start();
-
-                            a++;
-                        }
-
-                        Thread threadMonitor = new Thread(() =>
-                        {
-                            ThreadMonitor();
                         });
-                        threadMonitor.Start();
+                        monitor.Start();
 
                         ToggleGUI(false);
-                        lblStatus.StringValue = "Pinging " + ip_count.ToString() + " IP addresses";
+                        lblStatus.StringValue = "Pinging " + subnet.Count + " IP addresses";
                     } else
                     {
                         foreach (IPAddress ip in subnet)
@@ -317,6 +292,12 @@ namespace IPList
         {
             PingWindowController pingWindow = new PingWindowController(Globals.CurrentIP);
             pingWindow.ShowWindow(this);
+        }
+
+        partial void mnuPortScan_Click(NSObject sender)
+        {
+            PortScannerController portScanner = new PortScannerController(Globals.CurrentIP);
+            portScanner.ShowWindow(this);
         }
     }
 }

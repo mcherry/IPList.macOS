@@ -453,6 +453,12 @@
                                 <action selector="mnuPingAction:" target="XfG-lQ-9wD" id="OU4-s0-o0T"/>
                             </connections>
                         </menuItem>
+                        <menuItem title="Port Scan" id="krb-gl-H2m">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <connections>
+                                <action selector="mnuPortScan_Click:" target="XfG-lQ-9wD" id="deq-x5-e3N"/>
+                            </connections>
+                        </menuItem>
                     </items>
                 </menu>
             </objects>

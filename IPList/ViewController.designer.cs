@@ -72,6 +72,9 @@ namespace IPList
 		[Action ("mnuPingAction:")]
 		partial void mnuPingAction (Foundation.NSObject sender);
 
+		[Action ("mnuPortScan_Click:")]
+		partial void mnuPortScan_Click (Foundation.NSObject sender);
+
 		[Action ("PortscanMenuAction:")]
 		partial void PortscanMenuAction (Foundation.NSObject sender);
 
