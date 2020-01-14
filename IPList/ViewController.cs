@@ -239,7 +239,7 @@ namespace IPList
                         this.StopPings = false;
 
                         ipList = Lists.Split<string>(subnet);
-
+                        runningTasks = 0;
                         Thread monitor = new Thread(() =>
                         {
                             MonitorThread(ipList);
