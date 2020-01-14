@@ -143,17 +143,20 @@ namespace IPList
                 {
                     lblStatus.StringValue = "Scanning " + PortList.Count + " common ports";
                 });
-
-                TcpClient Scan;
+                
                 foreach (int port in portList)
                 {
-                    Scan = new TcpClient();
+                    TcpClient Scan = new TcpClient();
                     IAsyncResult result = Scan.BeginConnect(this.IPAddress, port, null, null);
                     bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(250));
 
                     if (success)
                     {
-                        Scan.EndConnect(result);
+                        try {
+                            Scan.EndConnect(result);
+                        } catch {
+                            continue;
+                        }
 
                         InvokeOnMainThread(() =>
                         {
@@ -164,6 +167,7 @@ namespace IPList
 
                     Scan.Close();
                     Scan.Dispose();
+                    Scan = null;
 
                     if (this.StopScan == true) break;
                 }
@@ -184,7 +188,7 @@ namespace IPList
             ThreadPool.SetMaxThreads(3, 0);
 
             foreach (List<int> portList in sublist)
-            {
+            { 
                 lock (locker) runningTasks++;
                 ThreadPool.QueueUserWorkItem(new WaitCallback(ScannerThread), new object[] { portList });
             }
@@ -266,6 +270,36 @@ namespace IPList
             btnStart.Enabled = true;
             btnStart.Hidden = false;
             prgStatus.StopAnimation(this);
+        }
+
+        partial void btnCopy_Click(NSObject sender)
+        {
+            string delim = "";
+            string clip_val = "";
+
+
+            switch (cmbDelim.SelectedItem.Title)
+            {
+                case "Newline":
+                    delim = Environment.NewLine;
+                    break;
+                case "Comma":
+                    delim = ",";
+                    break;
+                case "Tab":
+                    delim = "\t";
+                    break;
+                case "Space":
+                    delim = " ";
+                    break;
+            }
+
+            foreach (PortEntry port in PortEntryDelegate.DataSource.Ports)
+            {
+                clip_val += port.Port + delim;
+            }
+
+            Warehouse.CopyString(clip_val.TrimEnd());
         }
     }
 }

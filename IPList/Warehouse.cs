@@ -1,4 +1,5 @@
 ﻿using AppKit;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -50,6 +51,13 @@ namespace IPList
             clipboard.SetStringForType(text, types[0]);
         }
 
+        public static string GetPortDescription(int port)
+        {
+            string value = "";
+            if (Services.TryGetValue(port.ToString(), out value)) return value;
+            return value;
+        }
+
         public static void LoadServices()
         {
             string line;
@@ -72,6 +80,8 @@ namespace IPList
                 }
             }
             file.Close();
+
+            return;
         }
     }
 }
