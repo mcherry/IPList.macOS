@@ -9,9 +9,7 @@ namespace IPList
     {
         public List<AddressEntry> AddressEntries = new List<AddressEntry>();
 
-        public AddressEntryDataSource()
-        {
-        }
+        public AddressEntryDataSource() { }
 
         public void Sort(string key, bool ascending)
         {

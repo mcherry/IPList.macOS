@@ -11,14 +11,10 @@ namespace IPList
         private string IPAddress;
         private Thread Pinger = null;
 
-        public PingWindowController(IntPtr handle) : base(handle)
-        {
-        }
+        public PingWindowController(IntPtr handle) : base(handle) { }
 
         [Export("initWithCoder:")]
-        public PingWindowController(NSCoder coder) : base(coder)
-        {
-        }
+        public PingWindowController(NSCoder coder) : base(coder) { }
 
         public PingWindowController(string ip_address) : base("PingWindow")
         {

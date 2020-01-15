@@ -6,9 +6,7 @@ namespace IPList
 {
     public class Lists
     {
-        public Lists()
-        {
-        }
+        public Lists() { }
 
         public static List<List<T>> Split<T>(IPAddressCollection collection, int list_size = 10)
         {

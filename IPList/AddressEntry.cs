@@ -7,9 +7,7 @@
         public string Latency { get; set; } = "";
         public string TTL { get; set; } = "";
 
-        public AddressEntry()
-        {
-        }
+        public AddressEntry() { }
 
         public AddressEntry(string address, string status = "", string latency = "", string ttl = "")
         {
