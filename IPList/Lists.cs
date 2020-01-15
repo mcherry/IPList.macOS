@@ -10,15 +10,15 @@ namespace IPList
         {
         }
 
-        public static List<List<T>> Split<T>(IPAddressCollection collection, int size = 10)
+        public static List<List<T>> Split<T>(IPAddressCollection collection, int list_size = 10)
         {
             // calculate chunk size based on number of IPs and a max of 30 threads
             double col_count = collection.Count;
-            double threads = col_count / size;
-            while (threads > 20)
+            double lists = col_count / list_size;
+            while (lists > 20)
             {
-                size *= 2;
-                threads = col_count / size;
+                list_size *= 2;
+                lists = col_count / list_size;
             }
 
             List<T> CollectionList = new List<T>();
@@ -37,7 +37,7 @@ namespace IPList
 
             foreach (var element in CollectionList)
             {
-                if (count++ == size)
+                if (count++ == list_size)
                 {
                     chunks.Add(temp);
                     temp = new List<T>();
@@ -50,15 +50,15 @@ namespace IPList
             return chunks;
         }
 
-        public static List<List<T>> Split<T>(List<int> collection, int size = 10)
+        public static List<List<T>> Split<T>(List<int> collection, int list_size = 10)
         {
             // calculate chunk size based on number of IPs and a max of 30 threads
             double col_count = collection.Count;
-            double threads = col_count / size;
-            while (threads > 20)
+            double lists = col_count / list_size;
+            while (lists > 20)
             {
-                size *= 2;
-                threads = col_count / size;
+                list_size *= 2;
+                lists = col_count / list_size;
             }
 
             List<T> CollectionList = new List<T>();
@@ -73,7 +73,7 @@ namespace IPList
 
             foreach (var element in CollectionList)
             {
-                if (count++ == size)
+                if (count++ == list_size)
                 {
                     chunks.Add(temp);
                     temp = new List<T>();

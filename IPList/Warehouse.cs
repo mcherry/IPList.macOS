@@ -1,5 +1,4 @@
 ﻿using AppKit;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -9,7 +8,7 @@ namespace IPList
 {
     public class Warehouse
     {
-        public static IDictionary<string, string> Services = new Dictionary<string, string>();
+        public static Dictionary<string, string> Services = new Dictionary<string, string>();
 
         public Warehouse()
         {
@@ -28,15 +27,12 @@ namespace IPList
             }
             catch (PingException)
             {
-                // nothing to see here, ignoring exceptions
+                // continue
             }
             finally
             {
                 // cleanup
-                if (pinger != null)
-                {
-                    pinger.Dispose();
-                }
+                if (pinger != null) pinger.Dispose();
             }
 
             return reply;
@@ -53,7 +49,7 @@ namespace IPList
 
         public static string GetPortDescription(int port)
         {
-            string value = "";
+            string value;
             if (Services.TryGetValue(port.ToString(), out value)) return value;
             return value;
         }
@@ -65,17 +61,13 @@ namespace IPList
             StreamReader file = new StreamReader(@"/etc/services");
             while ((line = file.ReadLine()) != null)
             {
-                Regex regex = new Regex("  +");
                 if (!line.StartsWith("#"))
                 {
-                    string[] entry = regex.Split(line);
+                    string[] entry = new Regex("  +").Split(line);
                     if (entry.Length > 1)
                     {
                         string[] port = entry[1].Split("/");
-                        if (port.Length > 1)
-                        {
-                            Services[port[0]] = entry[0];
-                        }
+                        if (port.Length > 1) Services[port[0]] = entry[0];
                     }
                 }
             }

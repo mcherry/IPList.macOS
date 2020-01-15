@@ -59,9 +59,7 @@ namespace IPList
             lblIP.StringValue = this.IPAddress;
             prgStatus.StartAnimation(this);
 
-            Pinger = new Thread(() => {
-                PingThread();
-            });
+            Pinger = new Thread(() => { PingThread(); });
             Pinger.Start();
         }
 

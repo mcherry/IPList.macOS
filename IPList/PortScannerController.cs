@@ -154,9 +154,7 @@ namespace IPList
                     {
                         try {
                             Scan.EndConnect(result);
-                        } catch {
-                            continue;
-                        }
+                        } catch { continue; }
 
                         InvokeOnMainThread(() =>
                         {
@@ -189,17 +187,11 @@ namespace IPList
 
             foreach (List<int> portList in sublist)
             { 
-                lock (locker) runningTasks++;
+                lock(locker) runningTasks++;
                 ThreadPool.QueueUserWorkItem(new WaitCallback(ScannerThread), new object[] { portList });
             }
 
-            lock (locker)
-            {
-                while (runningTasks > 0)
-                {
-                    Monitor.Wait(locker);
-                }
-            }
+            lock(locker) while (runningTasks > 0) Monitor.Wait(locker);
 
             AddressEntryDelegate.DataSource.Sort("Port", true);
 
@@ -263,7 +255,7 @@ namespace IPList
 
         partial void btnStop_Click(NSObject sender)
         {
-            this.StopScan = true;
+            StopScan = true;
 
             prgStatus.Hidden = true;
             btnStop.Enabled = false;

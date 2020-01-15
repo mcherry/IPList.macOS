@@ -11,10 +11,7 @@ namespace IPList
             IPAddress y = IPAddress.Parse(ip2);
 
             var result = x.AddressFamily.CompareTo(y.AddressFamily);
-            if (result != 0)
-            {
-                return result;
-            }
+            if (result != 0) return result;
 
             var xBytes = x.GetAddressBytes();
             var yBytes = y.GetAddressBytes();
@@ -23,10 +20,7 @@ namespace IPList
             for (var i = 0; i < octets; i++)
             {
                 var octetResult = xBytes[i].CompareTo(yBytes[i]);
-                if (octetResult != 0)
-                {
-                    return octetResult;
-                }
+                if (octetResult != 0) return octetResult;
             }
 
             return 0;

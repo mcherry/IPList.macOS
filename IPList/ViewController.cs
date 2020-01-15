@@ -4,7 +4,6 @@ using Foundation;
 using LukeSkywalker.IPNetwork;
 using System.Collections.Generic;
 using System.Net;
-using System.IO;
 using System.Threading;
 using System.Net.NetworkInformation;
 using IPAddressCollection = LukeSkywalker.IPNetwork.IPAddressCollection;
@@ -80,15 +79,12 @@ namespace IPList
                 }
 
                 // update GUI
-                InvokeOnMainThread(() =>
-                {
-                    tblList.ReloadData();
-                });
+                InvokeOnMainThread(() => { tblList.ReloadData(); });
 
                 if (this.StopPings == true) break;
             }
 
-            lock (locker)
+            lock(locker)
             {
                 runningTasks--;
                 Monitor.Pulse(locker);
@@ -104,16 +100,13 @@ namespace IPList
 
             foreach (List<string> sublist in ipList)
             {
-                lock (locker) runningTasks++;
+                lock(locker) runningTasks++;
                 ThreadPool.QueueUserWorkItem(new WaitCallback(PingThread), new object[] { sublist });
             }
 
             lock (locker)
             {
-                while (runningTasks > 0)
-                {
-                    Monitor.Wait(locker);
-                }
+                while (runningTasks > 0) Monitor.Wait(locker);
             }
 
             AddressEntryDelegate.DataSource.Sort("IP", true);
@@ -240,11 +233,7 @@ namespace IPList
 
                         ipList = Lists.Split<string>(subnet);
                         runningTasks = 0;
-                        Thread monitor = new Thread(() =>
-                        {
-                            MonitorThread(ipList);
-
-                        });
+                        Thread monitor = new Thread(() => { MonitorThread(ipList); });
                         monitor.Start();
 
                         ToggleGUI(false);
