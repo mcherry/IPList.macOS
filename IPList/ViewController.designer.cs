@@ -87,6 +87,9 @@ namespace IPList
 		[Action ("TracerouteMenuAction:")]
 		partial void TracerouteMenuAction (Foundation.NSObject sender);
 
+		[Action ("TracertMenu_Click:")]
+		partial void TracertMenu_Click (Foundation.NSObject sender);
+
 		[Action ("txtNetworkAction:")]
 		partial void txtNetworkAction (Foundation.NSObject sender);
 		

@@ -27,7 +27,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="Port Scan" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" animationBehavior="default" id="2" customClass="PortScanner">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="131" y="74" width="667" height="524"/>
@@ -128,7 +128,7 @@
                                     <tableColumns>
                                         <tableColumn width="116" minWidth="40" maxWidth="1000" id="nA0-jL-Lml">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Port">
-                                                <font key="font" metaFont="menu" size="11"/>
+                                                <font key="font" metaFont="label" size="11"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                             </tableHeaderCell>
@@ -160,9 +160,9 @@
                                                 </tableCellView>
                                             </prototypeCellViews>
                                         </tableColumn>
-                                        <tableColumn width="133" minWidth="40" maxWidth="1000" id="IWv-tG-NhV">
+                                        <tableColumn width="503" minWidth="40" maxWidth="1000" id="IWv-tG-NhV">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Service">
-                                                <font key="font" metaFont="menu" size="11"/>
+                                                <font key="font" metaFont="label" size="11"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                             </tableHeaderCell>
@@ -175,11 +175,11 @@
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                             <prototypeCellViews>
                                                 <tableCellView id="OUT-5u-N3W">
-                                                    <rect key="frame" x="120" y="1" width="133" height="17"/>
+                                                    <rect key="frame" x="120" y="1" width="503" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lmk-bO-kpP">
-                                                            <rect key="frame" x="0.0" y="0.0" width="133" height="17"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="503" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="BEY-vR-MBQ">
                                                                 <font key="font" metaFont="system"/>
@@ -194,9 +194,9 @@
                                                 </tableCellView>
                                             </prototypeCellViews>
                                         </tableColumn>
-                                        <tableColumn width="367" minWidth="10" maxWidth="3.4028234663852886e+38" id="ba0-1C-Oz8">
+                                        <tableColumn width="367" minWidth="10" maxWidth="3.4028234663852886e+38" hidden="YES" id="ba0-1C-Oz8">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Data">
-                                                <font key="font" metaFont="menu" size="11"/>
+                                                <font key="font" metaFont="label" size="11"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </tableHeaderCell>
@@ -209,11 +209,11 @@
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                             <prototypeCellViews>
                                                 <tableCellView id="Pjb-aN-D5r">
-                                                    <rect key="frame" x="256" y="1" width="367" height="17"/>
+                                                    <rect key="frame" x="1" y="1" width="0.0" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xaV-kp-f9d">
-                                                            <rect key="frame" x="0.0" y="0.0" width="367" height="17"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="4" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="1By-9q-Wmp">
                                                                 <font key="font" metaFont="system"/>

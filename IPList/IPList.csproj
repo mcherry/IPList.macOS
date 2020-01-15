@@ -85,8 +85,6 @@
       <DependentUpon>ViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="AddressEntry.cs" />
-    <Compile Include="AddressEntryDataSource.cs" />
-    <Compile Include="AddressEntryDelegate.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Lists.cs" />
@@ -108,8 +106,6 @@
       <DependentUpon>PortScannerController.cs</DependentUpon>
     </Compile>
     <Compile Include="PortEntry.cs" />
-    <Compile Include="PortEntryDataSource.cs" />
-    <Compile Include="PortEntryDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
