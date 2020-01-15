@@ -16,9 +16,7 @@ namespace IPList
         private int runningTasks = 0;
         private object locker = new object();
 
-        public ViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public ViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
         {
@@ -104,10 +102,7 @@ namespace IPList
                 ThreadPool.QueueUserWorkItem(new WaitCallback(PingThread), new object[] { sublist });
             }
 
-            lock (locker)
-            {
-                while (runningTasks > 0) Monitor.Wait(locker);
-            }
+            lock(locker) while (runningTasks > 0) Monitor.Wait(locker);
 
             AddressEntryDelegate.DataSource.Sort("IP", true);
 

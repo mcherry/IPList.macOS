@@ -7,9 +7,7 @@ namespace IPList
         public string Service { get; set; } = "";
         public string Data { get; set; } = "";
 
-        public PortEntry()
-        {
-        }
+        public PortEntry() { }
 
         public PortEntry(string port, string service = "", string data = "")
         {

@@ -22,7 +22,7 @@ namespace IPList
 
         public PingWindowController(string ip_address) : base("PingWindow")
         {
-            this.IPAddress = ip_address;
+            IPAddress = ip_address;
         }
 
         private void PingThread()
@@ -56,7 +56,7 @@ namespace IPList
         {
             base.AwakeFromNib();
 
-            lblIP.StringValue = this.IPAddress;
+            lblIP.StringValue = IPAddress;
             prgStatus.StartAnimation(this);
 
             Pinger = new Thread(() => { PingThread(); });

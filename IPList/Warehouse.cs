@@ -10,9 +10,7 @@ namespace IPList
     {
         public static Dictionary<string, string> Services = new Dictionary<string, string>();
 
-        public Warehouse()
-        {
-        }
+        public Warehouse() { }
 
         public static PingReply Ping(string host, int timeout = 500)
         {
@@ -49,8 +47,7 @@ namespace IPList
 
         public static string GetPortDescription(int port)
         {
-            string value;
-            if (Services.TryGetValue(port.ToString(), out value)) return value;
+            if (Services.TryGetValue(port.ToString(), out string value)) return value;
             return value;
         }
 

@@ -4,8 +4,6 @@
     {
         public static string CurrentIP;
 
-        public Globals()
-        {
-        }
+        public Globals() { }
     }
 }

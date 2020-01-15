@@ -9,9 +9,7 @@ namespace IPList
     {
         public List<PortEntry> Ports = new List<PortEntry>();
 
-        public PortEntryDataSource()
-        {
-        }
+        public PortEntryDataSource() { }
         
         public override nint GetRowCount(NSTableView tableView)
         {

@@ -92,14 +92,10 @@ namespace IPList
             65129,65389
         });
 
-        public PortScannerController(IntPtr handle) : base(handle)
-        {
-        }
+        public PortScannerController(IntPtr handle) : base(handle) { }
 
         [Export("initWithCoder:")]
-        public PortScannerController(NSCoder coder) : base(coder)
-        {
-        }
+        public PortScannerController(NSCoder coder) : base(coder) { }
 
         public PortScannerController(string ip_address) : base("PortScanner")
         {
@@ -236,10 +232,7 @@ namespace IPList
             List<List<int>> portList = Lists.Split<int>(PortList);
 
             runningTasks = 0;
-            Thread monitor = new Thread(() =>
-            {
-                MonitorThread(portList);
-            });
+            Thread monitor = new Thread(() => { MonitorThread(portList); });
             monitor.Start();
         }
 
@@ -268,8 +261,7 @@ namespace IPList
         {
             string delim = "";
             string clip_val = "";
-
-
+            
             switch (cmbDelim.SelectedItem.Title)
             {
                 case "Newline":
