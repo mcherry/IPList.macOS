@@ -93,9 +93,6 @@ namespace IPList
 
         private void MonitorThread(List<List<string>> ipList)
         {
-            ThreadPool.SetMinThreads(3, 0);
-            ThreadPool.SetMaxThreads(3, 0);
-
             foreach (List<string> sublist in ipList)
             {
                 lock(locker) runningTasks++;

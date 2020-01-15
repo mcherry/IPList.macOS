@@ -104,8 +104,8 @@ namespace IPList
 
         private void ScannerThread(object state)
         {
-            object[] array = state as object[];
-            List<int> portList = (List<int>)array[0];
+            object[] arguments = state as object[];
+            List<int> portList = (List<int>)arguments[0];
 
             bool host_up = false;
 
@@ -139,31 +139,38 @@ namespace IPList
                 {
                     lblStatus.StringValue = "Scanning " + PortList.Count + " common ports";
                 });
-                
+
                 foreach (int port in portList)
                 {
                     TcpClient Scan = new TcpClient();
                     IAsyncResult result = Scan.BeginConnect(this.IPAddress, port, null, null);
-                    bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(250));
+                    bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(200));
 
                     if (success)
                     {
-                        try {
+                        try
+                        {
                             Scan.EndConnect(result);
-                        } catch { continue; }
+                        }
+                        catch { continue; }
+
+                        try
+                        {
+                            Scan.GetStream().Close();
+                        }
+                        catch { continue; }
 
                         InvokeOnMainThread(() =>
                         {
-                            PortEntryDelegate.DataSource.Ports.Add(new PortEntry(port.ToString(), Warehouse.Services[port.ToString()]));
+                            PortEntryDelegate.DataSource.Ports.Add(new PortEntry(port.ToString(), Warehouse.GetServiceName(port.ToString())));
                             tblPorts.ReloadData();
                         });
                     }
 
+                    if (this.StopScan == true) break;
+
                     Scan.Close();
                     Scan.Dispose();
-                    Scan = null;
-
-                    if (this.StopScan == true) break;
                 }
 
                 lock (locker)
@@ -178,9 +185,6 @@ namespace IPList
 
         private void MonitorThread(List<List<int>> sublist)
         {
-            ThreadPool.SetMinThreads(3, 0);
-            ThreadPool.SetMaxThreads(3, 0);
-
             foreach (List<int> portList in sublist)
             { 
                 lock(locker) runningTasks++;
@@ -200,6 +204,8 @@ namespace IPList
                 btnStop.Hidden = true;
                 btnStart.Hidden = false;
                 btnStart.Enabled = true;
+                cmbDelim.Enabled = true;
+                btnCopy.Enabled = true;
             });
 
             return;
@@ -219,6 +225,8 @@ namespace IPList
             btnStop.Enabled = true;
             btnStop.Hidden = false;
             prgStatus.Hidden = false;
+            cmbDelim.Enabled = false;
+            btnCopy.Enabled = false;
 
             prgStatus.StartAnimation(this);
             this.StopScan = false;
@@ -254,6 +262,9 @@ namespace IPList
             btnStop.Enabled = false;
             btnStart.Enabled = true;
             btnStart.Hidden = false;
+            cmbDelim.Enabled = true;
+            btnCopy.Enabled = true;
+
             prgStatus.StopAnimation(this);
         }
 

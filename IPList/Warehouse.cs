@@ -1,4 +1,5 @@
 ﻿using AppKit;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -8,7 +9,7 @@ namespace IPList
 {
     public class Warehouse
     {
-        public static Dictionary<string, string> Services = new Dictionary<string, string>();
+        public static IDictionary<string, string> Services = new Dictionary<string, string>();
 
         public Warehouse() { }
 
@@ -38,16 +39,20 @@ namespace IPList
 
         public static void CopyString(string text)
         {
-            NSPasteboard clipboard = NSPasteboard.GeneralPasteboard;
-            string[] types = { "NSStringPboardType" };
+            if (text != null) {
+                NSPasteboard clipboard = NSPasteboard.GeneralPasteboard;
+                string[] types = { "NSStringPboardType" };
 
-            clipboard.DeclareTypes(types, null);
-            clipboard.SetStringForType(text, types[0]);
+                clipboard.DeclareTypes(types, null);
+                clipboard.SetStringForType(text, types[0]);
+            }
         }
 
-        public static string GetPortDescription(int port)
+        public static string GetServiceName(string port)
         {
-            if (Services.TryGetValue(port.ToString(), out string value)) return value;
+            if (Services.TryGetValue(port, out string value)) return value;
+            if (value == null) value = "";
+
             return value;
         }
 
@@ -64,7 +69,10 @@ namespace IPList
                     if (entry.Length > 1)
                     {
                         string[] port = entry[1].Split("/");
-                        if (port.Length > 1) Services[port[0]] = entry[0];
+                        if (port.Length > 1 && !port[0].StartsWith("#") && port[1] == "tcp")
+                        {
+                            Services[port[0]] = entry[0];
+                        }
                     }
                 }
             }
