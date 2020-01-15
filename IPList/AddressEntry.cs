@@ -11,15 +11,17 @@ namespace IPList
         public string Status { get; set; } = "";
         public string Latency { get; set; } = "";
         public string TTL { get; set; } = "";
+        public string DNS { get; set; } = "";
 
         public AddressEntry() { }
 
-        public AddressEntry(string address, string status = "", string latency = "", string ttl = "")
+        public AddressEntry(string address, string status = "", string latency = "", string ttl = "", string dns = "")
         {
             this.Address = address;
             this.Status = status;
             this.Latency = latency;
             this.TTL = ttl;
+            this.DNS = dns;
         }   
     }
 
@@ -71,6 +73,16 @@ namespace IPList
                     else
                     {
                         AddressEntries.Sort((x, y) => -1 * string.Compare(x.TTL, y.TTL, StringComparison.Ordinal));
+                    }
+                    break;
+                case "DNS":
+                    if (ascending)
+                    {
+                        AddressEntries.Sort((x, y) => string.Compare(x.DNS, y.DNS, StringComparison.Ordinal));
+                    }
+                    else
+                    {
+                        AddressEntries.Sort((x, y) => -1 * string.Compare(x.DNS, y.DNS, StringComparison.Ordinal));
                     }
                     break;
             }
@@ -133,6 +145,9 @@ namespace IPList
                     break;
                 case "TTL":
                     view.StringValue = DataSource.AddressEntries[(int)row].TTL;
+                    break;
+                case "DNS":
+                    view.StringValue = DataSource.AddressEntries[(int)row].DNS;
                     break;
             }
 

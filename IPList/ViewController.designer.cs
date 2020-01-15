@@ -34,6 +34,9 @@ namespace IPList
 		AppKit.NSTableColumn colAddress { get; set; }
 
 		[Outlet]
+		AppKit.NSTableColumn colDNS { get; set; }
+
+		[Outlet]
 		AppKit.NSTableColumn colStatus { get; set; }
 
 		[Outlet]
@@ -75,20 +78,8 @@ namespace IPList
 		[Action ("mnuPortScan_Click:")]
 		partial void mnuPortScan_Click (Foundation.NSObject sender);
 
-		[Action ("PortscanMenuAction:")]
-		partial void PortscanMenuAction (Foundation.NSObject sender);
-
-		[Action ("SSHMenuAction:")]
-		partial void SSHMenuAction (Foundation.NSObject sender);
-
 		[Action ("tblListAction:")]
 		partial void tblListAction (Foundation.NSObject sender);
-
-		[Action ("TracerouteMenuAction:")]
-		partial void TracerouteMenuAction (Foundation.NSObject sender);
-
-		[Action ("TracertMenu_Click:")]
-		partial void TracertMenu_Click (Foundation.NSObject sender);
 
 		[Action ("txtNetworkAction:")]
 		partial void txtNetworkAction (Foundation.NSObject sender);
@@ -163,6 +154,11 @@ namespace IPList
 			if (txtNetwork != null) {
 				txtNetwork.Dispose ();
 				txtNetwork = null;
+			}
+
+			if (colDNS != null) {
+				colDNS.Dispose ();
+				colDNS = null;
 			}
 		}
 	}

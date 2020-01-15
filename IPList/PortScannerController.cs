@@ -137,7 +137,7 @@ namespace IPList
             {
                 InvokeOnMainThread(() =>
                 {
-                    lblStatus.StringValue = "Scanning " + PortList.Count + " common ports";
+                    lblStatus.StringValue = "Scanning " + string.Format("{0:n0}", PortList.Count) + " most common ports";
                 });
 
                 foreach (int port in portList)

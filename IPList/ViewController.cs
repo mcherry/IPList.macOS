@@ -64,14 +64,24 @@ namespace IPList
                 PingReply pinger = Warehouse.Ping(ip);
                 if (pinger.Status == IPStatus.Success)
                 {
-                    // successful ping, add IP and status to tableview datasource and IP list
-                    AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip, "UP", pinger.RoundtripTime.ToString() + "ms", pinger.Options.Ttl.ToString()));
+                    string hostname = "";
+
+                    IPHostEntry hostEntry = Dns.GetHostEntry(ip);
+                    if (hostEntry.HostName != ip) hostname = hostEntry.HostName;
+
+                    // successful ping, add details to tableview datasource
+                    AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(
+                        ip,
+                        "UP",
+                        pinger.RoundtripTime.ToString() + "ms",
+                        pinger.Options.Ttl.ToString(),
+                        hostname));
                 }
                 else
                 {
                     if (listPingable != true)
                     {
-                        // listing unpingable hosts, add to tableview datasource and IP list
+                        // listing unpingable hosts, add to tableview datasource
                         AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip, "DOWN"));
                     }
                 }
@@ -93,20 +103,29 @@ namespace IPList
 
         private void MonitorThread(List<List<string>> ipList)
         {
+            int ip_count = 0;
+
             foreach (List<string> sublist in ipList)
             {
                 lock(locker) runningTasks++;
                 ThreadPool.QueueUserWorkItem(new WaitCallback(PingThread), new object[] { sublist });
+
+                ip_count += sublist.Count;
             }
 
-            lock(locker) while (runningTasks > 0) Monitor.Wait(locker);
+            InvokeOnMainThread(() =>
+            {
+                lblStatus.StringValue = "Pinging " + ip_count + " IPs...";
+            });
+
+            lock (locker) while (runningTasks > 0) Monitor.Wait(locker);
 
             AddressEntryDelegate.DataSource.Sort("IP", true);
 
             InvokeOnMainThread(() =>
             {
                 tblList.ReloadData();
-                lblStatus.StringValue = AddressEntryDelegate.DataSource.AddressEntries.Count.ToString() + " IP addresses found";
+                lblStatus.StringValue = AddressEntryDelegate.DataSource.AddressEntries.Count.ToString() + " IPs found";
                 ToggleGUI(true);
 
                 prgSpinner.StopAnimation(this);
@@ -229,7 +248,6 @@ namespace IPList
                         monitor.Start();
 
                         ToggleGUI(false);
-                        lblStatus.StringValue = "Pinging " + subnet.Count + " IP addresses";
                     } else
                     {
                         foreach (IPAddress ip in subnet)
@@ -245,7 +263,7 @@ namespace IPList
                         tblList.ReloadData();
 
                         ToggleGUI(true);
-                        lblStatus.StringValue = tblList.RowCount + " IP addresses found";
+                        lblStatus.StringValue = tblList.RowCount + " IPs found";
                         prgSpinner.StopAnimation(this);
                     }
                 } else
