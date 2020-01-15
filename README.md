@@ -10,3 +10,5 @@ This uses IPNetwork (https://github.com/lduchosal/ipnetwork).
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/002.png?raw=true "Screenshot 2")
 
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/003.png?raw=true "Screenshot 3")
+
+![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/004.png?raw=true "Screenshot 4")
