@@ -28,7 +28,7 @@ namespace IPList
             btnCopy.Enabled = false;
             cmbDelimiter.Enabled = false;
 
-            Warehouse.LoadServices();
+            W.LoadServices();
 
             txtNetwork.EditingEnded += (object sender, EventArgs e) =>
             {
@@ -71,7 +71,7 @@ namespace IPList
 
             foreach (string ip in ipList)
             {
-                PingReply pinger = Warehouse.Ping(ip);
+                PingReply pinger = W.Ping(ip);
                 if (pinger.Status == IPStatus.Success)
                 {
                     IPHostEntry hostEntry = new IPHostEntry();
@@ -196,7 +196,7 @@ namespace IPList
                 clip_val += ip.Address + delim;
             }
 
-            Warehouse.CopyString(clip_val.TrimEnd());
+            W.CopyString(clip_val.TrimEnd());
         }
 
         private void ToggleGUI(bool enabled)
@@ -233,18 +233,26 @@ namespace IPList
             string network = txtNetwork.StringValue;
             if (network != null)
             {
+                IPNetwork ipnetwork = null;
                 IPAddressCollection subnet = null;
                 List<List<string>> ipList = null;
                 bool invalid = false;
 
-                try
-                {
-                    // get list of IPs
-                    IPNetwork ipnetwork = IPNetwork.Parse(network);
-                    subnet = IPNetwork.ListIPAddress(ipnetwork);
-                } catch (System.ArgumentException)
+                if (!W.IsValidIP(network))
                 {
                     invalid = true;
+                } else
+                {
+                    try
+                    {
+                        // get list of IPs
+                        ipnetwork = IPNetwork.Parse(network);
+                        subnet = IPNetwork.ListIPAddress(ipnetwork);
+                    }
+                    catch (ArgumentException)
+                    {
+                        invalid = true;
+                    }
                 }
 
                 if (invalid == false)
@@ -258,10 +266,10 @@ namespace IPList
 
                     if (chkPIng.IntValue == 1)
                     {
-                        this.StopPings = false;
-
-                        ipList = Lists.Split<string>(subnet);
                         runningTasks = 0;
+                        this.StopPings = false;
+                        ipList = Lists.Split<string>(subnet);
+
                         Thread monitor = new Thread(() => { MonitorThread(ipList); });
                         monitor.Start();
 
@@ -302,7 +310,7 @@ namespace IPList
 
         partial void CopyMenuAction(NSObject sender)
         {
-            Warehouse.CopyString(Globals.CurrentIP);
+            W.CopyString(Globals.CurrentIP);
         }
 
         partial void mnuPingAction(NSObject sender)

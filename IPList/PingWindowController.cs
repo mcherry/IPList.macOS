@@ -25,7 +25,7 @@ namespace IPList
         {
             while (true)
             {
-                PingReply reply = Warehouse.Ping(this.IPAddress);
+                PingReply reply = W.Ping(this.IPAddress);
                 if (reply.Status == IPStatus.Success)
                 {
                     InvokeOnMainThread(() =>

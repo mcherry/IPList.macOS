@@ -1,5 +1,4 @@
 ﻿using AppKit;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -7,12 +6,31 @@ using System.Net.NetworkInformation;
 
 namespace IPList
 {
-    public class Warehouse
+    public class W
     {
         public static IDictionary<string, string> Services = new Dictionary<string, string>();
 
-        public Warehouse() { }
+        public W() { }
 
+        // basic validation for IP addresses and CIDR networks
+        public static bool IsValidIP(string ip)
+        {
+            if (string.IsNullOrEmpty(ip) || string.IsNullOrWhiteSpace(ip)) return false;
+
+            string[] octets = ip.Split(".");
+            if (octets.Length != 4) return false;
+
+            if (octets[3].Contains("/"))
+            {
+                string[] values = octets[3].Split("/");
+                octets[3] = values[0];
+            }
+
+            foreach (string octet in octets) if (int.Parse(octet) < 0 || int.Parse(octet) > 255) return false;
+            return true;
+        }
+
+        // send a single ping
         public static PingReply Ping(string host, int timeout = 500)
         {
             Ping pinger = null;
@@ -37,6 +55,7 @@ namespace IPList
             return reply;
         }
 
+        // copy a string to the pasteboard
         public static void CopyString(string text)
         {
             if (text != null) {
@@ -48,6 +67,7 @@ namespace IPList
             }
         }
 
+        // get a service name from the Services dictionary
         public static string GetServiceName(string port)
         {
             if (Services.TryGetValue(port, out string value)) return value;
@@ -56,6 +76,8 @@ namespace IPList
             return value;
         }
 
+        // load /etc/services into a dictionary
+        // skips lines starting with # and only extracts TCP ports
         public static void LoadServices()
         {
             string line;

@@ -110,7 +110,7 @@ namespace IPList
 
             bool host_up = false;
 
-            PingReply reply = Warehouse.Ping(this.CurrentIP);
+            PingReply reply = W.Ping(this.CurrentIP);
             if (reply.Status == IPStatus.Success)
             {
                 host_up = true;
@@ -151,7 +151,7 @@ namespace IPList
                     {
                         InvokeOnMainThread(() =>
                         {
-                            PortEntryDelegate.DataSource.Ports.Add(new PortEntry(port.ToString(), Warehouse.GetServiceName(port.ToString())));
+                            PortEntryDelegate.DataSource.Ports.Add(new PortEntry(port.ToString(), W.GetServiceName(port.ToString())));
                             tblPorts.ReloadData();
                         });
 
@@ -287,7 +287,7 @@ namespace IPList
                 clip_val += port.Port + delim;
             }
 
-            Warehouse.CopyString(clip_val.TrimEnd());
+            W.CopyString(clip_val.TrimEnd());
         }
     }
 }
