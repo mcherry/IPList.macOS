@@ -171,6 +171,9 @@ namespace IPList
 
                     Scan.Close();
                     Scan.Dispose();
+                    Scan = null;
+
+                    GC.Collect();
                 }
 
                 lock (locker)
@@ -298,3 +301,4 @@ namespace IPList
         }
     }
 }
+ 

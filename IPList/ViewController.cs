@@ -4,6 +4,7 @@ using Foundation;
 using LukeSkywalker.IPNetwork;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Sockets;
 using System.Threading;
 using System.Net.NetworkInformation;
 using IPAddressCollection = LukeSkywalker.IPNetwork.IPAddressCollection;
@@ -64,10 +65,18 @@ namespace IPList
                 PingReply pinger = Warehouse.Ping(ip);
                 if (pinger.Status == IPStatus.Success)
                 {
+                    IPHostEntry hostEntry = new IPHostEntry();
                     string hostname = "";
 
-                    IPHostEntry hostEntry = Dns.GetHostEntry(ip);
-                    if (hostEntry.HostName != ip) hostname = hostEntry.HostName;
+                    try
+                    {
+                        hostEntry = Dns.GetHostEntry(ip);
+                        hostname = hostEntry.HostName;
+                    } catch (SocketException)
+                    {
+                        hostname = "";
+                    }
+                    if (hostname == ip) hostname = "";
 
                     // successful ping, add details to tableview datasource
                     AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(
