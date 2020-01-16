@@ -29,8 +29,17 @@ namespace IPList
             cmbDelimiter.Enabled = false;
 
             Warehouse.LoadServices();
-        }
 
+            txtNetwork.EditingEnded += (object sender, EventArgs e) =>
+            {
+                if (CTextField.KeyCode == 36)
+                {
+                    CTextField.KeyCode = 0;
+                    btnList(this);
+                }
+            };
+        }
+        
         public override NSObject RepresentedObject
         {
             get
@@ -240,7 +249,7 @@ namespace IPList
 
                 if (invalid == false)
                 {
-                    prgSpinner.StartAnimation(sender);
+                    prgSpinner.StartAnimation(this);
 
                     AddressEntryDelegate.DataSource = new AddressEntryDataSource();
                     tblList.Delegate = new AddressEntryDelegate(AddressEntryDelegate.DataSource);

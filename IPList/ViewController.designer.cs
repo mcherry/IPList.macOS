@@ -121,6 +121,11 @@ namespace IPList
 				colAddress = null;
 			}
 
+			if (colDNS != null) {
+				colDNS.Dispose ();
+				colDNS = null;
+			}
+
 			if (colStatus != null) {
 				colStatus.Dispose ();
 				colStatus = null;
@@ -154,11 +159,6 @@ namespace IPList
 			if (txtNetwork != null) {
 				txtNetwork.Dispose ();
 				txtNetwork = null;
-			}
-
-			if (colDNS != null) {
-				colDNS.Dispose ();
-				colDNS = null;
 			}
 		}
 	}

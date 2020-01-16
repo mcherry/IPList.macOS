@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Net;
 using System.Net.Sockets;
 using Foundation;
 using System.Net.NetworkInformation;
@@ -11,7 +12,7 @@ namespace IPList
     public partial class PortScannerController : NSWindowController
     {
         private bool StopScan = false;
-        private string IPAddress;
+        private string CurrentIP;
 
         private int runningTasks = 0;
         private object locker = new object();
@@ -99,7 +100,7 @@ namespace IPList
 
         public PortScannerController(string ip_address) : base("PortScanner")
         {
-            this.IPAddress = ip_address;
+            this.CurrentIP = ip_address;
         }
 
         private void ScannerThread(object state)
@@ -109,7 +110,7 @@ namespace IPList
 
             bool host_up = false;
 
-            PingReply reply = Warehouse.Ping(this.IPAddress);
+            PingReply reply = Warehouse.Ping(this.CurrentIP);
             if (reply.Status == IPStatus.Success)
             {
                 host_up = true;
@@ -143,37 +144,26 @@ namespace IPList
                 foreach (int port in portList)
                 {
                     TcpClient Scan = new TcpClient();
-                    IAsyncResult result = Scan.BeginConnect(this.IPAddress, port, null, null);
-                    bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(200));
+                    IAsyncResult result = Scan.BeginConnect(this.CurrentIP, port, null, null);
+                    bool wait = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(250), false);
 
-                    if (success)
+                    if (Scan.Connected)
                     {
-                        try
-                        {
-                            Scan.EndConnect(result);
-                        }
-                        catch { continue; }
-
-                        try
-                        {
-                            Scan.GetStream().Close();
-                        }
-                        catch { continue; }
-
                         InvokeOnMainThread(() =>
                         {
                             PortEntryDelegate.DataSource.Ports.Add(new PortEntry(port.ToString(), Warehouse.GetServiceName(port.ToString())));
                             tblPorts.ReloadData();
                         });
-                    }
 
-                    if (this.StopScan == true) break;
+                        Scan.EndConnect(result);
+                        result.AsyncWaitHandle.Close();
+                        result.AsyncWaitHandle.Dispose();
+                    }
 
                     Scan.Close();
                     Scan.Dispose();
-                    Scan = null;
 
-                    GC.Collect();
+                    if (this.StopScan == true) break;
                 }
 
                 lock (locker)
@@ -233,7 +223,7 @@ namespace IPList
 
             prgStatus.StartAnimation(this);
             this.StopScan = false;
-            lblIP.StringValue = this.IPAddress;
+            lblIP.StringValue = this.CurrentIP;
 
             PortEntryDelegate.DataSource = new PortEntryDataSource();
             tblPorts.Delegate = new PortEntryDelegate(PortEntryDelegate.DataSource);
