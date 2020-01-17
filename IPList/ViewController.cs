@@ -30,6 +30,7 @@ namespace IPList
 
             W.LoadServices();
 
+            // part of a stupid h ack to emulate a keydown event for a textfield
             txtNetwork.EditingEnded += (object sender, EventArgs e) =>
             {
                 if (CTextField.KeyCode == 36)
@@ -77,15 +78,19 @@ namespace IPList
                     IPHostEntry hostEntry = new IPHostEntry();
                     string hostname = "";
 
-                    try
+                    if (chkDNS.IntValue == 1)
                     {
-                        hostEntry = Dns.GetHostEntry(ip);
-                        hostname = hostEntry.HostName;
-                    } catch (SocketException)
-                    {
-                        hostname = "";
+                        try
+                        {
+                            hostEntry = Dns.GetHostEntry(ip);
+                            hostname = hostEntry.HostName;
+                        }
+                        catch (SocketException)
+                        {
+                            hostname = "";
+                        }
+                        if (hostname == ip) hostname = "";
                     }
-                    if (hostname == ip) hostname = "";
 
                     // successful ping, add details to tableview datasource
                     AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(
@@ -123,6 +128,7 @@ namespace IPList
         {
             int ip_count = 0;
 
+            // add all the lists of IP addresses to the threadpool
             foreach (List<string> sublist in ipList)
             {
                 lock(locker) runningTasks++;
@@ -166,6 +172,7 @@ namespace IPList
             } else
             {
                 chkList.Enabled = true;
+                chkList.IntValue = 1;
             }
         }
 
@@ -211,6 +218,7 @@ namespace IPList
                 txtNetwork.Enabled = true;
                 chkList.Enabled = true;
                 chkPIng.Enabled = true;
+                chkDNS.Enabled = true;
                 tblList.Enabled = true;
                 tblList.Menu = popupMenu;
             } else
@@ -223,6 +231,7 @@ namespace IPList
                 txtNetwork.Enabled = false;
                 chkList.Enabled = false;
                 chkPIng.Enabled = false;
+                chkDNS.Enabled = false;
                 tblList.Enabled = false;
                 tblList.Menu = null;
             }
@@ -268,8 +277,11 @@ namespace IPList
                     {
                         runningTasks = 0;
                         this.StopPings = false;
+
+                        // split list of IPs into several smaller lists for the threadpool
                         ipList = Lists.Split<string>(subnet);
 
+                        // launch monitoring thread that fills threadpool
                         Thread monitor = new Thread(() => { MonitorThread(ipList); });
                         monitor.Start();
 
@@ -320,6 +332,12 @@ namespace IPList
         }
 
         partial void mnuPortScan_Click(NSObject sender)
+        {
+            PortScannerController portScanner = new PortScannerController(Globals.CurrentIP);
+            portScanner.ShowWindow(this);
+        }
+
+        partial void mnuNetstat_Click(NSObject sender)
         {
             PortScannerController portScanner = new PortScannerController(Globals.CurrentIP);
             portScanner.ShowWindow(this);

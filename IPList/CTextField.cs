@@ -15,6 +15,7 @@ namespace IPList
 		{
 		}
 
+        // part of a stupid h ack to get a keydown event for textfields
         public override void KeyUp(NSEvent theEvent)
         {
             base.KeyUp(theEvent);

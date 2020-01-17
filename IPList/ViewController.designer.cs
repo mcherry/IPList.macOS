@@ -22,6 +22,9 @@ namespace IPList
 		AppKit.NSButton btnStopOutlet { get; set; }
 
 		[Outlet]
+		AppKit.NSButton chkDNS { get; set; }
+
+		[Outlet]
 		AppKit.NSButton chkList { get; set; }
 
 		[Outlet]
@@ -71,6 +74,9 @@ namespace IPList
 
 		[Action ("CopyMenuAction:")]
 		partial void CopyMenuAction (Foundation.NSObject sender);
+
+		[Action ("mnuNetstat_Click:")]
+		partial void mnuNetstat_Click (Foundation.NSObject sender);
 
 		[Action ("mnuPingAction:")]
 		partial void mnuPingAction (Foundation.NSObject sender);
@@ -159,6 +165,11 @@ namespace IPList
 			if (txtNetwork != null) {
 				txtNetwork.Dispose ();
 				txtNetwork = null;
+			}
+
+			if (chkDNS != null) {
+				chkDNS.Dispose ();
+				chkDNS = null;
 			}
 		}
 	}
