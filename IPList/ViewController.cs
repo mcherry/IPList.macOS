@@ -130,13 +130,15 @@ namespace IPList
         {
             int ip_count = 0;
 
+            InvokeOnMainThread(() => { ToggleGUI(false); });
+
             // add all the lists of IP addresses to the threadpool
             foreach (List<string> sublist in ipList)
             {
-                lock(locker) runningTasks++;
-                ThreadPool.QueueUserWorkItem(new WaitCallback(PingThread), new object[] { sublist });
-
                 ip_count += sublist.Count;
+
+                lock (locker) runningTasks++;
+                ThreadPool.QueueUserWorkItem(new WaitCallback(PingThread), new object[] { sublist });
             }
 
             InvokeOnMainThread(() =>
@@ -153,8 +155,6 @@ namespace IPList
                 tblList.ReloadData();
                 lblStatus.StringValue = AddressEntryDelegate.DataSource.AddressEntries.Count.ToString() + " IPs found";
                 ToggleGUI(true);
-
-                prgSpinner.StopAnimation(this);
             });
 
             return;
@@ -212,6 +212,8 @@ namespace IPList
         {
             if (enabled == true)
             {
+                prgSpinner.StopAnimation(this);
+                prgSpinner.Hidden = true;
                 btnListOutlet.Hidden = false;
                 btnStopOutlet.Hidden = true;
                 btnStopOutlet.Enabled = false;
@@ -225,6 +227,8 @@ namespace IPList
                 tblList.Menu = popupMenu;
             } else
             {
+                prgSpinner.Hidden = false;
+                prgSpinner.StartAnimation(this);
                 btnListOutlet.Hidden = true;
                 btnStopOutlet.Hidden = false;
                 btnStopOutlet.Enabled = true;
@@ -272,8 +276,6 @@ namespace IPList
 
                 if (invalid == false)
                 {
-                    prgSpinner.StartAnimation(this);
-
                     AddressEntryDelegate.DataSource = new AddressEntryDataSource();
                     tblList.Delegate = new AddressEntryDelegate(AddressEntryDelegate.DataSource);
                     tblList.DataSource = AddressEntryDelegate.DataSource;
@@ -290,8 +292,6 @@ namespace IPList
                         // launch monitoring thread that fills threadpool
                         Thread monitor = new Thread(() => { MonitorThread(ipList); });
                         monitor.Start();
-
-                        ToggleGUI(false);
                     } else
                     {
                         foreach (IPAddress ip in subnet)
@@ -306,9 +306,7 @@ namespace IPList
                         AddressEntryDelegate.DataSource.Sort("IP", true);
                         tblList.ReloadData();
 
-                        ToggleGUI(true);
                         lblStatus.StringValue = tblList.RowCount + " IPs found";
-                        prgSpinner.StopAnimation(this);
                     }
                 } else
                 {

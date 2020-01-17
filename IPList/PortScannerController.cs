@@ -191,7 +191,6 @@ namespace IPList
             {
                 lblStatus.StringValue = "Found " + PortEntryDelegate.DataSource.GetRowCount(tblPorts).ToString() + " open ports";
                 ToggleGUI(true);
-                prgStatus.StopAnimation(this);
             });
 
             return;
@@ -208,6 +207,7 @@ namespace IPList
         {
             if (enabled == true)
             {
+                prgStatus.StopAnimation(this);
                 prgStatus.Hidden = true;
                 btnStop.Enabled = false;
                 btnStop.Hidden = true;
@@ -218,6 +218,7 @@ namespace IPList
             }
             else
             {
+                prgStatus.StartAnimation(this);
                 btnStart.Enabled = false;
                 btnStart.Hidden = true;
                 btnStop.Enabled = true;
@@ -230,7 +231,6 @@ namespace IPList
 
         private void StartScan()
         {
-            prgStatus.StartAnimation(this);
             ToggleGUI(false);
 
             this.StopScan = false;
@@ -263,8 +263,6 @@ namespace IPList
             StopScan = true;
 
             ToggleGUI(true);
-
-            prgStatus.StopAnimation(this);
         }
 
         partial void btnCopy_Click(NSObject sender)
