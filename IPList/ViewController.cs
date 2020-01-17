@@ -62,12 +62,14 @@ namespace IPList
 
             bool pingHosts = true;
             bool listPingable = true;
+            bool checkDNS = true;
 
             // manipulate items in GUI main thread
             InvokeOnMainThread(() =>
             {
                 pingHosts &= chkPIng.IntValue == 1;
                 listPingable &= chkList.IntValue == 1;
+                checkDNS &= chkDNS.IntValue == 1;
             });
 
             foreach (string ip in ipList)
@@ -75,13 +77,13 @@ namespace IPList
                 PingReply pinger = W.Ping(ip);
                 if (pinger.Status == IPStatus.Success)
                 {
-                    IPHostEntry hostEntry = new IPHostEntry();
                     string hostname = "";
 
-                    if (chkDNS.IntValue == 1)
+                    if (checkDNS == true)
                     {
                         try
                         {
+                            IPHostEntry hostEntry = new IPHostEntry();
                             hostEntry = Dns.GetHostEntry(ip);
                             hostname = hostEntry.HostName;
                         }
@@ -239,7 +241,9 @@ namespace IPList
 
         partial void btnList(NSObject sender)
         {
+            string errormsg = "";
             string network = txtNetwork.StringValue;
+
             if (network != null)
             {
                 IPNetwork ipnetwork = null;
@@ -250,6 +254,7 @@ namespace IPList
                 if (!W.IsValidIP(network))
                 {
                     invalid = true;
+                    errormsg = "Invalid IP address. Please use CIDR notation when specifying a network to list. Eg: 192.168.1.0/24";
                 } else
                 {
                     try
@@ -261,6 +266,7 @@ namespace IPList
                     catch (ArgumentException)
                     {
                         invalid = true;
+                        errormsg = "Failed to retrieve IP address for the network.";
                     }
                 }
 
@@ -307,11 +313,11 @@ namespace IPList
                 } else
                 {
                     // invalid input, show an alert
-                    var alert = new NSAlert()
+                    NSAlert alert = new NSAlert()
                     {
                         AlertStyle = NSAlertStyle.Critical,
-                        InformativeText = "Please use CIDR notation when specifying a network to list. Eg: 192.168.1.0/24",
-                        MessageText = "Invalid Network"
+                        InformativeText = errormsg,
+                        MessageText = "Error"
                     };
 
                     alert.RunModal();
@@ -332,12 +338,6 @@ namespace IPList
         }
 
         partial void mnuPortScan_Click(NSObject sender)
-        {
-            PortScannerController portScanner = new PortScannerController(Globals.CurrentIP);
-            portScanner.ShowWindow(this);
-        }
-
-        partial void mnuNetstat_Click(NSObject sender)
         {
             PortScannerController portScanner = new PortScannerController(Globals.CurrentIP);
             portScanner.ShowWindow(this);

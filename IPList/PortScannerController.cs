@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Net;
 using System.Net.Sockets;
 using Foundation;
 using System.Net.NetworkInformation;
@@ -145,7 +144,7 @@ namespace IPList
                 {
                     TcpClient Scan = new TcpClient();
                     IAsyncResult result = Scan.BeginConnect(this.CurrentIP, port, null, null);
-                    bool wait = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(250), false);
+                    bool wait = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(350), false);
 
                     if (Scan.Connected)
                     {
@@ -186,19 +185,13 @@ namespace IPList
 
             lock(locker) while (runningTasks > 0) Monitor.Wait(locker);
 
-            AddressEntryDelegate.DataSource.Sort("Port", true);
+            PortEntryDelegate.DataSource.Sort("Port", true);
 
             InvokeOnMainThread(() =>
             {
                 lblStatus.StringValue = "Found " + PortEntryDelegate.DataSource.GetRowCount(tblPorts).ToString() + " open ports";
+                ToggleGUI(true);
                 prgStatus.StopAnimation(this);
-                prgStatus.Hidden = true;
-                btnStop.Enabled = false;
-                btnStop.Hidden = true;
-                btnStart.Hidden = false;
-                btnStart.Enabled = true;
-                cmbDelim.Enabled = true;
-                btnCopy.Enabled = true;
             });
 
             return;
@@ -211,17 +204,35 @@ namespace IPList
             StartScan();
         }
 
+        private void ToggleGUI(bool enabled)
+        {
+            if (enabled == true)
+            {
+                prgStatus.Hidden = true;
+                btnStop.Enabled = false;
+                btnStop.Hidden = true;
+                btnStart.Hidden = false;
+                btnStart.Enabled = true;
+                cmbDelim.Enabled = true;
+                btnCopy.Enabled = true;
+            }
+            else
+            {
+                btnStart.Enabled = false;
+                btnStart.Hidden = true;
+                btnStop.Enabled = true;
+                btnStop.Hidden = false;
+                prgStatus.Hidden = false;
+                cmbDelim.Enabled = false;
+                btnCopy.Enabled = false;
+            }
+        }
+
         private void StartScan()
         {
-            btnStart.Enabled = false;
-            btnStart.Hidden = true;
-            btnStop.Enabled = true;
-            btnStop.Hidden = false;
-            prgStatus.Hidden = false;
-            cmbDelim.Enabled = false;
-            btnCopy.Enabled = false;
-
             prgStatus.StartAnimation(this);
+            ToggleGUI(false);
+
             this.StopScan = false;
             lblIP.StringValue = this.CurrentIP;
 
@@ -251,12 +262,7 @@ namespace IPList
         {
             StopScan = true;
 
-            prgStatus.Hidden = true;
-            btnStop.Enabled = false;
-            btnStart.Enabled = true;
-            btnStart.Hidden = false;
-            cmbDelim.Enabled = true;
-            btnCopy.Enabled = true;
+            ToggleGUI(true);
 
             prgStatus.StopAnimation(this);
         }

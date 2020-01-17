@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using LukeSkywalker.IPNetwork;
+using System.Net;
+using IPAddressCollection = LukeSkywalker.IPNetwork.IPAddressCollection;
 
 namespace IPList
 {
@@ -20,7 +21,7 @@ namespace IPList
             }
 
             List<T> CollectionList = new List<T>();
-            foreach (var item in collection)
+            foreach (IPAddress item in collection)
             {
                 string[] split_ip = item.ToString().Split(".");
                 if (split_ip[3] != "0" && split_ip[3] != "255")
@@ -29,11 +30,11 @@ namespace IPList
                 }
             }
 
-            var chunks = new List<List<T>>();
-            var temp = new List<T>();
-            var count = 0;
+            List<List<T>> chunks = new List<List<T>>();
+            List<T> temp = new List<T>();
+            int count = 0;
 
-            foreach (var element in CollectionList)
+            foreach (T element in CollectionList)
             {
                 if (count++ == list_size)
                 {
@@ -60,16 +61,16 @@ namespace IPList
             }
 
             List<T> CollectionList = new List<T>();
-            foreach (var item in collection)
+            foreach (int item in collection)
             {
                 CollectionList.Add((T)Convert.ChangeType(item.ToString(), typeof(T)));
             }
 
-            var chunks = new List<List<T>>();
-            var temp = new List<T>();
-            var count = 0;
+            List<List<T>> chunks = new List<List<T>>();
+            List<T> temp = new List<T>();
+            int count = 0;
 
-            foreach (var element in CollectionList)
+            foreach (T element in CollectionList)
             {
                 if (count++ == list_size)
                 {
