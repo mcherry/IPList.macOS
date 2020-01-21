@@ -13,6 +13,9 @@ namespace IPList
 	partial class PingWindowController
 	{
 		[Outlet]
+		AppKit.NSTextField lblCount { get; set; }
+
+		[Outlet]
 		AppKit.NSTextField lblIP { get; set; }
 
 		[Outlet]
@@ -45,14 +48,14 @@ namespace IPList
 				lblIPAddress = null;
 			}
 
-			if (lblStatus != null) {
-				lblStatus.Dispose ();
-				lblStatus = null;
-			}
-
 			if (lblLatency != null) {
 				lblLatency.Dispose ();
 				lblLatency = null;
+			}
+
+			if (lblStatus != null) {
+				lblStatus.Dispose ();
+				lblStatus = null;
 			}
 
 			if (lblTTL != null) {
@@ -63,6 +66,11 @@ namespace IPList
 			if (prgStatus != null) {
 				prgStatus.Dispose ();
 				prgStatus = null;
+			}
+
+			if (lblCount != null) {
+				lblCount.Dispose ();
+				lblCount = null;
 			}
 		}
 	}

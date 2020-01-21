@@ -8,8 +8,9 @@ namespace IPList
 {
     public partial class PingWindowController : NSWindowController
     {
-        private string IPAddress;
+        private string ipAddress;
         private Thread Pinger = null;
+        private int pingCount = 0;
 
         public PingWindowController(IntPtr handle) : base(handle) { }
 
@@ -18,30 +19,22 @@ namespace IPList
 
         public PingWindowController(string ip_address) : base("PingWindow")
         {
-            IPAddress = ip_address;
+            ipAddress = ip_address;
         }
 
         private void PingThread()
         {
             while (true)
             {
-                PingReply reply = W.Ping(this.IPAddress);
+                pingCount++;
+
+                PingReply reply = W.Ping(ipAddress);
                 if (reply.Status == IPStatus.Success)
                 {
-                    InvokeOnMainThread(() =>
-                    {
-                        lblStatus.StringValue = "UP";
-                        lblLatency.StringValue = reply.RoundtripTime.ToString() + "ms";
-                        lblTTL.StringValue = reply.Options.Ttl.ToString();
-                    });
+                    setPingStatus("UP", reply.RoundtripTime.ToString() + "ms", reply.Options.Ttl.ToString());
                 } else
                 {
-                    InvokeOnMainThread(() =>
-                    {
-                        lblStatus.StringValue = "DOWN";
-                        lblLatency.StringValue = "";
-                        lblTTL.StringValue = "";
-                    });
+                    setPingStatus("DOWN");
                 }
 
                 Thread.Sleep(1000);
@@ -52,7 +45,7 @@ namespace IPList
         {
             base.AwakeFromNib();
 
-            lblIP.StringValue = IPAddress;
+            lblIP.StringValue = ipAddress;
             prgStatus.StartAnimation(this);
 
             Pinger = new Thread(() => { PingThread(); });
@@ -62,6 +55,17 @@ namespace IPList
         public new PingWindow Window
         {
             get { return (PingWindow)base.Window; }
+        }
+
+        private void setPingStatus(string status, string time = "", string ttl = "")
+        {
+            InvokeOnMainThread(() =>
+            {
+                lblStatus.StringValue = status;
+                lblLatency.StringValue = time;
+                lblTTL.StringValue = ttl;
+                lblCount.StringValue = pingCount.ToString();
+            });
         }
 
         partial void btnStop_Click(NSObject sender)

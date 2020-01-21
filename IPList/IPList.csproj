@@ -86,8 +86,6 @@
     </Compile>
     <Compile Include="AddressEntry.cs" />
     <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="Globals.cs" />
-    <Compile Include="Lists.cs" />
     <Compile Include="Warehouse.cs" />
     <Compile Include="PingWindow.cs" />
     <Compile Include="PingWindow.designer.cs">
@@ -106,10 +104,6 @@
       <DependentUpon>PortScannerController.cs</DependentUpon>
     </Compile>
     <Compile Include="PortEntry.cs" />
-    <Compile Include="CTextField.cs" />
-    <Compile Include="CTextField.designer.cs">
-      <DependentUpon>CTextField.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />

@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Net.Sockets;
+﻿using AppKit;
 using Foundation;
+using System;
+using System.Collections.Generic;
 using System.Net.NetworkInformation;
-using AppKit;
+using System.Net.Sockets;
+using System.Threading;
 
 namespace IPList
 {
     public partial class PortScannerController : NSWindowController
     {
-        private bool StopScan = false;
+        private bool stopScan = false;
         private string CurrentIP;
 
         private int runningTasks = 0;
         private object locker = new object();
 
-        private List<int> PortList = new List<int>(new int[]
+        private List<int> portList = new List<int>(new int[]
         {
             1,3,4,6,7,9,13,17,19,20,21,22,23,24,25,26,30,32,33,37,42,43,49,53,
             70,79,80,81,82,83,84,85,88,89,90,99,100,106,109,110,111,113,119,125,
@@ -105,7 +105,6 @@ namespace IPList
         private void ScannerThread(object state)
         {
             object[] arguments = state as object[];
-            List<int> portList = (List<int>)arguments[0];
 
             bool host_up = false;
 
@@ -113,34 +112,19 @@ namespace IPList
             if (reply.Status == IPStatus.Success)
             {
                 host_up = true;
-
-                InvokeOnMainThread(() =>
-                {
-                    lblStat.StringValue = "UP";
-                    lblLatency.StringValue = reply.RoundtripTime.ToString() + "ms";
-                    lblTTL.StringValue = reply.Options.Ttl.ToString();
-                });
+                setPingStatus("UP", reply.RoundtripTime.ToString() + "ms", reply.Options.Ttl.ToString());
             }
             else
             {
                 host_up = false;
-
-                InvokeOnMainThread(() =>
-                {
-                    lblStat.StringValue = "DOWN";
-                    lblLatency.StringValue = "";
-                    lblTTL.StringValue = "";
-                });
+                setPingStatus("DOWN");
             }
 
             if (host_up)
             {
-                InvokeOnMainThread(() =>
-                {
-                    lblStatus.StringValue = "Scanning " + string.Format("{0:n0}", PortList.Count) + " most common ports";
-                });
+                setStatus("Scanning " + string.Format("{0:n0}", portList.Count) + " most common ports");
 
-                foreach (int port in portList)
+                foreach (int port in (List<int>)arguments[0])
                 {
                     TcpClient Scan = new TcpClient();
                     IAsyncResult result = Scan.BeginConnect(this.CurrentIP, port, null, null);
@@ -162,7 +146,7 @@ namespace IPList
                     Scan.Close();
                     Scan.Dispose();
 
-                    if (this.StopScan == true) break;
+                    if (stopScan == true) break;
                 }
 
                 lock (locker)
@@ -177,21 +161,18 @@ namespace IPList
 
         private void MonitorThread(List<List<int>> sublist)
         {
-            foreach (List<int> portList in sublist)
+            foreach (List<int> pList in sublist)
             { 
                 lock(locker) runningTasks++;
-                ThreadPool.QueueUserWorkItem(new WaitCallback(ScannerThread), new object[] { portList });
+                ThreadPool.QueueUserWorkItem(new WaitCallback(ScannerThread), new object[] { pList });
             }
 
             lock(locker) while (runningTasks > 0) Monitor.Wait(locker);
 
             PortEntryDelegate.DataSource.Sort("Port", true);
 
-            InvokeOnMainThread(() =>
-            {
-                lblStatus.StringValue = "Found " + PortEntryDelegate.DataSource.GetRowCount(tblPorts).ToString() + " open ports";
-                ToggleGUI(true);
-            });
+            setStatus("Found " + PortEntryDelegate.DataSource.GetRowCount(tblPorts).ToString() + " open ports");
+            ToggleGUI(true);
 
             return;
         }
@@ -203,37 +184,58 @@ namespace IPList
             StartScan();
         }
 
+        private void setPingStatus(string status, string time = "", string ttl = "")
+        {
+            InvokeOnMainThread(() =>
+            {
+                lblStat.StringValue = status;
+                lblLatency.StringValue = time;
+                lblTTL.StringValue = ttl;
+            });
+        }
+
+        private void setStatus(string status)
+        {
+            InvokeOnMainThread(() =>
+            {
+                lblStatus.StringValue = status;
+            });
+        }
+
         private void ToggleGUI(bool enabled)
         {
-            if (enabled == true)
+            InvokeOnMainThread(() =>
             {
-                prgStatus.StopAnimation(this);
-                prgStatus.Hidden = true;
-                btnStop.Enabled = false;
-                btnStop.Hidden = true;
-                btnStart.Hidden = false;
-                btnStart.Enabled = true;
-                cmbDelim.Enabled = true;
-                btnCopy.Enabled = true;
-            }
-            else
-            {
-                prgStatus.StartAnimation(this);
-                btnStart.Enabled = false;
-                btnStart.Hidden = true;
-                btnStop.Enabled = true;
-                btnStop.Hidden = false;
-                prgStatus.Hidden = false;
-                cmbDelim.Enabled = false;
-                btnCopy.Enabled = false;
-            }
+                if (enabled == true)
+                {
+                    prgStatus.StopAnimation(this);
+                    prgStatus.Hidden = true;
+                    btnStop.Enabled = false;
+                    btnStop.Hidden = true;
+                    btnStart.Hidden = false;
+                    btnStart.Enabled = true;
+                    cmbDelim.Enabled = true;
+                    btnCopy.Enabled = true;
+                }
+                else
+                {
+                    prgStatus.StartAnimation(this);
+                    btnStart.Enabled = false;
+                    btnStart.Hidden = true;
+                    btnStop.Enabled = true;
+                    btnStop.Hidden = false;
+                    prgStatus.Hidden = false;
+                    cmbDelim.Enabled = false;
+                    btnCopy.Enabled = false;
+                }
+            });
         }
 
         private void StartScan()
         {
             ToggleGUI(false);
 
-            this.StopScan = false;
+            stopScan = false;
             lblIP.StringValue = this.CurrentIP;
 
             PortEntryDelegate.DataSource = new PortEntryDataSource();
@@ -241,10 +243,8 @@ namespace IPList
             tblPorts.DataSource = PortEntryDelegate.DataSource;
             tblPorts.ReloadData();
 
-            List<List<int>> portList = Lists.Split<int>(PortList);
-
             runningTasks = 0;
-            Thread monitor = new Thread(() => { MonitorThread(portList); });
+            Thread monitor = new Thread(() => { MonitorThread(W.Split<int>(portList)); });
             monitor.Start();
         }
 
@@ -260,7 +260,7 @@ namespace IPList
 
         partial void btnStop_Click(NSObject sender)
         {
-            StopScan = true;
+            stopScan = true;
 
             ToggleGUI(true);
         }

@@ -1,19 +1,20 @@
-﻿using System;
-using AppKit;
+﻿using AppKit;
 using Foundation;
 using LukeSkywalker.IPNetwork;
+using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
-using System.Net.NetworkInformation;
+
 using IPAddressCollection = LukeSkywalker.IPNetwork.IPAddressCollection;
 
 namespace IPList
 {
     public partial class ViewController : NSViewController
     {
-        private bool StopPings = false;
+        private bool stopPings = false;
         private int runningTasks = 0;
         private object locker = new object();
 
@@ -30,14 +31,9 @@ namespace IPList
 
             W.LoadServices();
 
-            // part of a stupid h ack to emulate a keydown event for a textfield
             txtNetwork.EditingEnded += (object sender, EventArgs e) =>
             {
-                if (CTextField.KeyCode == 36)
-                {
-                    CTextField.KeyCode = 0;
-                    btnList(this);
-                }
+               btnList(this);
             };
         }
         
@@ -56,9 +52,7 @@ namespace IPList
 
         private void PingThread(object state)
         {
-            //List<string> IPList
-            object[] array = state as object[];
-            List<string> ipList = (List<string>)array[0];
+            object[] arguments = state as object[];
 
             bool pingHosts = true;
             bool listPingable = true;
@@ -72,7 +66,7 @@ namespace IPList
                 checkDNS &= chkDNS.IntValue == 1;
             });
 
-            foreach (string ip in ipList)
+            foreach (string ip in (List<string>)arguments[0])
             {
                 PingReply pinger = W.Ping(ip);
                 if (pinger.Status == IPStatus.Success)
@@ -83,9 +77,7 @@ namespace IPList
                     {
                         try
                         {
-                            IPHostEntry hostEntry = new IPHostEntry();
-                            hostEntry = Dns.GetHostEntry(ip);
-                            hostname = hostEntry.HostName;
+                            hostname = Dns.GetHostEntry(ip).HostName;
                         }
                         catch (SocketException)
                         {
@@ -114,7 +106,7 @@ namespace IPList
                 // update GUI
                 InvokeOnMainThread(() => { tblList.ReloadData(); });
 
-                if (this.StopPings == true) break;
+                if (stopPings == true) break;
             }
 
             lock(locker)
@@ -130,7 +122,7 @@ namespace IPList
         {
             int ip_count = 0;
 
-            InvokeOnMainThread(() => { ToggleGUI(false); });
+            ToggleGUI(false);
 
             // add all the lists of IP addresses to the threadpool
             foreach (List<string> sublist in ipList)
@@ -141,28 +133,30 @@ namespace IPList
                 ThreadPool.QueueUserWorkItem(new WaitCallback(PingThread), new object[] { sublist });
             }
 
-            InvokeOnMainThread(() =>
-            {
-                lblStatus.StringValue = "Pinging " + ip_count + " IPs...";
-            });
+            setStatus("Pinging " + ip_count + " IPs...");
 
             lock (locker) while (runningTasks > 0) Monitor.Wait(locker);
 
             AddressEntryDelegate.DataSource.Sort("IP", true);
 
-            InvokeOnMainThread(() =>
-            {
-                tblList.ReloadData();
-                lblStatus.StringValue = AddressEntryDelegate.DataSource.AddressEntries.Count.ToString() + " IPs found";
-                ToggleGUI(true);
-            });
+            InvokeOnMainThread(() => { tblList.ReloadData(); });
+            setStatus(AddressEntryDelegate.DataSource.AddressEntries.Count.ToString() + " IPs found");
+            ToggleGUI(true);
 
             return;
         }
 
+        private void setStatus(string status)
+        {
+            InvokeOnMainThread(() =>
+            {
+                lblStatus.StringValue = status;
+            });
+        }
+
         partial void btnStop(NSObject sender)
         {
-            this.StopPings = true;
+            stopPings = true;
         }
 
         partial void chkPingAction(NSObject sender)
@@ -210,37 +204,41 @@ namespace IPList
 
         private void ToggleGUI(bool enabled)
         {
-            if (enabled == true)
+            InvokeOnMainThread(() =>
             {
-                prgSpinner.StopAnimation(this);
-                prgSpinner.Hidden = true;
-                btnListOutlet.Hidden = false;
-                btnStopOutlet.Hidden = true;
-                btnStopOutlet.Enabled = false;
-                btnCopy.Enabled = true;
-                cmbDelimiter.Enabled = true;
-                txtNetwork.Enabled = true;
-                chkList.Enabled = true;
-                chkPIng.Enabled = true;
-                chkDNS.Enabled = true;
-                tblList.Enabled = true;
-                tblList.Menu = popupMenu;
-            } else
-            {
-                prgSpinner.Hidden = false;
-                prgSpinner.StartAnimation(this);
-                btnListOutlet.Hidden = true;
-                btnStopOutlet.Hidden = false;
-                btnStopOutlet.Enabled = true;
-                btnCopy.Enabled = false;
-                cmbDelimiter.Enabled = false;
-                txtNetwork.Enabled = false;
-                chkList.Enabled = false;
-                chkPIng.Enabled = false;
-                chkDNS.Enabled = false;
-                tblList.Enabled = false;
-                tblList.Menu = null;
-            }
+                if (enabled == true)
+                {
+                    prgSpinner.StopAnimation(this);
+                    prgSpinner.Hidden = true;
+                    btnListOutlet.Hidden = false;
+                    btnStopOutlet.Hidden = true;
+                    btnStopOutlet.Enabled = false;
+                    btnCopy.Enabled = true;
+                    cmbDelimiter.Enabled = true;
+                    txtNetwork.Enabled = true;
+                    chkList.Enabled = true;
+                    chkPIng.Enabled = true;
+                    chkDNS.Enabled = true;
+                    tblList.Enabled = true;
+                    tblList.Menu = popupMenu;
+                }
+                else
+                {
+                    prgSpinner.Hidden = false;
+                    prgSpinner.StartAnimation(this);
+                    btnListOutlet.Hidden = true;
+                    btnStopOutlet.Hidden = false;
+                    btnStopOutlet.Enabled = true;
+                    btnCopy.Enabled = false;
+                    cmbDelimiter.Enabled = false;
+                    txtNetwork.Enabled = false;
+                    chkList.Enabled = false;
+                    chkPIng.Enabled = false;
+                    chkDNS.Enabled = false;
+                    tblList.Enabled = false;
+                    tblList.Menu = null;
+                }
+            });
         }
 
         partial void btnList(NSObject sender)
@@ -252,7 +250,6 @@ namespace IPList
             {
                 IPNetwork ipnetwork = null;
                 IPAddressCollection subnet = null;
-                List<List<string>> ipList = null;
                 bool invalid = false;
 
                 if (!W.IsValidIP(network))
@@ -270,7 +267,7 @@ namespace IPList
                     catch (ArgumentException)
                     {
                         invalid = true;
-                        errormsg = "Failed to retrieve IP address for the network.";
+                        errormsg = "Failed to retrieve IP addresses for the network.";
                     }
                 }
 
@@ -284,13 +281,10 @@ namespace IPList
                     if (chkPIng.IntValue == 1)
                     {
                         runningTasks = 0;
-                        this.StopPings = false;
-
-                        // split list of IPs into several smaller lists for the threadpool
-                        ipList = Lists.Split<string>(subnet);
+                        stopPings = false;
 
                         // launch monitoring thread that fills threadpool
-                        Thread monitor = new Thread(() => { MonitorThread(ipList); });
+                        Thread monitor = new Thread(() => { MonitorThread(W.Split<string>(subnet)); });
                         monitor.Start();
                     } else
                     {
@@ -306,7 +300,7 @@ namespace IPList
                         AddressEntryDelegate.DataSource.Sort("IP", true);
                         tblList.ReloadData();
 
-                        lblStatus.StringValue = tblList.RowCount + " IPs found";
+                        setStatus(tblList.RowCount + " IPs found");
                     }
                 } else
                 {
@@ -326,18 +320,18 @@ namespace IPList
 
         partial void CopyMenuAction(NSObject sender)
         {
-            W.CopyString(Globals.CurrentIP);
+            W.CopyString(W.CurrentIP);
         }
 
         partial void mnuPingAction(NSObject sender)
         {
-            PingWindowController pingWindow = new PingWindowController(Globals.CurrentIP);
+            PingWindowController pingWindow = new PingWindowController(W.CurrentIP);
             pingWindow.ShowWindow(this);
         }
 
         partial void mnuPortScan_Click(NSObject sender)
         {
-            PortScannerController portScanner = new PortScannerController(Globals.CurrentIP);
+            PortScannerController portScanner = new PortScannerController(W.CurrentIP);
             portScanner.ShowWindow(this);
         }
     }
