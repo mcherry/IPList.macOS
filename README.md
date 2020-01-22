@@ -7,9 +7,10 @@ A tool to list IP addresses in a network while optionally pinging and performing
 * Perform a port scan of any network host to determine service availability
 * Perform a constant ping against a network host to monitor availability
 * Copy IP and port lists to the clipboard with a user defined delimiter
+* Multithreaded for performance
 
 # Dependencies
-IPList relies on the awesome [IPNetwork](https://github.com/lduchosal/ipnetwork) and runs on macOS 10.10 or higher.
+IPList relies on the awesome [IPNetwork](https://github.com/lduchosal/ipnetwork) and runs on macOS 10.10 or higher. A binary is available [here](https://github.com/mcherry/IPList.macOS/raw/master/Binary/IPList.app.tgz) otherwise it can easily be compiled with [Visual Studio 2019](https://visualstudio.microsoft.com/vs/).
 
 # Screenshot
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/005.png?raw=true "Screenshot 1")
