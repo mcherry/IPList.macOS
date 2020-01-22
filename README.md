@@ -1,8 +1,15 @@
 # IPList Mac
-iplist.py rewritten in C# using Visual Studio and Xamarin.Mac. Uses threading for faster ping checks.
+A tool to list IP addresses in a network while optionally pinging and performing DNS lookups. This can be useful when you need a comma or newline delimited list of IP addresses in a network or if you just want to see which hosts are up on a given subnet. IPList is written in C# using Visual Studio 2019 and Xamarin.
+
+# Features
+* List all IP address in a network
+* Perform a ping scan of a network to determine host availability
+* Perform a port scan of any network host to determine service availability
+* Perform a constant ping against a network host to monitor availability
+* Copy IP and port lists to the clipboard with a user defined delimiter
 
 # Dependencies
-This uses IPNetwork (https://github.com/lduchosal/ipnetwork).
+IPList relies on the awesome [IPNetwork](https://github.com/lduchosal/ipnetwork) package.
 
 # Screenshot
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/005.png?raw=true "Screenshot 1")
