@@ -60,6 +60,19 @@ namespace IPList
             return reply;
         }
 
+        public static void Error(string message)
+        {
+            NSAlert alert = new NSAlert()
+            {
+                AlertStyle = NSAlertStyle.Critical,
+                InformativeText = message,
+                MessageText = "Error"
+            };
+
+            alert.RunModal();
+            alert.Dispose();
+        }
+
         // copy a string to the pasteboard
         public static void CopyString(string text)
         {
@@ -184,6 +197,23 @@ namespace IPList
 
             chunks.Add(temp);
             return chunks;
+        }
+
+        public static string dnsLookup(string ip)
+        {
+            string hostname = "";
+
+            try
+            {
+                hostname = Dns.GetHostEntry(ip).HostName;
+            }
+            catch
+            {
+                hostname = "";
+            }
+            if (hostname == ip) hostname = "";
+
+            return hostname;
         }
     }
 }

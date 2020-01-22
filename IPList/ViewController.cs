@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
-using System.Net.Sockets;
 using System.Threading;
 
 using IPAddressCollection = LukeSkywalker.IPNetwork.IPAddressCollection;
@@ -31,9 +30,15 @@ namespace IPList
 
             W.LoadServices();
 
+            // really dont like this but there seems to be no easy solution to capture
+            // a keydown event or only respond to the return key when editing is ended
             txtNetwork.EditingEnded += (object sender, EventArgs e) =>
             {
-               btnList(this);
+                if (IPListTextField.KeyCode == 36)
+                {
+                    IPListTextField.KeyCode = 0;
+                    btnList(this);
+                }
             };
         }
         
@@ -72,19 +77,7 @@ namespace IPList
                 if (pinger.Status == IPStatus.Success)
                 {
                     string hostname = "";
-
-                    if (checkDNS == true)
-                    {
-                        try
-                        {
-                            hostname = Dns.GetHostEntry(ip).HostName;
-                        }
-                        catch (SocketException)
-                        {
-                            hostname = "";
-                        }
-                        if (hostname == ip) hostname = "";
-                    }
+                    if (checkDNS == true) hostname = W.dnsLookup(ip);
 
                     // successful ping, add details to tableview datasource
                     AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(
@@ -255,7 +248,7 @@ namespace IPList
                 if (!W.IsValidIP(network))
                 {
                     invalid = true;
-                    errormsg = "Invalid IP address. Please use CIDR notation when specifying a network to list. Eg: 192.168.1.0/24";
+                    errormsg = "Invalid IP or network address. When specifying a network address you must use CIDR notation. Example: 192.168.1.0/24";
                 } else
                 {
                     try
@@ -273,6 +266,8 @@ namespace IPList
 
                 if (invalid == false)
                 {
+                    ToggleGUI(false);
+
                     AddressEntryDelegate.DataSource = new AddressEntryDataSource();
                     tblList.Delegate = new AddressEntryDelegate(AddressEntryDelegate.DataSource);
                     tblList.DataSource = AddressEntryDelegate.DataSource;
@@ -293,7 +288,10 @@ namespace IPList
                             string[] split_ip = ip.ToString().Split(".");
                             if (split_ip[3] != "0" && split_ip[3] != "255")
                             {
-                                AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip.ToString()));
+                                string hostname = "";
+                                if (chkDNS.IntValue == 1) hostname = W.dnsLookup(ip.ToString());
+
+                                AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip.ToString(), "", "", "", hostname));
                             }
                         }
 
@@ -301,19 +299,12 @@ namespace IPList
                         tblList.ReloadData();
 
                         setStatus(tblList.RowCount + " IPs found");
+                        ToggleGUI(true);
                     }
                 } else
                 {
                     // invalid input, show an alert
-                    NSAlert alert = new NSAlert()
-                    {
-                        AlertStyle = NSAlertStyle.Critical,
-                        InformativeText = errormsg,
-                        MessageText = "Error"
-                    };
-
-                    alert.RunModal();
-                    alert.Dispose();
+                    W.Error(errormsg);
                 }
             }
         }

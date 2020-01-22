@@ -104,6 +104,10 @@
       <DependentUpon>PortScannerController.cs</DependentUpon>
     </Compile>
     <Compile Include="PortEntry.cs" />
+    <Compile Include="IPListTextField.cs" />
+    <Compile Include="IPListTextField.designer.cs">
+      <DependentUpon>IPListTextField.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
