@@ -12,11 +12,8 @@ A tool to list IP addresses in a network while optionally pinging and performing
 # Dependencies
 IPList relies on the awesome [IPNetwork](https://github.com/lduchosal/ipnetwork) and runs on macOS 10.10 or higher. A binary is available [here](https://github.com/mcherry/IPList.macOS/raw/master/Binary/IPList.app.tgz) otherwise it can easily be compiled with [Visual Studio 2019](https://visualstudio.microsoft.com/vs/).
 
-# Screenshot
+# Screenshots
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/005.png?raw=true "Screenshot 1")
-
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/006.png?raw=true "Screenshot 2")
-
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/007.png?raw=true "Screenshot 3")
-
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/004.png?raw=true "Screenshot 4")
