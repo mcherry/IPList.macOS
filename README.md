@@ -12,7 +12,17 @@ IPList is licensed under the [2 Clause BSD License](https://opensource.org/licen
 * Multithreaded for performance
 
 # Dependencies
-IPList relies on the awesome [IPNetwork](https://github.com/lduchosal/ipnetwork) and runs on macOS 10.10 or higher. A binary is available [here](https://github.com/mcherry/IPList.macOS/raw/master/Binary/IPList.app.tgz) otherwise it can easily be compiled with [Visual Studio 2019](https://visualstudio.microsoft.com/vs/).
+IPList relies on the awesome [IPNetwork](https://github.com/lduchosal/ipnetwork) library and runs on macOS 10.10 or higher. A binary is available [here](https://github.com/mcherry/IPList.macOS/raw/master/Binary/IPList.app.tgz) otherwise it can easily be compiled with [Visual Studio 2019](https://visualstudio.microsoft.com/vs/).
+
+# Resources
+In no particular order, here are some of the resources I used to hack this project together:
+* [Windows in Xamarin.Mac](https://docs.microsoft.com/en-us/xamarin/mac/user-interface/window)
+* [Table Views in Xamarin.Mac](https://docs.microsoft.com/en-us/xamarin/mac/user-interface/table-view)
+* [ThreadPool Class](https://docs.microsoft.com/en-us/dotnet/api/system.threading.threadpool?view=netframework-4.8)
+* [Thread Class](https://docs.microsoft.com/en-us/dotnet/api/system.threading.thread?view=netframework-4.8)
+* [Xamarin Documentation](https://docs.microsoft.com/en-us/xamarin/)
+* [Xamarin.Mac Community Forums](https://forums.xamarin.com/categories/xamarin-mac)
+* [StackOverflow](https://stackoverflow.com/questions/tagged/xamarin)
 
 # Screenshots
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/005.png?raw=true "Screenshot 1")
