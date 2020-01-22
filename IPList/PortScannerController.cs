@@ -2,8 +2,10 @@
 using Foundation;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 
 namespace IPList
@@ -11,7 +13,8 @@ namespace IPList
     public partial class PortScannerController : NSWindowController
     {
         private bool stopScan = false;
-        private string CurrentIP;
+        private string ipAddress;
+        private string protocol;
 
         private int runningTasks = 0;
         private object locker = new object();
@@ -97,9 +100,10 @@ namespace IPList
         [Export("initWithCoder:")]
         public PortScannerController(NSCoder coder) : base(coder) { }
 
-        public PortScannerController(string ip_address) : base("PortScanner")
+        public PortScannerController(string ip_address, string ip_protocol = "tcp") : base("PortScanner")
         {
-            this.CurrentIP = ip_address;
+            ipAddress = ip_address;
+            protocol = ip_protocol;
         }
 
         private void ScannerThread(object state)
@@ -108,7 +112,7 @@ namespace IPList
 
             bool host_up = false;
 
-            PingReply reply = W.Ping(this.CurrentIP);
+            PingReply reply = W.Ping(ipAddress);
             if (reply.Status == IPStatus.Success)
             {
                 host_up = true;
@@ -126,26 +130,40 @@ namespace IPList
 
                 foreach (int port in (List<int>)arguments[0])
                 {
-                    TcpClient Scan = new TcpClient();
-                    IAsyncResult result = Scan.BeginConnect(this.CurrentIP, port, null, null);
-                    bool wait = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(350), false);
-
-                    if (Scan.Connected)
+                    switch (protocol)
                     {
-                        InvokeOnMainThread(() =>
-                        {
-                            PortEntryDelegate.DataSource.Ports.Add(new PortEntry(port.ToString(), W.GetServiceName(port.ToString())));
-                            tblPorts.ReloadData();
-                        });
+                        case "tcp":
+                            TcpClient Scan = new TcpClient();
+                            IAsyncResult result = Scan.BeginConnect(ipAddress, port, null, null);
+                            bool wait = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(350), false);
 
-                        Scan.EndConnect(result);
-                        result.AsyncWaitHandle.Close();
-                        result.AsyncWaitHandle.Dispose();
+                            if (Scan.Connected)
+                            {
+                                InvokeOnMainThread(() =>
+                                {
+                                    PortEntryDelegate.DataSource.Ports.Add(new PortEntry(port.ToString(), W.GetServiceName(port.ToString())));
+                                    tblPorts.ReloadData();
+                                });
+
+                                Scan.EndConnect(result);
+                                result.AsyncWaitHandle.Close();
+                                result.AsyncWaitHandle.Dispose();
+                            }
+
+                            Scan.Close();
+                            Scan.Dispose();
+
+                            break;
+                        case "udp":
+                            //Byte[] payload = Encoding.ASCII.GetBytes("00000000000000000000000000000000");
+                            //UdpClient udpScan = new UdpClient();
+                            //udpScan.Connect(ipAddress, port);
+                            //udpScan.Send(payload, payload.Length);
+
+                            //IPEndPoint remoteIP = new IPEndPoint(IPAddress.Parse(ipAddress), 0);
+                            break;
                     }
-
-                    Scan.Close();
-                    Scan.Dispose();
-
+                    
                     if (stopScan == true) break;
                 }
 
@@ -236,7 +254,8 @@ namespace IPList
             ToggleGUI(false);
 
             stopScan = false;
-            lblIP.StringValue = this.CurrentIP;
+            lblIP.StringValue = ipAddress;
+            lblProtocol.StringValue = protocol.ToUpper();
 
             PortEntryDelegate.DataSource = new PortEntryDataSource();
             tblPorts.Delegate = new PortEntryDelegate(PortEntryDelegate.DataSource);

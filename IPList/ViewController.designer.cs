@@ -84,6 +84,9 @@ namespace IPList
 		[Action ("mnuPortScan_Click:")]
 		partial void mnuPortScan_Click (Foundation.NSObject sender);
 
+		[Action ("mnuUDPScan:")]
+		partial void mnuUDPScan (Foundation.NSObject sender);
+
 		[Action ("tblListAction:")]
 		partial void tblListAction (Foundation.NSObject sender);
 
@@ -105,6 +108,11 @@ namespace IPList
 			if (btnStopOutlet != null) {
 				btnStopOutlet.Dispose ();
 				btnStopOutlet = null;
+			}
+
+			if (chkDNS != null) {
+				chkDNS.Dispose ();
+				chkDNS = null;
 			}
 
 			if (chkList != null) {
@@ -165,11 +173,6 @@ namespace IPList
 			if (txtNetwork != null) {
 				txtNetwork.Dispose ();
 				txtNetwork = null;
-			}
-
-			if (chkDNS != null) {
-				chkDNS.Dispose ();
-				chkDNS = null;
 			}
 		}
 	}

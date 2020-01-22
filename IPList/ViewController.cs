@@ -325,5 +325,11 @@ namespace IPList
             PortScannerController portScanner = new PortScannerController(W.CurrentIP);
             portScanner.ShowWindow(this);
         }
+
+        partial void mnuUDPScan(NSObject sender)
+        {
+            PortScannerController portScanner = new PortScannerController(W.CurrentIP, "udp");
+            portScanner.ShowWindow(this);
+        }
     }
 }

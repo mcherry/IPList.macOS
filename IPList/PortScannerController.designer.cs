@@ -31,6 +31,9 @@ namespace IPList
 		AppKit.NSTextField lblLatency { get; set; }
 
 		[Outlet]
+		AppKit.NSTextField lblProtocol { get; set; }
+
+		[Outlet]
 		AppKit.NSTextField lblStat { get; set; }
 
 		[Outlet]
@@ -68,9 +71,24 @@ namespace IPList
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (btnCopy != null) {
+				btnCopy.Dispose ();
+				btnCopy = null;
+			}
+
+			if (btnStart != null) {
+				btnStart.Dispose ();
+				btnStart = null;
+			}
+
 			if (btnStop != null) {
 				btnStop.Dispose ();
 				btnStop = null;
+			}
+
+			if (cmbDelim != null) {
+				cmbDelim.Dispose ();
+				cmbDelim = null;
 			}
 
 			if (lblIP != null) {
@@ -81,6 +99,16 @@ namespace IPList
 			if (lblLatency != null) {
 				lblLatency.Dispose ();
 				lblLatency = null;
+			}
+
+			if (lblStat != null) {
+				lblStat.Dispose ();
+				lblStat = null;
+			}
+
+			if (lblStatus != null) {
+				lblStatus.Dispose ();
+				lblStatus = null;
 			}
 
 			if (lblTTL != null) {
@@ -108,34 +136,14 @@ namespace IPList
 				tblPort_ServiceCol = null;
 			}
 
-			if (lblStat != null) {
-				lblStat.Dispose ();
-				lblStat = null;
+			if (lblProtocol != null) {
+				lblProtocol.Dispose ();
+				lblProtocol = null;
 			}
 
 			if (tblPorts != null) {
 				tblPorts.Dispose ();
 				tblPorts = null;
-			}
-
-			if (lblStatus != null) {
-				lblStatus.Dispose ();
-				lblStatus = null;
-			}
-
-			if (cmbDelim != null) {
-				cmbDelim.Dispose ();
-				cmbDelim = null;
-			}
-
-			if (btnCopy != null) {
-				btnCopy.Dispose ();
-				btnCopy = null;
-			}
-
-			if (btnStart != null) {
-				btnStart.Dispose ();
-				btnStart = null;
 			}
 		}
 	}
