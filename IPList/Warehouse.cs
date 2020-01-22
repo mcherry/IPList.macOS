@@ -13,7 +13,8 @@ namespace IPList
     public class W
     {
         public static string CurrentIP;
-        public static IDictionary<string, string> Services = new Dictionary<string, string>();
+        private static IDictionary<string, string> tcpServices = new Dictionary<string, string>();
+        private static IDictionary<string, string> udpServices = new Dictionary<string, string>();
 
         public W() { }
 
@@ -86,9 +87,18 @@ namespace IPList
         }
 
         // get a service name from the Services dictionary
-        public static string GetServiceName(string port)
+        public static string GetServiceName(string port, string protocol = "tcp")
         {
-            if (Services.TryGetValue(port, out string value)) return value;
+            string value = "";
+            switch (protocol)
+            {
+                case "tcp":
+                    if (tcpServices.TryGetValue(port, out value)) return value;
+                    break;
+                case "udp":
+                    if (udpServices.TryGetValue(port, out value)) return value;
+                    break;
+            }
             if (value == null) value = "";
 
             return value;
@@ -109,9 +119,16 @@ namespace IPList
                     if (entry.Length > 1)
                     {
                         string[] port = entry[1].Split("/");
-                        if (port.Length > 1 && !port[0].StartsWith("#") && port[1] == "tcp")
-                        {
-                            Services[port[0]] = entry[0];
+                        if (port.Length > 1 && !port[0].StartsWith("#")) {
+                            switch (port[1])
+                            {
+                                case "tcp":
+                                    tcpServices[port[0]] = entry[0];
+                                    break;
+                                case "udp":
+                                    udpServices[port[0]] = entry[0];
+                                    break;
+                            }
                         }
                     }
                 }
