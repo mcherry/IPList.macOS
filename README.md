@@ -1,5 +1,5 @@
 # IPList Mac
-A tool to list IP addresses in a network while optionally pinging and performing DNS lookups. This can be useful when you need a comma or newline delimited list of IP addresses in a network or if you just want to see which hosts are up on a given subnet. IPList is written in C# using Visual Studio 2019 and Xamarin.
+A tool to list IP addresses in a network while optionally pinging and performing DNS lookups. This can be useful when you need a comma or newline delimited list of IP addresses in a network or if you just want to see which hosts are up on a given subnet. IPList is written in C# using Visual Studio 2019 and Xamarin as an introduction to macOS development with C#.
 
 # Features
 * List all IP address in a network
@@ -9,7 +9,7 @@ A tool to list IP addresses in a network while optionally pinging and performing
 * Copy IP and port lists to the clipboard with a user defined delimiter
 
 # Dependencies
-IPList relies on the awesome [IPNetwork](https://github.com/lduchosal/ipnetwork) package.
+IPList relies on the awesome [IPNetwork](https://github.com/lduchosal/ipnetwork) and runs on macOS 10.10 or higher.
 
 # Screenshot
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/005.png?raw=true "Screenshot 1")
