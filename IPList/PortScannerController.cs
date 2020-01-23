@@ -118,7 +118,7 @@ namespace IPList
             if (reply.Status == IPStatus.Success)
             {
                 host_up = true;
-                setPingStatus("UP", reply.RoundtripTime.ToString() + "ms", reply.Options.Ttl.ToString());
+                setPingStatus("UP", reply.RoundtripTime, reply.Options.Ttl);
             }
             else
             {
@@ -141,11 +141,8 @@ namespace IPList
 
                             if (Scan.Connected)
                             {
-                                InvokeOnMainThread(() =>
-                                {
-                                    PortEntryDelegate.DataSource.Ports.Add(new PortEntry(port, W.GetServiceName(port)));
-                                    tblPorts.ReloadData();
-                                });
+                                PortEntryDelegate.DataSource.Ports.Add(new PortEntry(port, W.GetServiceName(port)));
+                                ReloadTable();
 
                                 Scan.EndConnect(result);
                                 result.AsyncWaitHandle.Close();
@@ -179,6 +176,12 @@ namespace IPList
             return;
         }
 
+        private void ReloadTable(bool sort = false)
+        {
+            if (sort) PortEntryDelegate.DataSource.Sort("Port", true);
+            InvokeOnMainThread(() => { tblPorts.ReloadData(); });
+        }
+
         private void MonitorThread(List<List<int>> sublist)
         {
             foreach (List<int> pList in sublist)
@@ -189,7 +192,7 @@ namespace IPList
 
             lock(locker) while (runningTasks > 0) Monitor.Wait(locker);
 
-            PortEntryDelegate.DataSource.Sort("Port", true);
+            ReloadTable(true);
 
             setStatus("Found " + PortEntryDelegate.DataSource.GetRowCount(tblPorts).ToString() + " open ports");
             ToggleGUI(true);
@@ -204,13 +207,14 @@ namespace IPList
             StartScan();
         }
 
-        private void setPingStatus(string status, string time = "", string ttl = "")
+        private void setPingStatus(string status, long time = 0, int ttl = 0)
         {
             InvokeOnMainThread(() =>
             {
+                Window.Title = protocol.ToUpper() + " Scanning " + ipAddress + " (" + status + ")";
                 lblStat.StringValue = status;
-                lblLatency.StringValue = time;
-                lblTTL.StringValue = ttl;
+                lblLatency.StringValue = time.ToString() + "ms";
+                lblTTL.StringValue = ttl.ToString();
             });
         }
 

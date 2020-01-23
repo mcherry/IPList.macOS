@@ -6,8 +6,6 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Text.RegularExpressions;
 
-using IPAddressCollection = LukeSkywalker.IPNetwork.IPAddressCollection;
-
 namespace IPList
 {
     public class W

@@ -19,7 +19,7 @@ namespace IPList
         public PingWindowController(string ip_address) : base("PingWindow")
         {
             ipAddress = ip_address;
-            Window.Title = "Pinging" + ip_address;
+            Window.Title = "Pinging " + ip_address;
         }
 
         private void PingThread()
@@ -31,7 +31,7 @@ namespace IPList
                 PingReply reply = W.Ping(ipAddress);
                 if (reply.Status == IPStatus.Success)
                 {
-                    setPingStatus(pingCount, "UP", reply.RoundtripTime.ToString() + "ms", reply.Options.Ttl.ToString());
+                    setPingStatus(pingCount, "UP", reply.RoundtripTime, reply.Options.Ttl);
                 } else
                 {
                     setPingStatus(pingCount, "DOWN");
@@ -58,13 +58,14 @@ namespace IPList
             get { return (PingWindow)base.Window; }
         }
 
-        private void setPingStatus(int pingCount, string status, string time = "", string ttl = "")
+        private void setPingStatus(int pingCount, string status, long time = 0, int ttl = 0)
         {
             InvokeOnMainThread(() =>
             {
+                Window.Title = "Pinging " + ipAddress + " (" + status + ")";
                 lblStatus.StringValue = status;
-                lblLatency.StringValue = time;
-                lblTTL.StringValue = ttl;
+                lblLatency.StringValue = time.ToString() + "ms";
+                lblTTL.StringValue = ttl.ToString();
                 lblCount.StringValue = pingCount.ToString();
             });
         }

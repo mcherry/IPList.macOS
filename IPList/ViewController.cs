@@ -95,9 +95,8 @@ namespace IPList
                         AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip, "DOWN"));
                     }
                 }
-
-                // update GUI
-                InvokeOnMainThread(() => { tblList.ReloadData(); });
+                
+                ReloadTable();
 
                 if (stopPings == true) break;
             }
@@ -130,9 +129,7 @@ namespace IPList
 
             lock (locker) while (runningTasks > 0) Monitor.Wait(locker);
 
-            AddressEntryDelegate.DataSource.Sort("IP", true);
-
-            InvokeOnMainThread(() => { tblList.ReloadData(); });
+            ReloadTable(true);
             setStatus(AddressEntryDelegate.DataSource.AddressEntries.Count.ToString() + " IPs found");
             ToggleGUI(true);
 
@@ -145,6 +142,12 @@ namespace IPList
             {
                 lblStatus.StringValue = status;
             });
+        }
+
+        private void ReloadTable(bool sort = false)
+        {
+            if (sort) AddressEntryDelegate.DataSource.Sort("IP", true);
+            InvokeOnMainThread(() => { tblList.ReloadData(); });
         }
 
         partial void btnStop(NSObject sender)
