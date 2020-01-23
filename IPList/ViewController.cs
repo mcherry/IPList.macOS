@@ -273,13 +273,16 @@ namespace IPList
                     tblList.DataSource = AddressEntryDelegate.DataSource;
                     tblList.ReloadData();
 
+                    List<string> subnetwork = new List<string>();
+                    foreach (IPAddress ip in subnet) subnetwork.Add(ip.ToString());
+
                     if (chkPIng.IntValue == 1)
                     {
                         runningTasks = 0;
                         stopPings = false;
 
                         // launch monitoring thread that fills threadpool
-                        Thread monitor = new Thread(() => { MonitorThread(W.Split<string>(subnet)); });
+                        Thread monitor = new Thread(() => { MonitorThread(W.Split<string>(subnetwork)); });
                         monitor.Start();
                     } else
                     {
