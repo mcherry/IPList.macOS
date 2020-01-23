@@ -19,6 +19,7 @@ namespace IPList
         public PingWindowController(string ip_address) : base("PingWindow")
         {
             ipAddress = ip_address;
+            Window.Title = "Pinging" + ip_address;
         }
 
         private void PingThread()

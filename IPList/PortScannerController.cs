@@ -104,6 +104,8 @@ namespace IPList
         {
             ipAddress = ip_address;
             protocol = ip_protocol;
+
+            Window.Title = protocol.ToUpper() + " Scanning " + ip_address;
         }
 
         private void ScannerThread(object state)
