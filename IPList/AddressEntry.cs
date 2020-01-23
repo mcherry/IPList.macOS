@@ -15,14 +15,14 @@ namespace IPList
 
         public AddressEntry() { }
 
-        public AddressEntry(string address, string status = "", string latency = "", string ttl = "", string dns = "")
+        public AddressEntry(string address, string status = "", long latency = 0, int ttl = 0, string dns = "")
         {
-            this.Address = address;
-            this.Status = status;
-            this.Latency = latency;
-            this.TTL = ttl;
-            this.DNS = dns;
-        }   
+            Address = address;
+            Status = status;
+            Latency = latency.ToString() + "ms";
+            TTL = ttl.ToString();
+            DNS = dns;
+        }
     }
 
     public class AddressEntryDataSource : NSTableViewDataSource
@@ -101,8 +101,7 @@ namespace IPList
             }
             else
             {
-                NSSortDescriptor[] tbSort = tableView.SortDescriptors;
-                Sort(tbSort[0].Key, tbSort[0].Ascending);
+                Sort(tableView.SortDescriptors[0].Key, tableView.SortDescriptors[0].Ascending);
             }
             tableView.ReloadData();
         }

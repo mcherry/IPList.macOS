@@ -13,11 +13,11 @@ namespace IPList
 
         public PortEntry() { }
 
-        public PortEntry(string port, string service = "", string data = "")
+        public PortEntry(int port, string service = "", string data = "")
         {
-            this.Port = port;
-            this.Service = service;
-            this.Data = data;
+            Port = port.ToString();
+            Service = service;
+            Data = data;
         }
     }
 

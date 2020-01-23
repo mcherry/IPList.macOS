@@ -87,16 +87,16 @@ namespace IPList
         }
 
         // get a service name from the Services dictionary
-        public static string GetServiceName(string port, string protocol = "tcp")
+        public static string GetServiceName(int port, string protocol = "tcp")
         {
             string value = "";
             switch (protocol)
             {
                 case "tcp":
-                    if (tcpServices.TryGetValue(port, out value)) return value;
+                    if (tcpServices.TryGetValue(port.ToString(), out value)) return value;
                     break;
                 case "udp":
-                    if (udpServices.TryGetValue(port, out value)) return value;
+                    if (udpServices.TryGetValue(port.ToString(), out value)) return value;
                     break;
             }
             if (value == null) value = "";

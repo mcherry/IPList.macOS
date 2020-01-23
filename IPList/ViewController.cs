@@ -83,8 +83,8 @@ namespace IPList
                     AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(
                         ip,
                         "UP",
-                        pinger.RoundtripTime.ToString() + "ms",
-                        pinger.Options.Ttl.ToString(),
+                        pinger.RoundtripTime,
+                        pinger.Options.Ttl,
                         hostname));
                 }
                 else
@@ -286,7 +286,7 @@ namespace IPList
                         monitor.Start();
                     } else
                     {
-                        foreach (IPAddress ip in subnet)
+                        foreach (string ip in subnetwork)
                         {
                             string[] split_ip = ip.ToString().Split(".");
                             if (split_ip[3] != "0" && split_ip[3] != "255")
@@ -294,7 +294,7 @@ namespace IPList
                                 string hostname = "";
                                 if (chkDNS.IntValue == 1) hostname = W.dnsLookup(ip.ToString());
 
-                                AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip.ToString(), "", "", "", hostname));
+                                AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip.ToString(), "", 0, 0, hostname));
                             }
                         }
 

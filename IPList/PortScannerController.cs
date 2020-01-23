@@ -141,7 +141,7 @@ namespace IPList
                             {
                                 InvokeOnMainThread(() =>
                                 {
-                                    PortEntryDelegate.DataSource.Ports.Add(new PortEntry(port.ToString(), W.GetServiceName(port.ToString())));
+                                    PortEntryDelegate.DataSource.Ports.Add(new PortEntry(port, W.GetServiceName(port)));
                                     tblPorts.ReloadData();
                                 });
 
