@@ -151,6 +151,7 @@ namespace IPList
             }
 
             List<T> NewList = new List<T>();
+
             foreach (T item in list)
             {
                 if (W.IsValidIP(item.ToString()))
