@@ -59,25 +59,17 @@ namespace IPList
         {
             object[] arguments = state as object[];
 
-            bool pingHosts = true;
-            bool listPingable = true;
-            bool checkDNS = true;
+            List<string> ipList = (List<string>)arguments[0];
+            int listPingable = (int)arguments[1];
+            int checkDNS = (int)arguments[2];
 
-            // manipulate items in GUI main thread
-            InvokeOnMainThread(() =>
-            {
-                pingHosts &= chkPIng.IntValue == 1;
-                listPingable &= chkList.IntValue == 1;
-                checkDNS &= chkDNS.IntValue == 1;
-            });
-
-            foreach (string ip in (List<string>)arguments[0])
+            foreach (string ip in ipList)
             {
                 PingReply pinger = W.Ping(ip);
                 if (pinger.Status == IPStatus.Success)
                 {
                     string hostname = "";
-                    if (checkDNS == true) hostname = W.dnsLookup(ip);
+                    if (checkDNS == 1) hostname = W.dnsLookup(ip);
 
                     // successful ping, add details to tableview datasource
                     AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(
@@ -89,7 +81,7 @@ namespace IPList
                 }
                 else
                 {
-                    if (listPingable != true)
+                    if (listPingable != 1)
                     {
                         // listing unpingable hosts, add to tableview datasource
                         AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip, "DOWN"));
@@ -119,10 +111,20 @@ namespace IPList
             // add all the lists of IP addresses to the threadpool
             foreach (List<string> sublist in ipList)
             {
-                ip_count += sublist.Count;
+                int checkList = 0;
+                int checkDNS = 0;
 
+                InvokeOnMainThread(() =>
+                {
+                    checkList = chkList.IntValue;
+                    checkDNS = chkDNS.IntValue;
+                });
+
+                ip_count += sublist.Count;
                 lock (locker) runningTasks++;
-                ThreadPool.QueueUserWorkItem(new WaitCallback(PingThread), new object[] { sublist });
+                
+                ThreadPool.QueueUserWorkItem(new WaitCallback(PingThread), new object[] { sublist, checkList, checkDNS });
+                
             }
 
             setStatus("Pinging " + ip_count + " IPs...");
