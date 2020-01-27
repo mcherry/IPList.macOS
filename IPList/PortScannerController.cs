@@ -14,7 +14,7 @@ namespace IPList
         private string ipAddress;
         private string protocol;
 
-        private int runningTasks = 0;
+        private int runningTasks;
         private object locker = new object();
 
         private List<int> portList = new List<int>(new int[]
@@ -102,8 +102,6 @@ namespace IPList
         {
             ipAddress = ip_address;
             protocol = ip_protocol;
-
-            Window.Title = protocol.ToUpper() + " Scanning " + ip_address;
         }
 
         private void ScannerThread(object state)
@@ -139,12 +137,12 @@ namespace IPList
 
                             if (Scan.Connected)
                             {
-                                PortEntryDelegate.DataSource.Ports.Add(new PortEntry(port, W.GetServiceName(port)));
-                                ReloadTable();
-
                                 Scan.EndConnect(result);
                                 result.AsyncWaitHandle.Close();
                                 result.AsyncWaitHandle.Dispose();
+
+                                PortEntryDelegate.DataSource.Ports.Add(new PortEntry(port, W.GetServiceName(port)));
+                                ReloadTable();
                             }
 
                             Scan.Close();
@@ -182,6 +180,8 @@ namespace IPList
 
         private void MonitorThread(List<List<int>> sublist)
         {
+            runningTasks = 0;
+
             foreach (List<int> pList in sublist)
             { 
                 lock(locker) runningTasks++;
@@ -231,6 +231,7 @@ namespace IPList
                 if (enabled == true)
                 {
                     prgStatus.StopAnimation(this);
+                    Window.Title = protocol.ToUpper() + " Scanned " + ipAddress;
                     prgStatus.Hidden = true;
                     btnStop.Enabled = false;
                     btnStop.Hidden = true;
@@ -242,6 +243,7 @@ namespace IPList
                 else
                 {
                     prgStatus.StartAnimation(this);
+                    Window.Title = protocol.ToUpper() + " Scanning " + ipAddress;
                     btnStart.Enabled = false;
                     btnStart.Hidden = true;
                     btnStop.Enabled = true;
@@ -266,7 +268,6 @@ namespace IPList
             tblPorts.DataSource = PortEntryDelegate.DataSource;
             tblPorts.ReloadData();
 
-            runningTasks = 0;
             Thread monitor = new Thread(() => { MonitorThread(W.Split<int>(portList)); });
             monitor.Start();
         }
@@ -284,7 +285,6 @@ namespace IPList
         partial void btnStop_Click(NSObject sender)
         {
             stopScan = true;
-
             ToggleGUI(true);
         }
 
