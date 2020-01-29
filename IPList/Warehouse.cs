@@ -35,7 +35,7 @@ namespace IPList
         }
 
         // send a single ping
-        public static PingReply Ping(string host, int timeout = 500)
+        public static PingReply Ping(string host)
         {
             Ping pinger = null;
             PingReply reply = null;
@@ -44,7 +44,7 @@ namespace IPList
             {
                 // ping host
                 pinger = new Ping();
-                reply = pinger.Send(host, timeout);
+                reply = pinger.Send(host, Settings.PingTimeout);
             }
             catch (PingException)
             {

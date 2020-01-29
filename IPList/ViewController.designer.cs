@@ -69,8 +69,17 @@ namespace IPList
 		[Action ("btnStop:")]
 		partial void btnStop (Foundation.NSObject sender);
 
+		[Action ("chkDNS_Click:")]
+		partial void chkDNS_Click (Foundation.NSObject sender);
+
+		[Action ("chkList_Click:")]
+		partial void chkList_Click (Foundation.NSObject sender);
+
 		[Action ("chkPingAction:")]
 		partial void chkPingAction (Foundation.NSObject sender);
+
+		[Action ("cmdDelimiter_Click:")]
+		partial void cmdDelimiter_Click (Foundation.NSObject sender);
 
 		[Action ("CopyMenuAction:")]
 		partial void CopyMenuAction (Foundation.NSObject sender);

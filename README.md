@@ -1,5 +1,5 @@
 # IPList Mac
-A tool to list IP addresses in a network while optionally pinging and performing DNS lookups. This can be useful when you need a comma or newline delimited list of IP addresses in a network or if you just want to see which hosts are up on a given subnet. IPList is written in C# using Visual Studio 2019 and Xamarin as an introduction to macOS development with C#.
+A tool to list IP addresses in a network while optionally pinging and performing DNS lookups. This can be useful when you need a comma or newline delimited list of IP addresses in a network or if you just want to see which hosts are up on a given subnet. The port scanner allows you to quickly view open TCP services on a host. IPList is written in C# using Visual Studio 2019 and Xamarin as an introduction to macOS development with C#.
 
 # Features
 * List all IP address in a network
@@ -7,6 +7,7 @@ A tool to list IP addresses in a network while optionally pinging and performing
 * Perform a port scan of any network host to determine service availability
 * Perform a constant ping against a network host to monitor availability
 * Copy IP and port lists to the clipboard with a user defined delimiter
+* Change settings such as ping timeout, port scan timeout, and port list
 * Multithreaded for performance
 
 # Dependencies
@@ -21,9 +22,11 @@ In no particular order, here are some of the resources I used to hack this proje
 * [Xamarin Documentation](https://docs.microsoft.com/en-us/xamarin/)
 * [Xamarin.Mac Community Forums](https://forums.xamarin.com/categories/xamarin-mac)
 * [StackOverflow](https://stackoverflow.com/questions/tagged/xamarin)
+* [SettingsPlugin Documentation](https://github.com/jamesmontemagno/SettingsPlugin/tree/master/docs)
 
 # Screenshots
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/012.png?raw=true "Screenshot 1")
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/009.png?raw=true "Screenshot 2")
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/0010.png?raw=true "Screenshot 3")
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/0011.png?raw=true "Screenshot 4")
+![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/013.png?raw=true "Screenshot 5")

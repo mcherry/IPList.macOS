@@ -9,9 +9,11 @@ using System.CodeDom.Compiler;
 
 namespace IPList
 {
-	[Register ("IPListTextField")]
-	partial class IPListTextField
+	[Register ("PrefsWindow")]
+	partial class PrefsWindow
 	{
+		[Action ("btnSave_Click:")]
+		partial void btnSave_Click (Foundation.NSObject sender);
 		
 		void ReleaseDesignerOutlets ()
 		{

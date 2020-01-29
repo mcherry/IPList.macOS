@@ -23,23 +23,24 @@ namespace IPList
         {
             base.ViewDidLoad();
 
-            // Do any additional setup after loading the view.
-            // default state of GUI
             btnCopy.Enabled = false;
             cmbDelimiter.Enabled = false;
 
-            W.LoadServices();
-
-            // really dont like this but there seems to be no easy solution to capture
-            // a keydown event or only respond to the return key when editing is ended
-            txtNetwork.EditingEnded += (object sender, EventArgs e) =>
+            chkPIng.IntValue = Settings.PingCheck;
+            if (Settings.PingCheck == 0)
             {
-                if (IPListTextField.KeyCode == 36)
-                {
-                    IPListTextField.KeyCode = 0;
-                    btnList(this);
-                }
-            };
+                chkList.IntValue = 0;
+                chkList.Enabled = false;
+            }
+            else
+            {
+                chkList.IntValue = Settings.ListCheck;
+            }
+
+            chkDNS.IntValue = Settings.DNSCheck;
+            cmbDelimiter.SelectItem(Settings.PingDelimiter);
+
+            W.LoadServices();
         }
         
         public override NSObject RepresentedObject
@@ -53,6 +54,19 @@ namespace IPList
                 base.RepresentedObject = value;
                 // Update the view, if already loaded.
             }
+        }
+
+        [Action("txtNetworkAction:")]
+        public void PressedEnter(NSObject sender)
+        {
+            btnList(this);
+        }
+
+        [Action("PrefsWindow:")]
+        public void PrefsWindow(NSObject sender)
+        {
+            PrefsWindowController prefsWindow = new PrefsWindowController();
+            prefsWindow.ShowWindow(this);
         }
 
         private void PingThread(object state)
@@ -140,10 +154,7 @@ namespace IPList
 
         private void setStatus(string status)
         {
-            InvokeOnMainThread(() =>
-            {
-                lblStatus.StringValue = status;
-            });
+            InvokeOnMainThread(() => { lblStatus.StringValue = status; });
         }
 
         private void ReloadTable(bool sort = false)
@@ -157,8 +168,25 @@ namespace IPList
             stopPings = true;
         }
 
+        partial void cmdDelimiter_Click(NSObject sender)
+        {
+            Settings.PingDelimiter = cmbDelimiter.SelectedItem.Title;
+        }
+
+        partial void chkList_Click(NSObject sender)
+        {
+            Settings.ListCheck = chkList.IntValue;
+        }
+
+        partial void chkDNS_Click(NSObject sender)
+        {
+            Settings.DNSCheck = chkDNS.IntValue;
+        }
+
         partial void chkPingAction(NSObject sender)
         {
+            Settings.PingCheck = chkPIng.IntValue;
+
             if (chkPIng.IntValue == 0)
             {
                 chkList.IntValue = 0;
@@ -178,18 +206,10 @@ namespace IPList
 
             switch (cmbDelimiter.SelectedItem.Title)
             {
-                case "Newline":
-                    delim = Environment.NewLine;
-                    break;
-                case "Comma":
-                    delim = ",";
-                    break;
-                case "Tab":
-                    delim = "\t";
-                    break;
-                case "Space":
-                    delim = " ";
-                    break;
+                case "Newline": delim = Environment.NewLine; break;
+                case "Comma":   delim = ",";  break;
+                case "Tab":     delim = "\t"; break;
+                case "Space":   delim = " ";  break;
             }
 
             foreach (AddressEntry ip in AddressEntryDelegate.DataSource.AddressEntries)

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -22,7 +23,11 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
-                                        <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW"/>
+                                        <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW">
+                                            <connections>
+                                                <action selector="PrefsWindow:" target="Ady-hI-5gd" id="Awb-L6-vn5"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem isSeparatorItem="YES" id="wFC-TO-SCJ"/>
                                         <menuItem title="Services" id="NMo-om-nkz">
                                             <modifierMask key="keyEquivalentModifierMask"/>
@@ -102,7 +107,7 @@
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="0.0"/>
+            <point key="canvasLocation" x="76" y="-106"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
@@ -134,10 +139,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="667" height="524"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Ac-0i-50d" customClass="IPListTextField">
-                                <rect key="frame" x="20" y="485" width="569" height="21"/>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cbf-Zs-v2Y">
+                                <rect key="frame" x="18" y="488" width="59" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Network:" id="eNh-zZ-X0I">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Ac-0i-50d">
+                                <rect key="frame" x="83" y="485" width="506" height="21"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="IP Address or Network" drawsBackground="YES" id="OkH-V9-InZ">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" drawsBackground="YES" id="OkH-V9-InZ">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -146,6 +160,17 @@
                                     <action selector="txtNetworkAction:" target="XfG-lQ-9wD" id="jZM-Li-R8I"/>
                                 </connections>
                             </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NuY-Ey-opL">
+                                <rect key="frame" x="81" y="461" width="49" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="check" title="Ping" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="6Tl-KY-k9d">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="chkPingAction:" target="XfG-lQ-9wD" id="d5I-SH-CKf"/>
+                                </connections>
+                            </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3v7-Dn-NRV">
                                 <rect key="frame" x="591" y="478" width="62" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
@@ -155,6 +180,17 @@
                                 </buttonCell>
                                 <connections>
                                     <action selector="btnList:" target="XfG-lQ-9wD" id="ksR-6R-VhN"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BTJ-iH-PAP">
+                                <rect key="frame" x="134" y="461" width="210" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="check" title="Only list IPs responding to ping" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="I84-9D-dl4">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="chkList_Click:" target="XfG-lQ-9wD" id="16s-dF-sS0"/>
                                 </connections>
                             </button>
                             <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kuf-bb-Kk8">
@@ -173,7 +209,7 @@
                                             <tableColumns>
                                                 <tableColumn editable="NO" width="124" minWidth="40" maxWidth="1000" id="5dL-d4-xfo">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Address">
-                                                        <font key="font" metaFont="menu" size="11"/>
+                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -207,7 +243,7 @@
                                                 </tableColumn>
                                                 <tableColumn editable="NO" width="70" minWidth="40" maxWidth="1000" id="qN9-Pm-5MA">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Status">
-                                                        <font key="font" metaFont="menu" size="11"/>
+                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -241,7 +277,7 @@
                                                 </tableColumn>
                                                 <tableColumn width="68" minWidth="10" maxWidth="3.4028234663852886e+38" id="Vs7-Hf-AfM">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Latency">
-                                                        <font key="font" metaFont="menu" size="11"/>
+                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </tableHeaderCell>
@@ -275,7 +311,7 @@
                                                 </tableColumn>
                                                 <tableColumn width="76" minWidth="10" maxWidth="3.4028234663852886e+38" id="CRA-Z4-10i">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="TTL">
-                                                        <font key="font" metaFont="menu" size="11"/>
+                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </tableHeaderCell>
@@ -309,7 +345,7 @@
                                                 </tableColumn>
                                                 <tableColumn width="266" minWidth="10" maxWidth="3.4028234663852886e+38" id="VEW-si-WtW">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="DNS">
-                                                        <font key="font" metaFont="menu" size="11"/>
+                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </tableHeaderCell>
@@ -396,6 +432,9 @@
                                         </items>
                                     </menu>
                                 </popUpButtonCell>
+                                <connections>
+                                    <action selector="cmdDelimiter_Click:" target="XfG-lQ-9wD" id="YbB-ti-1zh"/>
+                                </connections>
                             </popUpButton>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3dt-vh-Fmb">
                                 <rect key="frame" x="581" y="6" width="72" height="32"/>
@@ -423,32 +462,16 @@
                                     <action selector="btnStop:" target="XfG-lQ-9wD" id="IzU-g5-dAf"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NuY-Ey-opL">
-                                <rect key="frame" x="18" y="461" width="49" height="18"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="check" title="Ping" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="6Tl-KY-k9d">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="chkPingAction:" target="XfG-lQ-9wD" id="d5I-SH-CKf"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BTJ-iH-PAP">
-                                <rect key="frame" x="71" y="461" width="210" height="18"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="check" title="Only list IPs responding to ping" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="I84-9D-dl4">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                            </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kag-Du-bSk">
-                                <rect key="frame" x="285" y="461" width="146" height="18"/>
+                                <rect key="frame" x="348" y="461" width="146" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="check" title="Perform DNS lookup" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="r81-jR-w1f">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="chkDNS_Click:" target="XfG-lQ-9wD" id="iZx-sg-cb9"/>
+                                </connections>
                             </button>
                         </subviews>
                     </view>
@@ -457,6 +480,7 @@
                         <outlet property="btnListOutlet" destination="3v7-Dn-NRV" id="9HN-X2-djT"/>
                         <outlet property="btnStopOutlet" destination="kqN-lg-4sO" id="Bqz-dX-LcN"/>
                         <outlet property="chkDNS" destination="Kag-Du-bSk" id="Ov7-bp-gSt"/>
+                        <outlet property="chkDNS_Click" destination="Kag-Du-bSk" id="IdV-fL-xdk"/>
                         <outlet property="chkList" destination="BTJ-iH-PAP" id="xqc-MZ-sNg"/>
                         <outlet property="chkPIng" destination="NuY-Ey-opL" id="9O1-wc-COJ"/>
                         <outlet property="cmbDelimiter" destination="Bvd-Nh-6Ud" id="pu2-Pf-AFs"/>
@@ -502,7 +526,7 @@
                     </items>
                 </menu>
             </objects>
-            <point key="canvasLocation" x="192.5" y="851"/>
+            <point key="canvasLocation" x="193" y="851"/>
         </scene>
     </scenes>
 </document>

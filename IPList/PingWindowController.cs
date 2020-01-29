@@ -16,6 +16,13 @@ namespace IPList
         [Export("initWithCoder:")]
         public PingWindowController(NSCoder coder) : base(coder) { }
 
+        [Action("PrefsWindow:")]
+        public void PrefsWindow(NSObject sender)
+        {
+            PrefsWindowController prefsWindow = new PrefsWindowController();
+            prefsWindow.ShowWindow(this);
+        }
+
         public PingWindowController(string ip_address) : base("PingWindow")
         {
             ipAddress = ip_address;

@@ -68,6 +68,9 @@ namespace IPList
 
 		[Action ("chkAddPorts_Click:")]
 		partial void chkAddPorts_Click (Foundation.NSObject sender);
+
+		[Action ("cmbDelim_Click:")]
+		partial void cmbDelim_Click (Foundation.NSObject sender);
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -99,6 +102,11 @@ namespace IPList
 			if (lblLatency != null) {
 				lblLatency.Dispose ();
 				lblLatency = null;
+			}
+
+			if (lblProtocol != null) {
+				lblProtocol.Dispose ();
+				lblProtocol = null;
 			}
 
 			if (lblStat != null) {
@@ -134,11 +142,6 @@ namespace IPList
 			if (tblPort_ServiceCol != null) {
 				tblPort_ServiceCol.Dispose ();
 				tblPort_ServiceCol = null;
-			}
-
-			if (lblProtocol != null) {
-				lblProtocol.Dispose ();
-				lblProtocol = null;
 			}
 
 			if (tblPorts != null) {
