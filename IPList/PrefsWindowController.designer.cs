@@ -13,6 +13,18 @@ namespace IPList
 	partial class PrefsWindowController
 	{
 		[Outlet]
+		AppKit.NSButton btnSave { get; set; }
+
+		[Outlet]
+		AppKit.NSPopUpButton cmbPortList { get; set; }
+
+		[Outlet]
+		AppKit.NSTextField lblStatus { get; set; }
+
+		[Outlet]
+		AppKit.NSProgressIndicator prgStatus { get; set; }
+
+		[Outlet]
 		AppKit.NSTextField txtPingTimeout { get; set; }
 
 		[Outlet]
@@ -23,12 +35,15 @@ namespace IPList
 
 		[Action ("btnSave_Click:")]
 		partial void btnSave_Click (Foundation.NSObject sender);
+
+		[Action ("cmbPortList_Click:")]
+		partial void cmbPortList_Click (Foundation.NSObject sender);
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (txtPorts != null) {
-				txtPorts.Dispose ();
-				txtPorts = null;
+			if (cmbPortList != null) {
+				cmbPortList.Dispose ();
+				cmbPortList = null;
 			}
 
 			if (txtPingTimeout != null) {
@@ -36,9 +51,29 @@ namespace IPList
 				txtPingTimeout = null;
 			}
 
+			if (txtPorts != null) {
+				txtPorts.Dispose ();
+				txtPorts = null;
+			}
+
 			if (txtPortscanTimeout != null) {
 				txtPortscanTimeout.Dispose ();
 				txtPortscanTimeout = null;
+			}
+
+			if (prgStatus != null) {
+				prgStatus.Dispose ();
+				prgStatus = null;
+			}
+
+			if (btnSave != null) {
+				btnSave.Dispose ();
+				btnSave = null;
+			}
+
+			if (lblStatus != null) {
+				lblStatus.Dispose ();
+				lblStatus = null;
 			}
 		}
 	}

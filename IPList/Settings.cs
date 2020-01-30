@@ -15,7 +15,7 @@ namespace IPList
 			}
 		}
 
-        private static readonly List<int> defaultPortList = new List<int>(new int[]
+        public static readonly List<int> topPorts1000 = new List<int>(new int[]
         {
             1,3,4,6,7,9,13,17,19,20,21,22,23,24,25,26,30,32,33,37,42,43,49,53,
             70,79,80,81,82,83,84,85,88,89,90,99,100,106,109,110,111,113,119,125,
@@ -91,6 +91,17 @@ namespace IPList
             65129,65389
         });
 
+        public static readonly List<int> topPorts100 = new List<int>(new int[]
+        {
+            7,9,13,21,22,23,25,26,37,53,79,80,81,88,106,110,111,113,119,135,139,
+            143,144,179,199,389,427,443,444,445,465,513,514,515,543,544,548,554,
+            587,631,646,873,990,993,995,1025,1026,1027,1028,1029,1110,1433,1720,
+            1723,1755,1900,2000,2001,2049,2121,2717,3000,3128,3306,3389,3986,4899,
+            5000,5009,5051,5060,5101,5190,5357,5432,5631,5666,5800,5900,6000,6001,
+            6646,7070,8000,8008,8009,8080,8081,8443,8888,9100,9999,10000,32768,
+            49152,49153,49154,49155,49156,49157
+        });
+
         public static int PingTimeout
 		{
 			get => AppSettings.GetValueOrDefault(nameof(PingTimeout), 500);
@@ -133,12 +144,18 @@ namespace IPList
             set => AppSettings.AddOrUpdateValue(nameof(PortDelimiter), value);
         }
 
+        public static string PortListName
+        {
+            get => AppSettings.GetValueOrDefault(nameof(PortListName), "Top 1000");
+            set => AppSettings.AddOrUpdateValue(nameof(PortListName), value);
+        }
+
         public static List<int> PortList
         {
             get
             {
                 string portList = AppSettings.GetValueOrDefault(nameof(PortList), "");
-                if (portList == "") return defaultPortList;
+                if (portList == "") return topPorts1000;
 
                 return JsonSerializer.Deserialize<List<int>>(portList);
             }

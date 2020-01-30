@@ -227,7 +227,6 @@ namespace IPList
                 if (enabled == true)
                 {
                     prgSpinner.StopAnimation(this);
-                    prgSpinner.Hidden = true;
                     btnListOutlet.Hidden = false;
                     btnStopOutlet.Hidden = true;
                     btnStopOutlet.Enabled = false;
@@ -242,7 +241,6 @@ namespace IPList
                 }
                 else
                 {
-                    prgSpinner.Hidden = false;
                     prgSpinner.StartAnimation(this);
                     btnListOutlet.Hidden = true;
                     btnStopOutlet.Hidden = false;

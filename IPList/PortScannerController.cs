@@ -165,7 +165,6 @@ namespace IPList
                 {
                     prgStatus.StopAnimation(this);
                     Window.Title = protocol.ToUpper() + " Scanned " + ipAddress;
-                    prgStatus.Hidden = true;
                     btnStop.Enabled = false;
                     btnStop.Hidden = true;
                     btnStart.Hidden = false;
@@ -181,7 +180,6 @@ namespace IPList
                     btnStart.Hidden = true;
                     btnStop.Enabled = true;
                     btnStop.Hidden = false;
-                    prgStatus.Hidden = false;
                     cmbDelim.Enabled = false;
                     btnCopy.Enabled = false;
                 }
