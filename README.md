@@ -3,11 +3,12 @@ A tool to list IP addresses in a network while optionally pinging and performing
 
 # Features
 * List all IP address in a network
+* Perform a DNS lookup on all IP addresses in a network
 * Perform a ping scan of a network to determine host availability
 * Perform a port scan of any network host to determine service availability
 * Perform a constant ping against a network host to monitor availability
 * Copy IP and port lists to the clipboard with a user defined delimiter
-* Change settings such as ping timeout, port scan timeout, and port list
+* User definable timeouts and port scanning list
 * Multithreaded for performance
 
 # Dependencies
@@ -29,4 +30,4 @@ In no particular order, here are some of the resources I used to hack this proje
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/009.png?raw=true "Screenshot 2")
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/0010.png?raw=true "Screenshot 3")
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/0011.png?raw=true "Screenshot 4")
-![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/013.png?raw=true "Screenshot 5")
+![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/014.png?raw=true "Screenshot 5")
