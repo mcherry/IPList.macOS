@@ -43,6 +43,13 @@ namespace IPList
             Process.Start(W.ProjectURL);
         }
 
+        [Action("showAbout:")]
+        public void ShowAbout(NSObject sender)
+        {
+            AboutWindowController aboutWin = new AboutWindowController();
+            aboutWin.ShowWindow(this);
+        }
+
         public PortScannerController(string ip_address, string ip_protocol = "tcp") : base("PortScanner")
         {
             ipAddress = ip_address;

@@ -85,6 +85,13 @@ namespace IPList
             Process.Start(W.ProjectURL);
         }
 
+        [Action("showAbout:")]
+        public void ShowAbout(NSObject sender)
+        {
+            AboutWindowController aboutWin = new AboutWindowController();
+            aboutWin.ShowWindow(this);
+        }
+
         private void PingThread(object state)
         {
             object[] arguments = state as object[];

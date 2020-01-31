@@ -19,7 +19,7 @@
                                         <menuItem title="About IPList" id="5kV-Vb-QxS">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="mnuAbout_Click:" target="Voe-Tx-rLC" id="HMa-QP-oMN"/>
+                                                <action selector="showAbout:" target="Ady-hI-5gd" id="OuY-Xt-4g1"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Check for Updates" id="sRs-lc-LEk">
@@ -184,7 +184,7 @@
                                             <tableColumns>
                                                 <tableColumn editable="NO" width="124" minWidth="40" maxWidth="1000" id="5dL-d4-xfo">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Address">
-                                                        <font key="font" metaFont="label" size="11"/>
+                                                        <font key="font" metaFont="menu" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -218,7 +218,7 @@
                                                 </tableColumn>
                                                 <tableColumn editable="NO" width="70" minWidth="40" maxWidth="1000" id="qN9-Pm-5MA">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Status">
-                                                        <font key="font" metaFont="label" size="11"/>
+                                                        <font key="font" metaFont="menu" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -252,7 +252,7 @@
                                                 </tableColumn>
                                                 <tableColumn width="68" minWidth="10" maxWidth="3.4028234663852886e+38" id="Vs7-Hf-AfM">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Latency">
-                                                        <font key="font" metaFont="label" size="11"/>
+                                                        <font key="font" metaFont="menu" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </tableHeaderCell>
@@ -286,7 +286,7 @@
                                                 </tableColumn>
                                                 <tableColumn width="76" minWidth="10" maxWidth="3.4028234663852886e+38" id="CRA-Z4-10i">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="TTL">
-                                                        <font key="font" metaFont="label" size="11"/>
+                                                        <font key="font" metaFont="menu" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </tableHeaderCell>
@@ -320,7 +320,7 @@
                                                 </tableColumn>
                                                 <tableColumn width="266" minWidth="10" maxWidth="3.4028234663852886e+38" id="VEW-si-WtW">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="DNS">
-                                                        <font key="font" metaFont="label" size="11"/>
+                                                        <font key="font" metaFont="menu" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </tableHeaderCell>

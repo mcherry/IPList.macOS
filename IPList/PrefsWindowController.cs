@@ -52,6 +52,13 @@ namespace IPList
             Process.Start(W.ProjectURL);
         }
 
+        [Action("showAbout:")]
+        public void ShowAbout(NSObject sender)
+        {
+            AboutWindowController aboutWin = new AboutWindowController();
+            aboutWin.ShowWindow(this);
+        }
+
         partial void btnSave_Click(NSObject sender)
         {
             bool error = false;
