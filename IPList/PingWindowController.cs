@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Net.NetworkInformation;
 using Foundation;
@@ -21,6 +22,18 @@ namespace IPList
         {
             PrefsWindowController prefsWindow = new PrefsWindowController();
             prefsWindow.ShowWindow(this);
+        }
+
+        [Action("UpdateCheck:")]
+        public void UpdateCheck(NSObject sender)
+        {
+            W.UpdateCheck(true);
+        }
+
+        [Action("showHelp:")]
+        public void OpenProjectPage(NSObject sender)
+        {
+            Process.Start(W.ProjectURL);
         }
 
         public PingWindowController(string ip_address) : base("PingWindow")

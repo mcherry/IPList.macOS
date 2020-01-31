@@ -156,6 +156,7 @@ namespace IPList
         public override bool ShouldSelectRow(NSTableView tableView, nint row)
         {
             W.CurrentIP = DataSource.AddressEntries[(int)row].Address;
+            W.CurrentDNS = DataSource.AddressEntries[(int)row].DNS;
             return true;
         }
     }

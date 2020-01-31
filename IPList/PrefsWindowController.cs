@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using Foundation;
@@ -26,6 +27,7 @@ namespace IPList
         {
             base.AwakeFromNib();
 
+            chkUpdates.IntValue = Settings.UpdateCheck;
             txtPingTimeout.StringValue = Settings.PingTimeout.ToString();
             txtPortscanTimeout.StringValue = Settings.PortscanTimeout.ToString();
             cmbPortList.SelectItem(Settings.PortListName);
@@ -36,6 +38,18 @@ namespace IPList
         public new PrefsWindow Window
         {
             get { return (PrefsWindow)base.Window; }
+        }
+
+        [Action("UpdateCheck:")]
+        public void UpdateCheck(NSObject sender)
+        {
+            W.UpdateCheck(true);
+        }
+
+        [Action("showHelp:")]
+        public void OpenProjectPage(NSObject sender)
+        {
+            Process.Start(W.ProjectURL);
         }
 
         partial void btnSave_Click(NSObject sender)
@@ -65,7 +79,7 @@ namespace IPList
             
             if (error == true)
             {
-                W.Error(error_msg);
+                W.Alert("Error", error_msg, NSAlertStyle.Critical);
             } else
             {
                 List<int> newPortList = new List<int>();
@@ -74,6 +88,7 @@ namespace IPList
                     if (port != "") newPortList.Add(int.Parse(port));
                 }
 
+                Settings.UpdateCheck = chkUpdates.IntValue;
                 Settings.PingTimeout = int.Parse(txtPingTimeout.StringValue);
                 Settings.PortscanTimeout = int.Parse(txtPortscanTimeout.StringValue);
                 Settings.PortListName = cmbPortList.SelectedItem.Title;

@@ -96,6 +96,9 @@ namespace IPList
 		[Action ("mnuUDPScan:")]
 		partial void mnuUDPScan (Foundation.NSObject sender);
 
+		[Action ("mnyCopyDNS_Click:")]
+		partial void mnyCopyDNS_Click (Foundation.NSObject sender);
+
 		[Action ("tblListAction:")]
 		partial void tblListAction (Foundation.NSObject sender);
 

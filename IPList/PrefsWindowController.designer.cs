@@ -16,6 +16,9 @@ namespace IPList
 		AppKit.NSButton btnSave { get; set; }
 
 		[Outlet]
+		AppKit.NSButton chkUpdates { get; set; }
+
+		[Outlet]
 		AppKit.NSPopUpButton cmbPortList { get; set; }
 
 		[Outlet]
@@ -36,6 +39,9 @@ namespace IPList
 		[Action ("btnSave_Click:")]
 		partial void btnSave_Click (Foundation.NSObject sender);
 
+		[Action ("chkUpdates_Click:")]
+		partial void chkUpdates_Click (Foundation.NSObject sender);
+
 		[Action ("cmbPortList_Click:")]
 		partial void cmbPortList_Click (Foundation.NSObject sender);
 		
@@ -54,6 +60,11 @@ namespace IPList
 			if (txtPorts != null) {
 				txtPorts.Dispose ();
 				txtPorts = null;
+			}
+
+			if (chkUpdates != null) {
+				chkUpdates.Dispose ();
+				chkUpdates = null;
 			}
 
 			if (txtPortscanTimeout != null) {

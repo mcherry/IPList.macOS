@@ -132,6 +132,12 @@ namespace IPList
 			set => AppSettings.AddOrUpdateValue(nameof(DNSCheck), value);
 		}
 
+        public static int UpdateCheck
+        {
+            get => AppSettings.GetValueOrDefault(nameof(UpdateCheck), 1);
+            set => AppSettings.AddOrUpdateValue(nameof(UpdateCheck), value);
+        }
+
         public static string PingDelimiter
         {
             get => AppSettings.GetValueOrDefault(nameof(PingDelimiter), "Newline");

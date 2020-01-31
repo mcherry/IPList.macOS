@@ -2,6 +2,7 @@
 using Foundation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
@@ -28,6 +29,18 @@ namespace IPList
         {
             PrefsWindowController prefsWindow = new PrefsWindowController();
             prefsWindow.ShowWindow(this);
+        }
+
+        [Action("UpdateCheck:")]
+        public void UpdateCheck(NSObject sender)
+        {
+            W.UpdateCheck(true);
+        }
+
+        [Action("showHelp:")]
+        public void OpenProjectPage(NSObject sender)
+        {
+            Process.Start(W.ProjectURL);
         }
 
         public PortScannerController(string ip_address, string ip_protocol = "tcp") : base("PortScanner")

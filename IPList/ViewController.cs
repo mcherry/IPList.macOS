@@ -3,6 +3,7 @@ using Foundation;
 using LukeSkywalker.IPNetwork;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -43,8 +44,7 @@ namespace IPList
 
             W.LoadServices();
 
-            Console.WriteLine(NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleShortVersionString"));
-            Console.WriteLine(NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleVersion"));
+            if (Settings.UpdateCheck == 1) W.UpdateCheck();
         }
         
         public override NSObject RepresentedObject
@@ -71,6 +71,18 @@ namespace IPList
         {
             PrefsWindowController prefsWindow = new PrefsWindowController();
             prefsWindow.ShowWindow(this);
+        }
+
+        [Action("UpdateCheck:")]
+        public void UpdateCheck(NSObject sender)
+        {
+            W.UpdateCheck(true);
+        }
+
+        [Action("showHelp:")]
+        public void OpenProjectPage(NSObject sender)
+        {
+            Process.Start(W.ProjectURL);
         }
 
         private void PingThread(object state)
@@ -333,7 +345,7 @@ namespace IPList
                 } else
                 {
                     // invalid input, show an alert
-                    W.Error(errormsg);
+                    W.Alert("Error", errormsg, NSAlertStyle.Critical);
                 }
             }
         }
@@ -341,6 +353,11 @@ namespace IPList
         partial void CopyMenuAction(NSObject sender)
         {
             W.CopyString(W.CurrentIP);
+        }
+
+        partial void mnyCopyDNS_Click(NSObject sender)
+        {
+            W.CopyString(W.CurrentDNS);
         }
 
         partial void mnuPingAction(NSObject sender)

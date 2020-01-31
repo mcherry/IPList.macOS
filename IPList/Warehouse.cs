@@ -1,6 +1,8 @@
 ﻿using AppKit;
+using Foundation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -11,10 +13,74 @@ namespace IPList
     public class W
     {
         public static string CurrentIP;
+        public static string CurrentDNS;
+
         private static IDictionary<string, string> tcpServices = new Dictionary<string, string>();
         private static IDictionary<string, string> udpServices = new Dictionary<string, string>();
 
+        private static readonly string VersionURL = "https://raw.githubusercontent.com/mcherry/IPList.macOS/master/Binary/VERSION";
+        private static readonly string DownloadURL = "https://github.com/mcherry/IPList.macOS/raw/master/Binary/IPList.app.tgz";
+        public static readonly string ProjectURL = "https://github.com/mcherry/IPList.macOS/";
+
         public W() { }
+
+        public static void UpdateCheck(bool confirm = false)
+        {
+            bool hasUpdate = false;
+            float version = float.Parse(NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleShortVersionString").ToString());
+            int build = int.Parse(NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleVersion").ToString());
+
+            string versionDetails = new WebClient().DownloadString(VersionURL);
+            if (versionDetails == "")
+            {
+                hasUpdate = false;
+            }
+            else
+            {
+                string[] versionNumbers = versionDetails.Split(",");
+                if (float.Parse(versionNumbers[0].Trim()) > version) hasUpdate = true;
+                if (int.Parse(versionNumbers[1].Trim()) > build) hasUpdate = true;
+            }
+
+            if (hasUpdate == true)
+            {
+                NSAlert alert = new NSAlert()
+                {
+                    AlertStyle = NSAlertStyle.Informational,
+                    InformativeText = "An updated version of IPList is available! Would you like to download it now?",
+                    MessageText = "Software Update"
+                };
+
+                alert.AddButton("No");
+                alert.AddButton("Yes");
+                alert.ShowsSuppressionButton = true;
+
+                nint result = alert.RunModal();
+                if (alert.SuppressionButton.State == NSCellStateValue.On)
+                {
+                    Settings.UpdateCheck = 0;
+                    Alert("Software Update", "Automatic update check has been disabled. You can re-enable it in Preferences.", NSAlertStyle.Informational);
+                }
+
+                if (result == 1001) Process.Start(DownloadURL);
+                alert.Dispose();
+            }
+            
+            if (confirm) Alert("Software Update", "No new updates were found.", NSAlertStyle.Informational);
+        }
+
+        public static void Alert(string title, string message, NSAlertStyle style)
+        {
+            NSAlert alert = new NSAlert()
+            {
+                AlertStyle = style,
+                InformativeText = message,
+                MessageText = title
+            };
+
+            alert.RunModal();
+            alert.Dispose();
+        }
 
         // basic validation for IP addresses and CIDR networks
         public static bool IsValidIP(string ip)
@@ -57,19 +123,6 @@ namespace IPList
             }
 
             return reply;
-        }
-
-        public static void Error(string message)
-        {
-            NSAlert alert = new NSAlert()
-            {
-                AlertStyle = NSAlertStyle.Critical,
-                InformativeText = message,
-                MessageText = "Error"
-            };
-
-            alert.RunModal();
-            alert.Dispose();
         }
 
         // copy a string to the pasteboard
