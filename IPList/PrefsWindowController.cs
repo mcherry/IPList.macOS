@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using Foundation;
 using AppKit;
@@ -29,9 +30,7 @@ namespace IPList
             txtPortscanTimeout.StringValue = Settings.PortscanTimeout.ToString();
             cmbPortList.SelectItem(Settings.PortListName);
 
-            Thread loader = new Thread(() => { LoadList(Settings.PortList); });
-            loader.Start();
-            
+            ThreadLoader(LoadList, Settings.PortList);
         }
 
         public new PrefsWindow Window
@@ -86,26 +85,28 @@ namespace IPList
 
         partial void cmbPortList_Click(NSObject sender)
         {
-            Thread loader = null;
-
             switch (cmbPortList.SelectedItem.Title)
             {
                 case "Top 1,000":
-                    loader = new Thread(() => { LoadList(Settings.topPorts1000); });
+                    ThreadLoader(LoadList, Settings.topPorts1000);
                     break;
                 case "Top 100":
-                    loader = new Thread(() => { LoadList(Settings.topPorts100); });
+                    ThreadLoader(LoadList, Settings.topPorts100);
                     break;
                 case "All 65,535":
-                    loader = new Thread(() => { LoadAllPorts(); });
+                    ThreadLoader(LoadList, GeneratePortList());
                     break;
                 case "Custom":
                     txtPorts.Value = "";
                     setStatus("");
                     break;
             }
+        }
 
-            if (cmbPortList.SelectedItem.Title != "Custom") loader.Start();
+        private void ThreadLoader(Action<List<int>> method, List<int> portList)
+        {
+            Thread loader = new Thread(() => { method(portList); });
+            loader.Start();
         }
 
         private void ToggleGUI(bool enabled)
@@ -130,38 +131,34 @@ namespace IPList
             });
         }
 
-        private void LoadAllPorts()
+        private List<int> GeneratePortList()
         {
-            string portString = "";
-
-            ToggleGUI(false);
-            setStatus("Generating port list...");
+            List<int> returnList = new List<int>();
 
             for (int port = 1; port <= 65535; port++)
             {
-                portString += port.ToString() + ",";
+                returnList.Add(port);
             }
 
-            InvokeOnMainThread(() => { txtPorts.Value = portString; });
-            setStatus("65,535 ports to scan");
-            ToggleGUI(true);
+            return returnList;
         }
 
         private void LoadList(List<int> list)
         {
-            string portString = "";
+            StringBuilder sb = new StringBuilder();
 
             ToggleGUI(false);
+            setStatus("Generating port list...");
 
             if (list.Count > 0)
             {
                 foreach (int port in list)
                 {
-                    portString += port.ToString() + ",";
+                    sb.Append(port.ToString() + ",");
                 }
             }
-
-            InvokeOnMainThread(() => { txtPorts.Value = portString; });
+            
+            InvokeOnMainThread(() => { txtPorts.Value = sb.ToString(); });
             setStatus(string.Format("{0:n0}", list.Count) + " ports to scan");
             ToggleGUI(true);
         }

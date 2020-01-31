@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Text;
 using System.Threading;
 
 using IPAddressCollection = LukeSkywalker.IPNetwork.IPAddressCollection;
@@ -138,7 +139,6 @@ namespace IPList
                 lock (locker) runningTasks++;
                 
                 ThreadPool.QueueUserWorkItem(new WaitCallback(PingThread), new object[] { sublist, checkList, checkDNS });
-                
             }
 
             setStatus("Pinging " + ip_count + " IPs...");
@@ -201,7 +201,7 @@ namespace IPList
         partial void btnCopyAction(NSObject sender)
         {
             string delim = "";
-            string clip_val = "";
+            StringBuilder value = new StringBuilder();
             
 
             switch (cmbDelimiter.SelectedItem.Title)
@@ -214,10 +214,10 @@ namespace IPList
 
             foreach (AddressEntry ip in AddressEntryDelegate.DataSource.AddressEntries)
             {
-                clip_val += ip.Address + delim;
+                value.Append(ip.Address + delim);
             }
 
-            W.CopyString(clip_val.TrimEnd());
+            W.CopyString(value.ToString().TrimEnd());
         }
 
         private void ToggleGUI(bool enabled)

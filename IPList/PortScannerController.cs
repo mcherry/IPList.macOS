@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 
 namespace IPList
@@ -151,10 +152,7 @@ namespace IPList
 
         private void setStatus(string status)
         {
-            InvokeOnMainThread(() =>
-            {
-                lblStatus.StringValue = status;
-            });
+            InvokeOnMainThread(() => { lblStatus.StringValue = status; });
         }
 
         private void ToggleGUI(bool enabled)
@@ -222,7 +220,7 @@ namespace IPList
         partial void btnCopy_Click(NSObject sender)
         {
             string delim = "";
-            string clip_val = "";
+            StringBuilder value = new StringBuilder();
             
             switch (cmbDelim.SelectedItem.Title)
             {
@@ -234,10 +232,10 @@ namespace IPList
             
             foreach (PortEntry port in PortEntryDelegate.DataSource.Ports)
             {
-                clip_val += port.Port + delim;
+                value.Append(port.Port + delim);
             }
 
-            W.CopyString(clip_val.TrimEnd());
+            W.CopyString(value.ToString().TrimEnd());
         }
 
         partial void cmbDelim_Click(NSObject sender)

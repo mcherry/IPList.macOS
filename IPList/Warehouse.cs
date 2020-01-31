@@ -142,9 +142,9 @@ namespace IPList
             // calculate chunk size based on number of IPs and a max of 30 threads
             double list_count = list.Count;
             double lists = list_count / list_size;
-            while (lists > 20)
+            while (lists > 30)
             {
-                list_size *= 2;
+                list_size += 5;
                 lists = list_count / list_size;
             }
 
