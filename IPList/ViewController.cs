@@ -42,6 +42,9 @@ namespace IPList
             cmbDelimiter.SelectItem(Settings.PingDelimiter);
 
             W.LoadServices();
+
+            Console.WriteLine(NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleShortVersionString"));
+            Console.WriteLine(NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleVersion"));
         }
         
         public override NSObject RepresentedObject

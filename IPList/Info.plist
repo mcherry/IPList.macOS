@@ -8,8 +8,6 @@
 	<string>org.inditech.IPList</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
-	<key>CFBundleVersion</key>
-	<string>1</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>10.10</string>
 	<key>CFBundleDevelopmentRegion</key>
@@ -28,5 +26,7 @@
 	<string>Main</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
+	<key>CFBundleVersion</key>
+	<string>79</string>
 </dict>
 </plist>
