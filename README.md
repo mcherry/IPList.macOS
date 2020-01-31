@@ -8,7 +8,9 @@ A tool to list IP addresses in a network while optionally pinging and performing
 * Perform a port scan of any network host to determine service availability
 * Perform a constant ping against a network host to monitor availability
 * Copy IP and port lists to the clipboard with a user defined delimiter
+* Copy DNS hostname to the clipboard
 * User definable timeouts and port scanning list (top 1000 and 100 ports, all ports, custom list)
+* Check for updates from the main menu or on program startup
 * Multithreaded for performance
 
 # Dependencies
