@@ -19,6 +19,8 @@ IPList relies on the awesome [IPNetwork](https://github.com/lduchosal/ipnetwork)
 # Resources
 In no particular order, here are some of the resources I used to hack this project together:
 * [Windows in Xamarin.Mac](https://docs.microsoft.com/en-us/xamarin/mac/user-interface/window)
+* [Images in Xamarin.Mac](https://docs.microsoft.com/en-us/xamarin/mac/app-fundamentals/image)
+* [Menus in Xamarin.Mac](https://docs.microsoft.com/en-us/xamarin/mac/user-interface/menu)
 * [Table Views in Xamarin.Mac](https://docs.microsoft.com/en-us/xamarin/mac/user-interface/table-view)
 * [ThreadPool Class](https://docs.microsoft.com/en-us/dotnet/api/system.threading.threadpool?view=netframework-4.8)
 * [Thread Class](https://docs.microsoft.com/en-us/dotnet/api/system.threading.thread?view=netframework-4.8)
@@ -26,6 +28,7 @@ In no particular order, here are some of the resources I used to hack this proje
 * [Xamarin.Mac Community Forums](https://forums.xamarin.com/categories/xamarin-mac)
 * [StackOverflow](https://stackoverflow.com/questions/tagged/xamarin)
 * [SettingsPlugin Documentation](https://github.com/jamesmontemagno/SettingsPlugin/tree/master/docs)
+* [Nmap Default Ports](https://nullsec.us/top-1-000-tcp-and-udp-ports-nmap-default/)
 
 # Screenshots
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/012.png?raw=true "Screenshot 1")
