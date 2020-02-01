@@ -152,7 +152,7 @@ namespace IPList
 
         public static string PortListName
         {
-            get => AppSettings.GetValueOrDefault(nameof(PortListName), "Top 1000");
+            get => AppSettings.GetValueOrDefault(nameof(PortListName), "Top 1,000");
             set => AppSettings.AddOrUpdateValue(nameof(PortListName), value);
         }
 

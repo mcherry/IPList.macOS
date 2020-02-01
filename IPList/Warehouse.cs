@@ -49,8 +49,8 @@ namespace IPList
                     MessageText = "Software Update"
                 };
 
-                alert.AddButton("No");
                 alert.AddButton("Yes");
+                alert.AddButton("No");
                 alert.ShowsSuppressionButton = true;
 
                 nint result = alert.RunModal();
@@ -60,7 +60,7 @@ namespace IPList
                     Alert("Software Update", "Automatic update check has been disabled. You can re-enable it in Preferences.", NSAlertStyle.Informational);
                 }
 
-                if (result == 1001) Process.Start(DownloadURL);
+                if (result == 1000) Process.Start(DownloadURL);
                 alert.Dispose();
             }
             
