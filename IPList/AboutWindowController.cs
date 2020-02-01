@@ -36,7 +36,11 @@ namespace IPList
         {
             base.AwakeFromNib();
 
+            string version = NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleShortVersionString").ToString();
+            string build = NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleVersion").ToString();
+
             imgLogo.Image = NSImage.ImageNamed("AppIcon");
+            lblVersion.StringValue = "Version " + version + " Build " + build;
             txtLicense.Value =
                 "Redistribution and use in source and binary forms, with or without modification, " +
                 "are permitted provided that the following conditions are met:\n\n" +

@@ -16,6 +16,9 @@ namespace IPList
 		AppKit.NSImageView imgLogo { get; set; }
 
 		[Outlet]
+		AppKit.NSTextField lblVersion { get; set; }
+
+		[Outlet]
 		AppKit.NSTextView txtLicense { get; set; }
 		
 		void ReleaseDesignerOutlets ()
@@ -28,6 +31,11 @@ namespace IPList
 			if (txtLicense != null) {
 				txtLicense.Dispose ();
 				txtLicense = null;
+			}
+
+			if (lblVersion != null) {
+				lblVersion.Dispose ();
+				lblVersion = null;
 			}
 		}
 	}
