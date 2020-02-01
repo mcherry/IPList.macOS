@@ -102,12 +102,12 @@ namespace IPList
 
             foreach (string ip in ipList)
             {
+                string hostname = "";
+                if (checkDNS == 1) hostname = W.dnsLookup(ip);
+
                 PingReply pinger = W.Ping(ip);
                 if (pinger.Status == IPStatus.Success)
                 {
-                    string hostname = "";
-                    if (checkDNS == 1) hostname = W.dnsLookup(ip);
-
                     // successful ping, add details to tableview datasource
                     AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(
                         ip,
@@ -121,7 +121,7 @@ namespace IPList
                     if (listPingable != 1)
                     {
                         // listing unpingable hosts, add to tableview datasource
-                        AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip, "DOWN"));
+                        AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip, "DOWN", 0, 0, hostname));
                     }
                 }
                 
@@ -172,6 +172,24 @@ namespace IPList
             ToggleGUI(true);
 
             return;
+        }
+
+        private void IPListThread(List<string> network, int dnsCheck)
+        {
+            foreach (string ip in network)
+            {
+                if (W.ipInRange(ip.ToString()))
+                {
+                    string hostname = "";
+                    if (dnsCheck == 1) hostname = W.dnsLookup(ip.ToString());
+
+                    AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip.ToString(), "", 0, 0, hostname));
+                    ReloadTable();
+                }
+            }
+
+            setStatus(network.Count + " IPs found");
+            ToggleGUI(true);
         }
 
         private void setStatus(string status)
@@ -316,7 +334,7 @@ namespace IPList
                     AddressEntryDelegate.DataSource = new AddressEntryDataSource();
                     tblList.Delegate = new AddressEntryDelegate(AddressEntryDelegate.DataSource);
                     tblList.DataSource = AddressEntryDelegate.DataSource;
-                    tblList.ReloadData();
+                    ReloadTable();
 
                     List<string> subnetwork = new List<string>();
                     foreach (IPAddress ip in subnet) subnetwork.Add(ip.ToString());
@@ -331,23 +349,9 @@ namespace IPList
                         monitor.Start();
                     } else
                     {
-                        foreach (string ip in subnetwork)
-                        {
-                            string[] split_ip = ip.ToString().Split(".");
-                            if (split_ip[3] != "0" && split_ip[3] != "255")
-                            {
-                                string hostname = "";
-                                if (chkDNS.IntValue == 1) hostname = W.dnsLookup(ip.ToString());
-
-                                AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip.ToString(), "", 0, 0, hostname));
-                            }
-                        }
-
-                        AddressEntryDelegate.DataSource.Sort("IP", true);
-                        tblList.ReloadData();
-
-                        setStatus(tblList.RowCount + " IPs found");
-                        ToggleGUI(true);
+                        int checkDNS = chkDNS.IntValue;
+                        Thread list = new Thread(() => { IPListThread(subnetwork, checkDNS); });
+                        list.Start();
                     }
                 } else
                 {
@@ -359,29 +363,29 @@ namespace IPList
 
         partial void CopyMenuAction(NSObject sender)
         {
-            W.CopyString(W.CurrentIP);
+            W.CopyString(AddressEntryDelegate.GetSelectedIP(tblList.SelectedRow));
         }
 
         partial void mnyCopyDNS_Click(NSObject sender)
         {
-            W.CopyString(W.CurrentDNS);
+            W.CopyString(AddressEntryDelegate.GetSelectedDNS(tblList.SelectedRow));
         }
 
         partial void mnuPingAction(NSObject sender)
         {
-            PingWindowController pingWindow = new PingWindowController(W.CurrentIP);
+            PingWindowController pingWindow = new PingWindowController(tblList.SelectedRow);
             pingWindow.ShowWindow(this);
         }
 
         partial void mnuPortScan_Click(NSObject sender)
         {
-            PortScannerController portScanner = new PortScannerController(W.CurrentIP);
+            PortScannerController portScanner = new PortScannerController(tblList.SelectedRow);
             portScanner.ShowWindow(this);
         }
 
         partial void mnuUDPScan(NSObject sender)
         {
-            PortScannerController portScanner = new PortScannerController(W.CurrentIP, "udp");
+            PortScannerController portScanner = new PortScannerController(tblList.SelectedRow, "udp");
             portScanner.ShowWindow(this);
         }
     }

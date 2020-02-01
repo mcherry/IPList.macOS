@@ -19,8 +19,15 @@ namespace IPList
         {
             Address = address;
             Status = status;
-            Latency = latency.ToString() + "ms";
-            TTL = ttl.ToString();
+            if (status != "DOWN")
+            {
+                Latency = latency.ToString() + "ms";
+                TTL = ttl.ToString();
+            } else
+            {
+                Latency = "";
+                TTL = "";
+            }
             DNS = dns;
         }
     }
@@ -153,10 +160,18 @@ namespace IPList
             return view;
         }
 
+        public static string GetSelectedIP(nint index)
+        {
+            return DataSource.AddressEntries[(int)index].Address;
+        }
+
+        public static string GetSelectedDNS(nint index)
+        {
+            return DataSource.AddressEntries[(int)index].DNS;
+        }
+
         public override bool ShouldSelectRow(NSTableView tableView, nint row)
         {
-            W.CurrentIP = DataSource.AddressEntries[(int)row].Address;
-            W.CurrentDNS = DataSource.AddressEntries[(int)row].DNS;
             return true;
         }
     }

@@ -50,10 +50,10 @@ namespace IPList
             aboutWin.ShowWindow(this);
         }
 
-        public PortScannerController(string ip_address, string ip_protocol = "tcp") : base("PortScanner")
+        public PortScannerController(nint ipIndex, string scanProtocol = "tcp") : base("PortScanner")
         {
-            ipAddress = ip_address;
-            protocol = ip_protocol;
+            ipAddress = AddressEntryDelegate.GetSelectedIP(ipIndex);
+            protocol = scanProtocol;
         }
 
         private void ScannerThread(object state)
@@ -102,12 +102,7 @@ namespace IPList
 
                             break;
                         case "udp":
-                            //Byte[] payload = Encoding.ASCII.GetBytes("00000000000000000000000000000000");
-                            //UdpClient udpScan = new UdpClient();
-                            //udpScan.Connect(ipAddress, port);
-                            //udpScan.Send(payload, payload.Length);
-
-                            //IPEndPoint remoteIP = new IPEndPoint(IPAddress.Parse(ipAddress), 0);
+                            // not implemented
                             break;
                     }
                     
@@ -165,8 +160,11 @@ namespace IPList
             {
                 Window.Title = protocol.ToUpper() + " Scanning " + ipAddress + " (" + status + ")";
                 lblStat.StringValue = status;
-                lblLatency.StringValue = time.ToString() + "ms";
-                lblTTL.StringValue = ttl.ToString();
+                if (status != "DOWN")
+                {
+                    lblLatency.StringValue = time.ToString() + "ms";
+                    lblTTL.StringValue = ttl.ToString();
+                }
             });
         }
 

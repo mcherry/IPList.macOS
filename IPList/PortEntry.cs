@@ -125,6 +125,11 @@ namespace IPList
             return view;
         }
 
+        public static string GetSelectedPort(nint index)
+        {
+            return DataSource.Ports[(int)index].Port;
+        }
+
         public override bool ShouldSelectRow(NSTableView tableView, nint row)
         {
             return true;

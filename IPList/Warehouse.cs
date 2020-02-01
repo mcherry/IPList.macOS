@@ -12,9 +12,6 @@ namespace IPList
 {
     public class W
     {
-        public static string CurrentIP;
-        public static string CurrentDNS;
-
         private static IDictionary<string, string> tcpServices = new Dictionary<string, string>();
         private static IDictionary<string, string> udpServices = new Dictionary<string, string>();
 
@@ -22,13 +19,14 @@ namespace IPList
         private static readonly string DownloadURL = "https://github.com/mcherry/IPList.macOS/raw/master/Binary/IPList.app.tgz";
         public static readonly string ProjectURL = "https://github.com/mcherry/IPList.macOS/";
 
+        public static readonly string appVersion = NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleShortVersionString").ToString();
+        public static readonly string appBuild = NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleVersion").ToString();
+
         public W() { }
 
         public static void UpdateCheck(bool confirm = false)
         {
             bool hasUpdate = false;
-            float version = float.Parse(NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleShortVersionString").ToString());
-            int build = int.Parse(NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleVersion").ToString());
 
             string versionDetails = new WebClient().DownloadString(VersionURL);
             if (versionDetails == "")
@@ -38,8 +36,8 @@ namespace IPList
             else
             {
                 string[] versionNumbers = versionDetails.Split(",");
-                if (float.Parse(versionNumbers[0].Trim()) > version) hasUpdate = true;
-                if (int.Parse(versionNumbers[1].Trim()) > build) hasUpdate = true;
+                if (float.Parse(versionNumbers[0].Trim()) > float.Parse(appVersion)) hasUpdate = true;
+                if (int.Parse(versionNumbers[1].Trim()) > int.Parse(appBuild)) hasUpdate = true;
             }
 
             if (hasUpdate == true)
@@ -98,6 +96,13 @@ namespace IPList
 
             foreach (string octet in octets) if (int.Parse(octet) < 0 || int.Parse(octet) > 255) return false;
             return true;
+        }
+
+        public static bool ipInRange(string ip)
+        {
+            string[] octets = ip.Split(".");
+            if (int.Parse(octets[0]) > 0 && int.Parse(octets[0]) < 255 && int.Parse(octets[3]) > 0 && int.Parse(octets[3]) < 255) return true;
+            return false;
         }
 
         // send a single ping
@@ -207,8 +212,7 @@ namespace IPList
             {
                 if (W.IsValidIP(item.ToString()))
                 {
-                    string[] octets = item.ToString().Split(".");
-                    if (octets[3] != "0" && octets[3] != "255")
+                    if (ipInRange(item.ToString()))
                     {
                         NewList.Add((T)Convert.ChangeType(item.ToString(), typeof(T)));
                     }

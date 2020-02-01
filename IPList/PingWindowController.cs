@@ -43,10 +43,10 @@ namespace IPList
             aboutWin.ShowWindow(this);
         }
 
-        public PingWindowController(string ip_address) : base("PingWindow")
+        public PingWindowController(nint ipIndex) : base("PingWindow")
         {
-            ipAddress = ip_address;
-            Window.Title = "Pinging " + ip_address;
+            ipAddress = AddressEntryDelegate.GetSelectedIP(ipIndex);
+            Window.Title = "Pinging " + ipAddress;
         }
 
         private void PingThread()
@@ -91,8 +91,11 @@ namespace IPList
             {
                 Window.Title = "Pinging " + ipAddress + " (" + status + ")";
                 lblStatus.StringValue = status;
-                lblLatency.StringValue = time.ToString() + "ms";
-                lblTTL.StringValue = ttl.ToString();
+                if (status != "DOWN")
+                {
+                    lblLatency.StringValue = time.ToString() + "ms";
+                    lblTTL.StringValue = ttl.ToString();
+                }
                 lblCount.StringValue = pingCount.ToString();
             });
         }
