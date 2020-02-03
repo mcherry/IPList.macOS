@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace IPList
@@ -257,6 +259,73 @@ namespace IPList
             if (hostname == ip) hostname = "";
 
             return hostname;
+        }
+
+        public static string tcpReadPort(ref TcpClient client, string host, int port)
+        {
+            string returnData = string.Empty;
+            string uri = string.Empty;
+
+            string payload = "\r\n";
+            switch (port)
+            {
+                case 80:
+                case 591:
+                case 8008:
+                case 8080:
+                    uri = "http";
+                    payload = "";
+                    break;
+                case 443:
+                case 1311:
+                case 8243:
+                case 8333:
+                case 12443:
+                    uri = "https";
+                    payload = "";
+                    break;
+            }
+
+            if (payload == "")
+            {
+                WebRequest request = WebRequest.Create(uri + "://" + host);
+                WebResponse response = request.GetResponse();
+
+                StreamReader reader = new StreamReader(response.GetResponseStream());
+                string data = reader.ReadToEnd();
+
+                returnData = data;
+
+                reader.Close();
+                reader.Dispose();
+
+                response.Close();
+                response.Dispose();
+            } else
+            {
+                NetworkStream stream = client.GetStream();
+                Byte[] data = Encoding.ASCII.GetBytes(payload);
+
+                stream.Write(data, 0, data.Length);
+                data = new Byte[1024];
+
+                try
+                {
+                    IAsyncResult result = stream.BeginRead(data, 0, data.Length, null, null);
+                    bool wait = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(Settings.PortscanTimeout), false);
+                    returnData = Encoding.ASCII.GetString(data, 0, data.Length);
+                }
+                catch
+                {
+                    // ignoring exceptions
+                }
+
+                stream.Close();
+                
+            }
+
+            return returnData;
+            
         }
     }
 }

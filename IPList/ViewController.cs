@@ -45,6 +45,9 @@ namespace IPList
             W.LoadServices();
 
             if (Settings.UpdateCheck == 1) W.UpdateCheck();
+
+            // required to ignore invalid ssl certs
+            ServicePointManager.ServerCertificateValidationCallback = (a, b, c, d) => true;
         }
         
         public override NSObject RepresentedObject
@@ -273,7 +276,7 @@ namespace IPList
                     btnCopy.Enabled = true;
                     cmbDelimiter.Enabled = true;
                     txtNetwork.Enabled = true;
-                    chkList.Enabled = true;
+                    if (chkPIng.IntValue == 1) chkList.Enabled = true;
                     chkPIng.Enabled = true;
                     chkDNS.Enabled = true;
                     tblList.Enabled = true;
@@ -288,7 +291,7 @@ namespace IPList
                     btnCopy.Enabled = false;
                     cmbDelimiter.Enabled = false;
                     txtNetwork.Enabled = false;
-                    chkList.Enabled = false;
+                    if (chkPIng.IntValue == 1) chkList.Enabled = false;
                     chkPIng.Enabled = false;
                     chkDNS.Enabled = false;
                     tblList.Enabled = false;

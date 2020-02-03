@@ -93,7 +93,9 @@ namespace IPList
                                 result.AsyncWaitHandle.Close();
                                 result.AsyncWaitHandle.Dispose();
 
-                                PortEntryDelegate.DataSource.Ports.Add(new PortEntry(port, W.GetServiceName(port)));
+                                string data = W.tcpReadPort(ref Scan, ipAddress, port);
+
+                                PortEntryDelegate.DataSource.Ports.Add(new PortEntry(port, W.GetServiceName(port), data));
                                 ReloadTable();
                             }
 

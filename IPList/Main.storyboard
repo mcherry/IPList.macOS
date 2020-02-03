@@ -495,17 +495,24 @@
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <menu title="popupMenu" identifier="popupMenu" id="KXX-lJ-FyV" userLabel="popupMenu">
                     <items>
-                        <menuItem title="Copy IP" id="QBB-xk-jsv">
+                        <menuItem title="Copy" id="f2q-no-Gyc">
                             <modifierMask key="keyEquivalentModifierMask"/>
-                            <connections>
-                                <action selector="CopyMenuAction:" target="XfG-lQ-9wD" id="6DN-ip-iW1"/>
-                            </connections>
-                        </menuItem>
-                        <menuItem title="Copy DNS" id="spH-Sy-Zj6">
-                            <modifierMask key="keyEquivalentModifierMask"/>
-                            <connections>
-                                <action selector="mnyCopyDNS_Click:" target="XfG-lQ-9wD" id="wBy-Rf-l4J"/>
-                            </connections>
+                            <menu key="submenu" id="g3R-sv-G9x">
+                                <items>
+                                    <menuItem title="IP" id="QBB-xk-jsv">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="CopyMenuAction:" target="XfG-lQ-9wD" id="6DN-ip-iW1"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="DNS" id="spH-Sy-Zj6">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="mnyCopyDNS_Click:" target="XfG-lQ-9wD" id="wBy-Rf-l4J"/>
+                                        </connections>
+                                    </menuItem>
+                                </items>
+                            </menu>
                         </menuItem>
                         <menuItem isSeparatorItem="YES" id="8Cs-s8-77o"/>
                         <menuItem title="Ping" id="wmO-zi-fuT">
