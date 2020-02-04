@@ -264,16 +264,15 @@ namespace IPList
         public static string tcpReadPort(ref TcpClient client, string host, int port)
         {
             string returnData = string.Empty;
-            string uri = string.Empty;
-
+            string uri = "http";
             string payload = "\r\n";
+
             switch (port)
             {
                 case 80:
                 case 591:
                 case 8008:
                 case 8080:
-                    uri = "http";
                     payload = "";
                     break;
                 case 443:
@@ -281,26 +280,57 @@ namespace IPList
                 case 8243:
                 case 8333:
                 case 12443:
-                    uri = "https";
+                case 60443:
+                    uri += "s";
                     payload = "";
                     break;
             }
 
             if (payload == "")
             {
-                WebRequest request = WebRequest.Create(uri + "://" + host);
-                WebResponse response = request.GetResponse();
+                WebResponse response = null;
+                StreamReader reader = null;
+                
+                try
+                {
+                    WebRequest request = WebRequest.Create(uri + "://" + host);
+                    response = request.GetResponse();
+                } catch (WebException we)
+                {
+                    if (we.Status == WebExceptionStatus.ProtocolError)
+                    {
+                        int code = (int)((HttpWebResponse)we.Response).StatusCode;
+                        returnData = code.ToString() + " " + ((HttpWebResponse)we.Response).StatusDescription;
+                    } else
+                    {
+                        returnData = "";
+                    }
+                }
 
-                StreamReader reader = new StreamReader(response.GetResponseStream());
-                string data = reader.ReadToEnd();
+                if (response != null)
+                {
+                    try
+                    {
+                        reader = new StreamReader(response.GetResponseStream());
+                        returnData = reader.ReadToEnd();
+                    } catch
+                    {
+                        returnData = "";
+                    } finally
+                    {
+                        if (reader != null)
+                        {
+                            reader.Close();
+                            reader.Dispose();
+                        }
+                    }
+                }
 
-                returnData = data;
-
-                reader.Close();
-                reader.Dispose();
-
-                response.Close();
-                response.Dispose();
+                if (response != null)
+                {
+                    response.Close();
+                    response.Dispose();
+                }
             } else
             {
                 NetworkStream stream = client.GetStream();
@@ -317,7 +347,7 @@ namespace IPList
                 }
                 catch
                 {
-                    // ignoring exceptions
+                    returnData = "";
                 }
 
                 stream.Close();

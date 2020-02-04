@@ -94,6 +94,11 @@
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Helpers\" />
+    <Folder Include="AboutWindow\" />
+    <Folder Include="PingWindow\" />
+    <Folder Include="PortScanWindow\" />
+    <Folder Include="PrefsWindow\" />
+    <Folder Include="DataViewerWindow\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -110,47 +115,56 @@
     <Compile Include="AddressEntry.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Warehouse.cs" />
-    <Compile Include="PingWindow.cs" />
-    <Compile Include="PingWindow.designer.cs">
-      <DependentUpon>PingWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PingWindowController.cs" />
-    <Compile Include="PingWindowController.designer.cs">
-      <DependentUpon>PingWindowController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PortScanner.cs" />
-    <Compile Include="PortScanner.designer.cs">
-      <DependentUpon>PortScanner.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PortScannerController.cs" />
-    <Compile Include="PortScannerController.designer.cs">
-      <DependentUpon>PortScannerController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PortEntry.cs" />
-    <Compile Include="PrefsWindow.cs" />
-    <Compile Include="PrefsWindow.designer.cs">
-      <DependentUpon>PrefsWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PrefsWindowController.cs" />
-    <Compile Include="PrefsWindowController.designer.cs">
-      <DependentUpon>PrefsWindowController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Settings.cs" />
-    <Compile Include="AboutWindow.cs" />
-    <Compile Include="AboutWindow.designer.cs">
+    <Compile Include="AboutWindow\AboutWindow.cs" />
+    <Compile Include="AboutWindow\AboutWindow.designer.cs">
       <DependentUpon>AboutWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="AboutWindowController.cs" />
-    <Compile Include="AboutWindowController.designer.cs">
+    <Compile Include="AboutWindow\AboutWindowController.cs" />
+    <Compile Include="AboutWindow\AboutWindowController.designer.cs">
       <DependentUpon>AboutWindowController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PingWindow\PingWindow.cs" />
+    <Compile Include="PingWindow\PingWindow.designer.cs">
+      <DependentUpon>PingWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PingWindow\PingWindowController.cs" />
+    <Compile Include="PingWindow\PingWindowController.designer.cs">
+      <DependentUpon>PingWindowController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PortScanWindow\PortScanner.cs" />
+    <Compile Include="PortScanWindow\PortScanner.designer.cs">
+      <DependentUpon>PortScanner.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PortScanWindow\PortScannerController.cs" />
+    <Compile Include="PortScanWindow\PortScannerController.designer.cs">
+      <DependentUpon>PortScannerController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PrefsWindow\PrefsWindow.cs" />
+    <Compile Include="PrefsWindow\PrefsWindow.designer.cs">
+      <DependentUpon>PrefsWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PrefsWindow\PrefsWindowController.cs" />
+    <Compile Include="PrefsWindow\PrefsWindowController.designer.cs">
+      <DependentUpon>PrefsWindowController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PortScanWindow\PortEntry.cs" />
+    <Compile Include="DataViewerWindow\DataViewerWindow.cs" />
+    <Compile Include="DataViewerWindow\DataViewerWindow.designer.cs">
+      <DependentUpon>DataViewerWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataViewerWindow\DataViewerWindowController.cs" />
+    <Compile Include="DataViewerWindow\DataViewerWindowController.designer.cs">
+      <DependentUpon>DataViewerWindowController.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
-    <InterfaceDefinition Include="PingWindow.xib" />
-    <InterfaceDefinition Include="PortScanner.xib" />
-    <InterfaceDefinition Include="PrefsWindow.xib" />
-    <InterfaceDefinition Include="AboutWindow.xib" />
+    <InterfaceDefinition Include="AboutWindow\AboutWindow.xib" />
+    <InterfaceDefinition Include="PingWindow\PingWindow.xib" />
+    <InterfaceDefinition Include="PortScanWindow\PortScanner.xib" />
+    <InterfaceDefinition Include="PrefsWindow\PrefsWindow.xib" />
+    <InterfaceDefinition Include="DataViewerWindow\DataViewerWindow.xib" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
