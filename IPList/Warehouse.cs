@@ -12,6 +12,20 @@ using System.Text.RegularExpressions;
 
 namespace IPList
 {
+    public struct ScanIP
+    {
+        public bool Open;
+        public string Service;
+        public string Data;
+
+        public ScanIP(bool p1, string p2, string p3)
+        {
+            Open = p1;
+            Service = p2;
+            Data = p3;
+        }
+    }
+
     public class W
     {
         private static IDictionary<string, string> tcpServices = new Dictionary<string, string>();
@@ -261,7 +275,38 @@ namespace IPList
             return hostname;
         }
 
-        public static string tcpReadPort(ref TcpClient client, string host, int port)
+        public static ScanIP portCheck(string ip, int port)
+        {
+            ScanIP host = new ScanIP();
+
+            host.Open = false;
+            for (int a = 0; a <= 1; a++)
+            {
+                TcpClient Scan = new TcpClient();
+                IAsyncResult result = Scan.BeginConnect(ip, port, null, null);
+                _ = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(Settings.PortscanTimeout), false);
+
+                if (Scan.Connected)
+                {
+                    Scan.EndConnect(result);
+                    result.AsyncWaitHandle.Close();
+                    result.AsyncWaitHandle.Dispose();
+
+                    host.Open = true;
+                    host.Data = tcpReadPort(Scan, ip, port);
+                    host.Service = GetServiceName(port);
+
+                    break;
+                }
+
+                Scan.Close();
+                Scan.Dispose();
+            }
+
+            return host;
+        }
+
+        public static string tcpReadPort(TcpClient client, string host, int port)
         {
             string returnData = string.Empty;
             string uri = "http";

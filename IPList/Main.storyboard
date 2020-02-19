@@ -527,7 +527,7 @@
                                 <action selector="mnuPortScan_Click:" target="XfG-lQ-9wD" id="deq-x5-e3N"/>
                             </connections>
                         </menuItem>
-                        <menuItem title="UDP Scan" hidden="YES" id="aso-GG-Pfm">
+                        <menuItem title="UDP Scan" hidden="YES" enabled="NO" id="aso-GG-Pfm">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
                                 <action selector="mnuUDPScan:" target="XfG-lQ-9wD" id="XHO-bQ-hCb"/>

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.NetworkInformation;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
@@ -90,24 +89,13 @@ namespace IPList
                     switch (protocol)
                     {
                         case "tcp":
-                            TcpClient Scan = new TcpClient();
-                            IAsyncResult result = Scan.BeginConnect(ipAddress, port, null, null);
-                            _ = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(Settings.PortscanTimeout), false);
+                            ScanIP scanner = W.portCheck(ipAddress, port);
 
-                            if (Scan.Connected)
+                            if (scanner.Open)
                             {
-                                Scan.EndConnect(result);
-                                result.AsyncWaitHandle.Close();
-                                result.AsyncWaitHandle.Dispose();
-
-                                string data = W.tcpReadPort(ref Scan, ipAddress, port);
-
-                                PortEntryDelegate.DataSource.Ports.Add(new PortEntry(port, W.GetServiceName(port), data));
+                                PortEntryDelegate.DataSource.Ports.Add(new PortEntry(port, scanner.Service, scanner.Data));
                                 ReloadTable();
                             }
-
-                            Scan.Close();
-                            Scan.Dispose();
 
                             break;
                         case "udp":

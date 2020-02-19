@@ -110,7 +110,7 @@ namespace IPList
 
 		public static int PortscanTimeout
 		{
-			get => AppSettings.GetValueOrDefault(nameof(PortscanTimeout), 350);
+			get => AppSettings.GetValueOrDefault(nameof(PortscanTimeout), 750);
 			set => AppSettings.AddOrUpdateValue(nameof(PortscanTimeout), value);
 		}
 
