@@ -58,6 +58,10 @@ namespace IPList
                 "OF THE POSSIBILITY OF SUCH DAMAGE.\n\n" +
                 "This program uses the IPNetwork library which is Copyright 2015 lduchosal and located " +
                 "at https://github.com/lduchosal/ipnetwork\n\n" +
+                "This program also uses the SharpCifs.Std library which is Copyright 2017 Do-Be's. " +
+                "SharpCifs.Std is licensed under the LGPL v2.1 license which may be viewed at " +
+                "https://github.com/ume05rw/SharpCifs.Std/blob/master/LICENSE. The project may be " +
+                "downloaded at https://github.com/ume05rw/SharpCifs.Std\n\n" +
                 "Mac and macOS are trademarks of Apple Inc., registered in the United States and other " +
                 "countries.";
         }

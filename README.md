@@ -17,7 +17,7 @@ A tool to list IP addresses in a network while optionally pinging and performing
 * Multithreaded for performance
 
 # Dependencies
-IPList relies on the awesome [IPNetwork](https://github.com/lduchosal/ipnetwork) library and runs on macOS 10.10 or higher. A binary is available [here](https://github.com/mcherry/IPList.macOS/raw/master/Binary/IPList.app.tgz) otherwise it can be easily compiled with [Visual Studio 2019](https://visualstudio.microsoft.com/vs/).
+IPList relies on the awesome [IPNetwork](https://github.com/lduchosal/ipnetwork) and [SharpCifs.Stf](http://sharpcifsstd.dobes.jp) libraries and runs on macOS 10.10 or higher. A binary is available [here](https://github.com/mcherry/IPList.macOS/raw/master/Binary/IPList.app.tgz) otherwise it can be easily compiled with [Visual Studio 2019](https://visualstudio.microsoft.com/vs/).
 
 # Resources
 In no particular order, here are some of the resources I used to hack this project together:
