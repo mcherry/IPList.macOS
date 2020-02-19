@@ -1,5 +1,6 @@
 ﻿using AppKit;
 using Foundation;
+using SharpCifs.Smb;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -260,8 +261,7 @@ namespace IPList
 
         public static string dnsLookup(string ip)
         {
-            string hostname = "";
-
+            string hostname;
             try
             {
                 hostname = Dns.GetHostEntry(ip).HostName;
@@ -314,6 +314,9 @@ namespace IPList
 
             switch (port)
             {
+                case 139:
+                    payload = "smb";
+                    break;
                 case 80:
                 case 591:
                 case 8008:
@@ -331,72 +334,91 @@ namespace IPList
                     break;
             }
 
-            if (payload == "")
+            switch (payload)
             {
-                WebResponse response = null;
-                StreamReader reader = null;
-                
-                try
-                {
-                    WebRequest request = WebRequest.Create(uri + "://" + host);
-                    response = request.GetResponse();
-                } catch (WebException we)
-                {
-                    if (we.Status == WebExceptionStatus.ProtocolError)
-                    {
-                        int code = (int)((HttpWebResponse)we.Response).StatusCode;
-                        returnData = code.ToString() + " " + ((HttpWebResponse)we.Response).StatusDescription;
-                    } else
-                    {
-                        returnData = "";
-                    }
-                }
+                case "smb":
+                    SharpCifs.Config.SetProperty("jcifs.smb.client.lport", "8137");
+                    SmbFile server = new SmbFile("smb://" + host);
+                    SmbFile[] shares = server.ListFiles();
 
-                if (response != null)
-                {
+                    returnData = "Discovered Shares:\n\n";
+                    foreach (SmbFile share in shares)
+                    {
+                        returnData += share.GetName() + "\n";
+                    }
+
+                    break;
+                case "":
+                    WebResponse response = null;
+                    StreamReader reader = null;
+
                     try
                     {
-                        reader = new StreamReader(response.GetResponseStream());
-                        returnData = reader.ReadToEnd();
-                    } catch
+                        WebRequest request = WebRequest.Create(uri + "://" + host);
+                        response = request.GetResponse();
+                    }
+                    catch (WebException we)
                     {
-                        returnData = "";
-                    } finally
-                    {
-                        if (reader != null)
+                        if (we.Status == WebExceptionStatus.ProtocolError)
                         {
-                            reader.Close();
-                            reader.Dispose();
+                            int code = (int)((HttpWebResponse)we.Response).StatusCode;
+                            returnData = code.ToString() + " " + ((HttpWebResponse)we.Response).StatusDescription;
+                        }
+                        else
+                        {
+                            returnData = "";
                         }
                     }
-                }
 
-                if (response != null)
-                {
-                    response.Close();
-                    response.Dispose();
-                }
-            } else
-            {
-                NetworkStream stream = client.GetStream();
-                Byte[] data = Encoding.ASCII.GetBytes(payload);
+                    if (response != null)
+                    {
+                        try
+                        {
+                            reader = new StreamReader(response.GetResponseStream());
+                            returnData = reader.ReadToEnd();
+                        }
+                        catch
+                        {
+                            returnData = "";
+                        }
+                        finally
+                        {
+                            if (reader != null)
+                            {
+                                reader.Close();
+                                reader.Dispose();
+                            }
+                        }
+                    }
 
-                stream.Write(data, 0, data.Length);
-                data = new Byte[1024];
+                    if (response != null)
+                    {
+                        response.Close();
+                        response.Dispose();
+                    }
 
-                try
-                {
-                    IAsyncResult result = stream.BeginRead(data, 0, data.Length, null, null);
-                    bool wait = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(Settings.PortscanTimeout), false);
-                    returnData = Encoding.ASCII.GetString(data, 0, data.Length);
-                }
-                catch
-                {
-                    returnData = "";
-                }
+                    break;
+                default:
+                    NetworkStream stream = client.GetStream();
+                    Byte[] data = Encoding.ASCII.GetBytes(payload);
 
-                stream.Close();
-                
+                    stream.Write(data, 0, data.Length);
+                    data = new Byte[1024];
+
+                    try
+                    {
+                        IAsyncResult result = stream.BeginRead(data, 0, data.Length, null, null);
+                        bool wait = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(Settings.PortscanTimeout), false);
+                        returnData = Encoding.ASCII.GetString(data, 0, data.Length);
+                    }
+                    catch
+                    {
+                        returnData = "";
+                    }
+
+                    stream.Close();
+
+                    break;
             }
 
             return returnData;

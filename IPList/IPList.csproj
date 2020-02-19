@@ -75,6 +75,9 @@
     <Reference Include="System.Text.Json">
       <HintPath>..\packages\System.Text.Json.4.7.0\lib\netstandard2.0\System.Text.Json.dll</HintPath>
     </Reference>
+    <Reference Include="SharpCifs.Std">
+      <HintPath>..\packages\SharpCifs.Std.0.2.13\lib\netstandard1.3\SharpCifs.Std.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
