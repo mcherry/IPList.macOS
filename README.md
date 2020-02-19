@@ -17,16 +17,19 @@ A tool to list IP addresses in a network while optionally pinging and performing
 * Multithreaded for performance
 
 # Dependencies
-IPList relies on the awesome [IPNetwork](https://github.com/lduchosal/ipnetwork) and [SharpCifs.Stf](http://sharpcifsstd.dobes.jp) libraries and runs on macOS 10.10 or higher. A binary is available [here](https://github.com/mcherry/IPList.macOS/raw/master/Binary/IPList.app.tgz) otherwise it can be easily compiled with [Visual Studio 2019](https://visualstudio.microsoft.com/vs/).
+IPList relies on the awesome [IPNetwork](https://github.com/lduchosal/ipnetwork) and [SharpCifs.Std]() libraries and runs on macOS 10.10 or higher. A binary is available [here](https://github.com/mcherry/IPList.macOS/raw/master/Binary/IPList.app.tgz) otherwise it can be easily compiled with [Visual Studio 2019](https://visualstudio.microsoft.com/vs/).
 
 # Resources
 In no particular order, here are some of the resources I used to hack this project together:
+* [IPNetwork](https://github.com/lduchosal/ipnetwork)
+* [SharpCifs.Std](http://sharpcifsstd.dobes.jp)
 * [Windows in Xamarin.Mac](https://docs.microsoft.com/en-us/xamarin/mac/user-interface/window)
 * [Images in Xamarin.Mac](https://docs.microsoft.com/en-us/xamarin/mac/app-fundamentals/image)
 * [Menus in Xamarin.Mac](https://docs.microsoft.com/en-us/xamarin/mac/user-interface/menu)
 * [Table Views in Xamarin.Mac](https://docs.microsoft.com/en-us/xamarin/mac/user-interface/table-view)
 * [ThreadPool Class](https://docs.microsoft.com/en-us/dotnet/api/system.threading.threadpool?view=netframework-4.8)
 * [Thread Class](https://docs.microsoft.com/en-us/dotnet/api/system.threading.thread?view=netframework-4.8)
+* [Using TCP Services](https://docs.microsoft.com/en-us/dotnet/framework/network-programming/using-tcp-services)
 * [Xamarin Documentation](https://docs.microsoft.com/en-us/xamarin/)
 * [Xamarin.Mac Community Forums](https://forums.xamarin.com/categories/xamarin-mac)
 * [StackOverflow](https://stackoverflow.com/questions/tagged/xamarin)
