@@ -366,30 +366,45 @@ namespace IPList
 
         partial void CopyMenuAction(NSObject sender)
         {
-            W.CopyString(AddressEntryDelegate.GetSelectedIP(tblList.SelectedRow));
+            if (tblList.SelectedRow != null && tblList.SelectedRow != -1)
+            {
+                W.CopyString(AddressEntryDelegate.GetSelectedIP(tblList.SelectedRow));
+            }
         }
 
         partial void mnyCopyDNS_Click(NSObject sender)
         {
-            W.CopyString(AddressEntryDelegate.GetSelectedDNS(tblList.SelectedRow));
+            if (tblList.SelectedRow != null && tblList.SelectedRow != -1)
+            {
+                W.CopyString(AddressEntryDelegate.GetSelectedDNS(tblList.SelectedRow));
+            }
         }
 
         partial void mnuPingAction(NSObject sender)
         {
-            PingWindowController pingWindow = new PingWindowController(tblList.SelectedRow);
-            pingWindow.ShowWindow(this);
+            if (tblList.SelectedRow != null && tblList.SelectedRow != -1)
+            {
+                PingWindowController pingWindow = new PingWindowController(tblList.SelectedRow);
+                pingWindow.ShowWindow(this);
+            }
         }
 
         partial void mnuPortScan_Click(NSObject sender)
         {
-            PortScannerController portScanner = new PortScannerController(tblList.SelectedRow);
-            portScanner.ShowWindow(this);
+            if (tblList.SelectedRow != null && tblList.SelectedRow != -1)
+            {
+                PortScannerController portScanner = new PortScannerController(tblList.SelectedRow);
+                portScanner.ShowWindow(this);
+            }
         }
 
         partial void mnuUDPScan(NSObject sender)
         {
-            PortScannerController portScanner = new PortScannerController(tblList.SelectedRow, "udp");
-            portScanner.ShowWindow(this);
+            if (tblList.SelectedRow != null && tblList.SelectedRow != -1)
+            {
+                PortScannerController portScanner = new PortScannerController(tblList.SelectedRow, "udp");
+                portScanner.ShowWindow(this);
+            }
         }
     }
 }

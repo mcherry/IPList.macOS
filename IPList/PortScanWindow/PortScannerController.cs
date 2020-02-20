@@ -175,6 +175,7 @@ namespace IPList
                     btnStart.Enabled = true;
                     cmbDelim.Enabled = true;
                     btnCopy.Enabled = true;
+                    tblPorts.Enabled = true;
                     tblPorts.Menu = portScanContextMenu;
                 }
                 else
@@ -187,6 +188,7 @@ namespace IPList
                     btnStop.Hidden = false;
                     cmbDelim.Enabled = false;
                     btnCopy.Enabled = false;
+                    tblPorts.Enabled = false;
                     tblPorts.Menu = null;
                 }
             });
@@ -253,18 +255,27 @@ namespace IPList
 
         partial void mnuCopyPort_Click(NSObject sender)
         {
-            W.CopyString(PortEntryDelegate.GetSelectedPort(tblPorts.SelectedRow));
+            if (tblPorts.SelectedRow != null && tblPorts.SelectedRow != -1)
+            {
+                W.CopyString(PortEntryDelegate.GetSelectedPort(tblPorts.SelectedRow));
+            }
         }
 
         partial void mnuCopyData_Click(NSObject sender)
         {
-            W.CopyString(PortEntryDelegate.GetSelectedData(tblPorts.SelectedRow));
+            if (tblPorts.SelectedRow != null && tblPorts.SelectedRow != -1)
+            {
+                W.CopyString(PortEntryDelegate.GetSelectedData(tblPorts.SelectedRow));
+            }
         }
 
         partial void mnuViewData_Click(NSObject sender)
         {
-            DataViewerWindowController dataView = new DataViewerWindowController(tblPorts.SelectedRow, ipAddress);
-            dataView.ShowWindow(this);
+            if (tblPorts.SelectedRow != null && tblPorts.SelectedRow != -1)
+            {
+                DataViewerWindowController dataView = new DataViewerWindowController(tblPorts.SelectedRow, ipAddress);
+                dataView.ShowWindow(this);
+            }
         }
     }
 }

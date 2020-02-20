@@ -314,8 +314,8 @@ namespace IPList
 
             switch (port)
             {
-                case 139:
-                    payload = "smb";
+                case 25:
+                    payload = "EHLO " + host + "\n";
                     break;
                 case 80:
                 case 591:
@@ -331,6 +331,9 @@ namespace IPList
                 case 60443:
                     uri += "s";
                     payload = "";
+                    break;
+                case 139:
+                    payload = "smb";
                     break;
             }
 
