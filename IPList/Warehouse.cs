@@ -342,13 +342,17 @@ namespace IPList
                 case "smb":
                     SharpCifs.Config.SetProperty("jcifs.smb.client.lport", "8137");
                     SmbFile server = new SmbFile("smb://" + host);
-                    SmbFile[] shares = server.ListFiles();
 
-                    returnData = "Discovered Shares:\n\n";
-                    foreach (SmbFile share in shares)
+                    try
                     {
-                        returnData += share.GetName() + "\n";
-                    }
+                        SmbFile[] shares = server.ListFiles();
+
+                        returnData = "Available Shares\n\n";
+                        foreach (SmbFile share in shares)
+                        {
+                            returnData += share.GetName() + "\n";
+                        }
+                    } catch { }
 
                     break;
                 case "":
