@@ -6,9 +6,10 @@ A tool to list IP addresses in a network while optionally pinging and performing
 * Perform a DNS lookup on all IP addresses in a network
 * Perform a ping scan of a network to determine host availability
 * Perform a port scan of any network host to determine service availability
-* Read data from open ports
-* Read HTML from open http server ports
-* Read available shares from open CIFS port
+* Read data from open ports:
+* * SMTP "ehlo"
+* * HTTP/S with headers
+* * CIFS share listing
 * Perform a constant ping against a network host to monitor availability
 * Copy IP and port lists to the clipboard with a user defined delimiter
 * Copy DNS hostname to the clipboard
