@@ -3,16 +3,15 @@ A tool to list IP addresses in a network while optionally pinging and performing
 
 # Features
 * List all IP address in a network
-* Perform a DNS lookup on all IP addresses in a network
-* Perform a ping scan of a network to determine host availability
-* Perform a port scan of any network host to determine service availability
+* DNS lookups on all IP addresses
+* Ping scan of a network to determine host availability
+* Port scan of any network host to determine service availability
 * Read data from open ports:
   * SMTP "ehlo"
   * HTTP/S with headers
   * CIFS share listing
-* Perform a constant ping against a network host to monitor availability
-* Copy IP and port lists to the clipboard with a user defined delimiter
-* Copy DNS hostname to the clipboard
+* Constant ping against a network host to monitor availability
+* Copy results to the clipboard with a user defined delimiter
 * User definable timeouts and port scanning list (top 1000 and 100 ports, all ports, custom list)
 * Check for updates from the main menu or on program startup
 * Multithreaded for performance
