@@ -13,16 +13,16 @@ using System.Text.RegularExpressions;
 
 namespace IPList
 {
-    public struct ScanIP
+    public struct PortInfo
     {
         public bool Open;
-        public string Service;
+        public string Name;
         public string Data;
 
-        public ScanIP(bool p1, string p2, string p3)
+        public PortInfo(bool p1, string p2, string p3)
         {
             Open = p1;
-            Service = p2;
+            Name = p2;
             Data = p3;
         }
     }
@@ -46,11 +46,7 @@ namespace IPList
             bool hasUpdate = false;
 
             string versionDetails = new WebClient().DownloadString(VersionURL);
-            if (versionDetails == "")
-            {
-                hasUpdate = false;
-            }
-            else
+            if (versionDetails != "")
             {
                 string[] versionNumbers = versionDetails.Split(",");
                 if (float.Parse(versionNumbers[0].Trim()) > float.Parse(appVersion)) hasUpdate = true;
@@ -134,16 +130,8 @@ namespace IPList
                 pinger = new Ping();
                 reply = pinger.Send(host, Settings.PingTimeout);
             }
-            catch (PingException)
-            {
-                // continue
-            }
-            finally
-            {
-                // cleanup
-                if (pinger != null) pinger.Dispose();
-            }
-
+            catch (PingException) { }
+            if (pinger != null) pinger.Dispose();
             return reply;
         }
 
@@ -177,8 +165,8 @@ namespace IPList
             return value;
         }
 
-        // load /etc/services into a dictionary
-        // skips lines starting with # and only extracts TCP ports
+        // load /etc/services into dictionaries
+        // skips lines starting with #
         public static void LoadServices()
         {
             string line;
@@ -211,10 +199,10 @@ namespace IPList
             return;
         }
 
-        // split collection of ints (ports) into sublists
+        // split collection into list array
         public static List<List<T>> Split<T>(List<T> list, int list_size = 10)
         {
-            // calculate chunk size based on number of IPs and a max of 30 threads
+            // calculate chunk size based on number of list items, stay ~30 total
             double list_count = list.Count;
             double lists = list_count / list_size;
             while (lists > 30)
@@ -261,23 +249,19 @@ namespace IPList
 
         public static string dnsLookup(string ip)
         {
-            string hostname;
+            string hostname = "";
             try
             {
                 hostname = Dns.GetHostEntry(ip).HostName;
-            }
-            catch
-            {
-                hostname = "";
-            }
+            } catch { }
             if (hostname == ip) hostname = "";
 
             return hostname;
         }
 
-        public static ScanIP portCheck(string ip, int port)
+        public static PortInfo portCheck(string ip, int port)
         {
-            ScanIP host = new ScanIP();
+            PortInfo host = new PortInfo();
 
             host.Open = false;
             for (int a = 0; a <= 1; a++)
@@ -294,7 +278,7 @@ namespace IPList
 
                     host.Open = true;
                     host.Data = tcpReadPort(Scan, ip, port);
-                    host.Service = GetServiceName(port);
+                    host.Name = GetServiceName(port);
 
                     break;
                 }
@@ -308,7 +292,7 @@ namespace IPList
 
         public static string tcpReadPort(TcpClient client, string host, int port)
         {
-            string returnData = string.Empty;
+            string returnData = "";
             string uri = "http";
             string payload = "\r\n";
 
@@ -340,7 +324,7 @@ namespace IPList
             switch (payload)
             {
                 case "smb":
-                    SharpCifs.Config.SetProperty("jcifs.smb.client.lport", "8137");
+                    SharpCifs.Config.SetProperty("jcifs.smb.client.lport", "0");
                     SmbFile server = new SmbFile("smb://" + host);
 
                     try
@@ -350,7 +334,7 @@ namespace IPList
                         returnData = "Available Shares\n\n";
                         foreach (SmbFile share in shares)
                         {
-                            returnData += share.GetName() + "\n";
+                            returnData += share.GetName().Replace("/", "") + "\n";
                         }
                     } catch { }
 
@@ -371,10 +355,6 @@ namespace IPList
                             int code = (int)((HttpWebResponse)we.Response).StatusCode;
                             returnData = code.ToString() + " " + ((HttpWebResponse)we.Response).StatusDescription;
                         }
-                        else
-                        {
-                            returnData = "";
-                        }
                     }
 
                     if (response != null)
@@ -382,19 +362,14 @@ namespace IPList
                         try
                         {
                             reader = new StreamReader(response.GetResponseStream());
-                            returnData = reader.ReadToEnd();
+                            returnData = response.Headers.ToString() + reader.ReadToEnd();
                         }
-                        catch
+                        catch { }
+
+                        if (reader != null)
                         {
-                            returnData = "";
-                        }
-                        finally
-                        {
-                            if (reader != null)
-                            {
-                                reader.Close();
-                                reader.Dispose();
-                            }
+                            reader.Close();
+                            reader.Dispose();
                         }
                     }
 
@@ -418,18 +393,13 @@ namespace IPList
                         bool wait = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(Settings.PortscanTimeout), false);
                         returnData = Encoding.ASCII.GetString(data, 0, data.Length);
                     }
-                    catch
-                    {
-                        returnData = "";
-                    }
+                    catch { }
 
                     stream.Close();
-
                     break;
             }
 
             return returnData;
-            
         }
     }
 }

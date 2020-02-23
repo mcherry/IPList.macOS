@@ -89,11 +89,11 @@ namespace IPList
                     switch (protocol)
                     {
                         case "tcp":
-                            ScanIP scanner = W.portCheck(ipAddress, port);
+                            PortInfo scanner = W.portCheck(ipAddress, port);
 
                             if (scanner.Open)
                             {
-                                PortEntryDelegate.DataSource.Ports.Add(new PortEntry(port, scanner.Service, scanner.Data));
+                                PortEntryDelegate.DataSource.Ports.Add(new PortEntry(port, scanner.Name, scanner.Data));
                                 ReloadTable();
                             }
 

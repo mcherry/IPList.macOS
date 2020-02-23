@@ -73,7 +73,7 @@
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\netstandard2.1\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="System.Text.Json">
-      <HintPath>..\packages\System.Text.Json.4.7.0\lib\netstandard2.0\System.Text.Json.dll</HintPath>
+      <HintPath>..\packages\System.Text.Json.4.7.1\lib\netstandard2.0\System.Text.Json.dll</HintPath>
     </Reference>
     <Reference Include="SharpCifs.Std">
       <HintPath>..\packages\SharpCifs.Std.0.2.13\lib\netstandard1.3\SharpCifs.Std.dll</HintPath>
