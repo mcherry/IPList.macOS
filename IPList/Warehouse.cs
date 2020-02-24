@@ -103,8 +103,7 @@ namespace IPList
 
             if (octets[3].Contains("/"))
             {
-                string[] values = octets[3].Split("/");
-                octets[3] = values[0];
+                octets[3] = octets[3].Split("/")[0];
             }
 
             foreach (string octet in octets) if (int.Parse(octet) < 0 || int.Parse(octet) > 255) return false;
@@ -277,7 +276,7 @@ namespace IPList
                     result.AsyncWaitHandle.Dispose();
 
                     host.Open = true;
-                    host.Data = tcpReadPort(Scan, ip, port);
+                    host.Data = tcpReadPort(ref Scan, ip, port);
                     host.Name = GetServiceName(port);
 
                     break;
@@ -290,7 +289,7 @@ namespace IPList
             return host;
         }
 
-        public static string tcpReadPort(TcpClient client, string host, int port)
+        public static string tcpReadPort(ref TcpClient client, string host, int port)
         {
             string returnData = "";
             string uri = "http";
@@ -340,12 +339,13 @@ namespace IPList
 
                     break;
                 case "":
+                    WebRequest request;
                     WebResponse response = null;
                     StreamReader reader = null;
 
                     try
                     {
-                        WebRequest request = WebRequest.Create(uri + "://" + host);
+                        request = WebRequest.Create(uri + "://" + host);
                         response = request.GetResponse();
                     }
                     catch (WebException we)
