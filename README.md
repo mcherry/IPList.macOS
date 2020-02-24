@@ -10,6 +10,7 @@ A tool to list IP addresses in a network while optionally pinging and performing
   * SMTP "ehlo"
   * HTTP/S with headers
   * CIFS share listing
+  * Raw data when protocol is unknown
 * Constant ping against a network host to monitor availability
 * Copy results to the clipboard with a user defined delimiter
 * User definable timeouts and port scanning list (top 1000 and 100 ports, all ports, custom list)
