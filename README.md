@@ -3,7 +3,6 @@ A tool to list IP addresses in a network while optionally pinging and performing
 
 # Features
 * List all IP address in a network
-* DNS lookups on all IP addresses
 * Ping scan of a network to determine host availability
   * DNS lookup
   * ARP lookup
