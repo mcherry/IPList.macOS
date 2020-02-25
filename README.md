@@ -5,6 +5,8 @@ A tool to list IP addresses in a network while optionally pinging and performing
 * List all IP address in a network
 * DNS lookups on all IP addresses
 * Ping scan of a network to determine host availability
+  * DNS lookup
+  * ARP lookup
 * Port scan of any network host to determine service availability
 * Read data from open ports:
   * SMTP "ehlo"
