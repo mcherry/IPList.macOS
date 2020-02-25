@@ -173,6 +173,16 @@ namespace IPList
             ReloadTable(true);
             setStatus(AddressEntryDelegate.DataSource.AddressEntries.Count.ToString() + " IPs found");
 
+            RefreshARP();
+
+            ReloadTable();
+            ToggleGUI(true);
+
+            return;
+        }
+
+        private void RefreshARP()
+        {
             int index = 0;
             W.LoadARPTable();
             foreach (AddressEntry item in AddressEntryDelegate.DataSource.AddressEntries)
@@ -180,11 +190,6 @@ namespace IPList
                 AddressEntryDelegate.DataSource.AddressEntries[index].MAC = W.getMAC(item.Address);
                 index++;
             }
-
-            ReloadTable();
-            ToggleGUI(true);
-
-            return;
         }
 
         private void IPListThread(List<string> network, int dnsCheck)
@@ -202,6 +207,7 @@ namespace IPList
             }
 
             setStatus(network.Count + " IPs found");
+            RefreshARP();
             ToggleGUI(true);
         }
 
