@@ -31,6 +31,7 @@ namespace IPList
     {
         private static IDictionary<string, string> tcpServices = new Dictionary<string, string>();
         private static IDictionary<string, string> udpServices = new Dictionary<string, string>();
+        private static IDictionary<string, string> arpTable = new Dictionary<string, string>();
 
         private static readonly string VersionURL = "https://raw.githubusercontent.com/mcherry/IPList.macOS/master/Binary/VERSION";
         private static readonly string DownloadURL = "https://github.com/mcherry/IPList.macOS/raw/master/Binary/IPList.app.tgz";
@@ -78,6 +79,42 @@ namespace IPList
             }
             
             if (confirm) Alert("Software Update", "No new updates were found.", NSAlertStyle.Informational);
+        }
+
+        public static void LoadARPTable()
+        {
+            Process p = new Process();
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.FileName = "arp";
+            p.StartInfo.Arguments = "-an";
+            p.Start();
+
+            string output = p.StandardOutput.ReadToEnd();
+            p.WaitForExit();
+
+            arpTable.Clear();
+            foreach (string line in output.Split('\n'))
+            {
+                string[] info = line.Split(" ");
+                if (line.Trim() != "")
+                {
+                    string ip = info[1].Replace("(", "").Replace(")", "");
+                    arpTable[ip] = info[3];
+                }
+            }
+            
+            p.Dispose();
+        }
+
+        public static string getMAC(string ip)
+        {
+            string value;
+
+            if (arpTable.TryGetValue(ip, out value)) return value;
+            if (value == null) value = "";
+
+            return value;
         }
 
         public static void Alert(string title, string message, NSAlertStyle style)

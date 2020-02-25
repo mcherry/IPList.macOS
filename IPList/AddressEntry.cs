@@ -12,10 +12,11 @@ namespace IPList
         public string Latency { get; set; } = "";
         public string TTL { get; set; } = "";
         public string DNS { get; set; } = "";
+        public string MAC { get; set; } = "";
 
         public AddressEntry() { }
 
-        public AddressEntry(string address, string status = "", long latency = 0, int ttl = 0, string dns = "")
+        public AddressEntry(string address, string status = "", long latency = 0, int ttl = 0, string dns = "", string mac = "")
         {
             Address = address;
             Status = status;
@@ -29,6 +30,7 @@ namespace IPList
                 TTL = "";
             }
             DNS = dns;
+            MAC = mac;
         }
     }
 
@@ -90,6 +92,16 @@ namespace IPList
                     else
                     {
                         AddressEntries.Sort((x, y) => -1 * string.Compare(x.DNS, y.DNS, StringComparison.Ordinal));
+                    }
+                    break;
+                case "MAC":
+                    if (ascending)
+                    {
+                        AddressEntries.Sort((x, y) => string.Compare(x.MAC, y.MAC, StringComparison.Ordinal));
+                    }
+                    else
+                    {
+                        AddressEntries.Sort((x, y) => -1 * string.Compare(x.MAC, y.MAC, StringComparison.Ordinal));
                     }
                     break;
             }
@@ -155,6 +167,9 @@ namespace IPList
                 case "DNS":
                     view.StringValue = DataSource.AddressEntries[(int)row].DNS;
                     break;
+                case "MAC":
+                    view.StringValue = DataSource.AddressEntries[(int)row].MAC;
+                    break;
             }
 
             return view;
@@ -168,6 +183,11 @@ namespace IPList
         public static string GetSelectedDNS(nint index)
         {
             return DataSource.AddressEntries[(int)index].DNS;
+        }
+
+        public static string GetSelectedMAC(nint index)
+        {
+            return DataSource.AddressEntries[(int)index].MAC;
         }
 
         public override bool ShouldSelectRow(NSTableView tableView, nint row)

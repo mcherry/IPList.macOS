@@ -172,6 +172,16 @@ namespace IPList
 
             ReloadTable(true);
             setStatus(AddressEntryDelegate.DataSource.AddressEntries.Count.ToString() + " IPs found");
+
+            int index = 0;
+            W.LoadARPTable();
+            foreach (AddressEntry item in AddressEntryDelegate.DataSource.AddressEntries)
+            {
+                AddressEntryDelegate.DataSource.AddressEntries[index].MAC = W.getMAC(item.Address);
+                index++;
+            }
+
+            ReloadTable();
             ToggleGUI(true);
 
             return;
