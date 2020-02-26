@@ -111,8 +111,24 @@ namespace IPList
         {
             string value;
 
-            if (arpTable.TryGetValue(ip, out value)) return value;
-            if (value == null) value = "";
+            if (arpTable.TryGetValue(ip, out value))
+            {
+                string mac_address = "";
+                if (value != null)
+                {
+                    foreach (string octet in value.Split(":"))
+                    {
+                        if (octet.Length == 1)
+                        {
+                            mac_address += "0";
+                        }
+
+                        mac_address += octet + ":";
+                    }
+                }
+                return mac_address.TrimEnd(':');
+            }
+            if (value == null) value = "";  
 
             return value;
         }
