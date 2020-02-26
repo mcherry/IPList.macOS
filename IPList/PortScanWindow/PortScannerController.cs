@@ -1,5 +1,6 @@
 ﻿using AppKit;
 using Foundation;
+using LukeSkywalker.IPNetwork;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -40,7 +41,7 @@ namespace IPList
         [Action("showHelp:")]
         public void OpenProjectPage(NSObject sender)
         {
-            Process.Start(W.ProjectURL);
+            Process.Start(W.projectURL);
         }
 
         [Action("showAbout:")]
@@ -73,6 +74,12 @@ namespace IPList
                 setPingStatus("DOWN");
             }
 
+            IPNetwork ipnetwork = IPNetwork.Parse(ipAddress);
+            lblNetmask.StringValue = ipnetwork.Netmask.ToString();
+            lblBroadcast.StringValue = ipnetwork.Broadcast.ToString();
+            if (Settings.DNSCheck == 1) lblDNS.StringValue = W.DnsLookup(ipAddress);
+            lblMAC.StringValue = W.GetMAC(ipAddress);
+
             StartScan();
         }
 
@@ -89,7 +96,7 @@ namespace IPList
                     switch (protocol)
                     {
                         case "tcp":
-                            PortInfo scanner = W.portCheck(ipAddress, port);
+                            PortInfo scanner = W.PortCheck(ipAddress, port);
 
                             if (scanner.Open)
                             {
@@ -200,7 +207,6 @@ namespace IPList
 
             stopScan = false;
             lblIP.StringValue = ipAddress;
-            lblProtocol.StringValue = protocol.ToUpper();
 
             PortEntryDelegate.DataSource = new PortEntryDataSource();
             tblPorts.Delegate = new PortEntryDelegate(PortEntryDelegate.DataSource);

@@ -33,7 +33,7 @@ namespace IPList
         [Action("showHelp:")]
         public void OpenProjectPage(NSObject sender)
         {
-            Process.Start(W.ProjectURL);
+            Process.Start(W.projectURL);
         }
 
         [Action("showAbout:")]

@@ -33,9 +33,9 @@ namespace IPList
         private static IDictionary<string, string> udpServices = new Dictionary<string, string>();
         private static IDictionary<string, string> arpTable = new Dictionary<string, string>();
 
-        private static readonly string VersionURL = "https://raw.githubusercontent.com/mcherry/IPList.macOS/master/Binary/VERSION";
-        private static readonly string DownloadURL = "https://github.com/mcherry/IPList.macOS/raw/master/Binary/IPList.app.tgz";
-        public static readonly string ProjectURL = "https://github.com/mcherry/IPList.macOS/";
+        private static readonly string versionURL = "https://raw.githubusercontent.com/mcherry/IPList.macOS/master/Binary/VERSION";
+        private static readonly string downloadURL = "https://github.com/mcherry/IPList.macOS/raw/master/Binary/IPList.app.tgz";
+        public static readonly string projectURL = "https://github.com/mcherry/IPList.macOS/";
 
         public static readonly string appVersion = NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleShortVersionString").ToString();
         public static readonly string appBuild = NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleVersion").ToString();
@@ -46,7 +46,7 @@ namespace IPList
         {
             bool hasUpdate = false;
 
-            string versionDetails = new WebClient().DownloadString(VersionURL);
+            string versionDetails = new WebClient().DownloadString(versionURL);
             if (versionDetails != "")
             {
                 string[] versionNumbers = versionDetails.Split(",");
@@ -74,7 +74,7 @@ namespace IPList
                     Alert("Software Update", "Automatic update check has been disabled. You can re-enable it in Preferences.", NSAlertStyle.Informational);
                 }
 
-                if (result == 1000) Process.Start(DownloadURL);
+                if (result == 1000) Process.Start(downloadURL);
                 alert.Dispose();
             }
             
@@ -107,7 +107,7 @@ namespace IPList
             p.Dispose();
         }
 
-        public static string getMAC(string ip)
+        public static string GetMAC(string ip)
         {
             string value;
 
@@ -163,7 +163,7 @@ namespace IPList
             return true;
         }
 
-        public static bool ipInRange(string ip)
+        public static bool IpInRange(string ip)
         {
             string[] octets = ip.Split(".");
             if (int.Parse(octets[0]) > 0 && int.Parse(octets[0]) < 255 && int.Parse(octets[3]) > 0 && int.Parse(octets[3]) < 255) return true;
@@ -269,7 +269,7 @@ namespace IPList
             {
                 if (W.IsValidIP(item.ToString()))
                 {
-                    if (ipInRange(item.ToString()))
+                    if (IpInRange(item.ToString()))
                     {
                         NewList.Add((T)Convert.ChangeType(item.ToString(), typeof(T)));
                     }
@@ -299,7 +299,7 @@ namespace IPList
             return chunks;
         }
 
-        public static string dnsLookup(string ip)
+        public static string DnsLookup(string ip)
         {
             string hostname = "";
             try
@@ -311,7 +311,7 @@ namespace IPList
             return hostname;
         }
 
-        public static PortInfo portCheck(string ip, int port)
+        public static PortInfo PortCheck(string ip, int port)
         {
             PortInfo host = new PortInfo();
 
@@ -329,7 +329,7 @@ namespace IPList
                     result.AsyncWaitHandle.Dispose();
 
                     host.Open = true;
-                    host.Data = tcpReadPort(ref Scan, ip, port);
+                    host.Data = TcpReadPort(ref Scan, ip, port);
                     host.Name = GetServiceName(port);
 
                     break;
@@ -342,7 +342,7 @@ namespace IPList
             return host;
         }
 
-        public static string tcpReadPort(ref TcpClient client, string host, int port)
+        public static string TcpReadPort(ref TcpClient client, string host, int port)
         {
             string returnData = "";
             string uri = "http";

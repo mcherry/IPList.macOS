@@ -25,10 +25,22 @@ namespace IPList
 		AppKit.NSPopUpButton cmbDelim { get; set; }
 
 		[Outlet]
+		AppKit.NSTextField lblBroadcast { get; set; }
+
+		[Outlet]
+		AppKit.NSTextField lblDNS { get; set; }
+
+		[Outlet]
 		AppKit.NSTextField lblIP { get; set; }
 
 		[Outlet]
 		AppKit.NSTextField lblLatency { get; set; }
+
+		[Outlet]
+		AppKit.NSTextField lblMAC { get; set; }
+
+		[Outlet]
+		AppKit.NSTextField lblNetmask { get; set; }
 
 		[Outlet]
 		AppKit.NSTextField lblProtocol { get; set; }
@@ -41,6 +53,9 @@ namespace IPList
 
 		[Outlet]
 		AppKit.NSTextField lblTTL { get; set; }
+
+		[Outlet]
+		AppKit.NSTextField lblVendor { get; set; }
 
 		[Outlet]
 		AppKit.NSMenu portScanContextMenu { get; set; }
@@ -86,6 +101,31 @@ namespace IPList
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblNetmask != null) {
+				lblNetmask.Dispose ();
+				lblNetmask = null;
+			}
+
+			if (lblBroadcast != null) {
+				lblBroadcast.Dispose ();
+				lblBroadcast = null;
+			}
+
+			if (lblDNS != null) {
+				lblDNS.Dispose ();
+				lblDNS = null;
+			}
+
+			if (lblMAC != null) {
+				lblMAC.Dispose ();
+				lblMAC = null;
+			}
+
+			if (lblVendor != null) {
+				lblVendor.Dispose ();
+				lblVendor = null;
+			}
+
 			if (btnCopy != null) {
 				btnCopy.Dispose ();
 				btnCopy = null;
@@ -136,6 +176,11 @@ namespace IPList
 				lblTTL = null;
 			}
 
+			if (portScanContextMenu != null) {
+				portScanContextMenu.Dispose ();
+				portScanContextMenu = null;
+			}
+
 			if (prgStatus != null) {
 				prgStatus.Dispose ();
 				prgStatus = null;
@@ -159,11 +204,6 @@ namespace IPList
 			if (tblPorts != null) {
 				tblPorts.Dispose ();
 				tblPorts = null;
-			}
-
-			if (portScanContextMenu != null) {
-				portScanContextMenu.Dispose ();
-				portScanContextMenu = null;
 			}
 		}
 	}

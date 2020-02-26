@@ -85,7 +85,7 @@ namespace IPList
         [Action("showHelp:")]
         public void OpenProjectPage(NSObject sender)
         {
-            Process.Start(W.ProjectURL);
+            Process.Start(W.projectURL);
         }
 
         [Action("showAbout:")]
@@ -106,7 +106,7 @@ namespace IPList
             foreach (string ip in ipList)
             {
                 string hostname = "";
-                if (checkDNS == 1) hostname = W.dnsLookup(ip);
+                if (checkDNS == 1) hostname = W.DnsLookup(ip);
 
                 PingReply pinger = W.Ping(ip);
                 if (pinger.Status == IPStatus.Success)
@@ -187,7 +187,7 @@ namespace IPList
             W.LoadARPTable();
             foreach (AddressEntry item in AddressEntryDelegate.DataSource.AddressEntries)
             {
-                AddressEntryDelegate.DataSource.AddressEntries[index].MAC = W.getMAC(item.Address);
+                AddressEntryDelegate.DataSource.AddressEntries[index].MAC = W.GetMAC(item.Address);
                 index++;
             }
         }
@@ -196,10 +196,10 @@ namespace IPList
         {
             foreach (string ip in network)
             {
-                if (W.ipInRange(ip.ToString()))
+                if (W.IpInRange(ip.ToString()))
                 {
                     string hostname = "";
-                    if (dnsCheck == 1) hostname = W.dnsLookup(ip.ToString());
+                    if (dnsCheck == 1) hostname = W.DnsLookup(ip.ToString());
 
                     AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip.ToString(), "", 0, 0, hostname));
                     ReloadTable();
