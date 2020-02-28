@@ -389,7 +389,6 @@
                                             </tableColumns>
                                             <connections>
                                                 <action trigger="doubleAction" selector="tblList_DoubleClick:" target="XfG-lQ-9wD" id="Vu3-HY-Xhw"/>
-                                                <action selector="tblList_DoubleClick:" target="XfG-lQ-9wD" id="aLf-uy-mpj"/>
                                             </connections>
                                         </tableView>
                                     </subviews>
