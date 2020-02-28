@@ -125,7 +125,7 @@
                                     <tableColumns>
                                         <tableColumn width="139.5" minWidth="40" maxWidth="1000" id="nA0-jL-Lml">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Port">
-                                                <font key="font" metaFont="message" size="11"/>
+                                                <font key="font" metaFont="controlContent" size="11"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                             </tableHeaderCell>
@@ -159,7 +159,7 @@
                                         </tableColumn>
                                         <tableColumn width="99.5" minWidth="40" maxWidth="1000" id="IWv-tG-NhV">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Service">
-                                                <font key="font" metaFont="message" size="11"/>
+                                                <font key="font" metaFont="controlContent" size="11"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                             </tableHeaderCell>
@@ -172,11 +172,11 @@
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                             <prototypeCellViews>
                                                 <tableCellView id="OUT-5u-N3W">
-                                                    <rect key="frame" x="144" y="1" width="99" height="17"/>
+                                                    <rect key="frame" x="144" y="1" width="100" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lmk-bO-kpP">
-                                                            <rect key="frame" x="0.0" y="0.0" width="99" height="17"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="100" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="BEY-vR-MBQ">
                                                                 <font key="font" metaFont="system"/>
@@ -193,7 +193,7 @@
                                         </tableColumn>
                                         <tableColumn width="347" minWidth="10" maxWidth="3.4028234663852886e+38" id="ba0-1C-Oz8">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Data">
-                                                <font key="font" metaFont="message" size="11"/>
+                                                <font key="font" metaFont="controlContent" size="11"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </tableHeaderCell>
@@ -226,6 +226,9 @@
                                             </prototypeCellViews>
                                         </tableColumn>
                                     </tableColumns>
+                                    <connections>
+                                        <action trigger="doubleAction" selector="tblPorts_DoubleCliekc:" target="-2" id="OZ1-0X-LVR"/>
+                                    </connections>
                                 </tableView>
                             </subviews>
                         </clipView>

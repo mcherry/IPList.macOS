@@ -99,6 +99,9 @@ namespace IPList
 		[Action ("mnyCopyDNS_Click:")]
 		partial void mnyCopyDNS_Click (Foundation.NSObject sender);
 
+		[Action ("tblList_DoubleClick:")]
+		partial void tblList_DoubleClick (Foundation.NSObject sender);
+
 		[Action ("tblListAction:")]
 		partial void tblListAction (Foundation.NSObject sender);
 

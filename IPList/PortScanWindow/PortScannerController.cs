@@ -283,6 +283,11 @@ namespace IPList
                 dataView.ShowWindow(this);
             }
         }
+
+        partial void tblPorts_DoubleCliekc(NSObject sender)
+        {
+            mnuViewData_Click(sender);
+        }
     }
 }
  

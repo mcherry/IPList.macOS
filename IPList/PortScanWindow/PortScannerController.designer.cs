@@ -98,34 +98,12 @@ namespace IPList
 
 		[Action ("mnuViewData_Click:")]
 		partial void mnuViewData_Click (Foundation.NSObject sender);
+
+		[Action ("tblPorts_DoubleCliekc:")]
+		partial void tblPorts_DoubleCliekc (Foundation.NSObject sender);
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (lblNetmask != null) {
-				lblNetmask.Dispose ();
-				lblNetmask = null;
-			}
-
-			if (lblBroadcast != null) {
-				lblBroadcast.Dispose ();
-				lblBroadcast = null;
-			}
-
-			if (lblDNS != null) {
-				lblDNS.Dispose ();
-				lblDNS = null;
-			}
-
-			if (lblMAC != null) {
-				lblMAC.Dispose ();
-				lblMAC = null;
-			}
-
-			if (lblVendor != null) {
-				lblVendor.Dispose ();
-				lblVendor = null;
-			}
-
 			if (btnCopy != null) {
 				btnCopy.Dispose ();
 				btnCopy = null;
@@ -146,6 +124,16 @@ namespace IPList
 				cmbDelim = null;
 			}
 
+			if (lblBroadcast != null) {
+				lblBroadcast.Dispose ();
+				lblBroadcast = null;
+			}
+
+			if (lblDNS != null) {
+				lblDNS.Dispose ();
+				lblDNS = null;
+			}
+
 			if (lblIP != null) {
 				lblIP.Dispose ();
 				lblIP = null;
@@ -154,6 +142,16 @@ namespace IPList
 			if (lblLatency != null) {
 				lblLatency.Dispose ();
 				lblLatency = null;
+			}
+
+			if (lblMAC != null) {
+				lblMAC.Dispose ();
+				lblMAC = null;
+			}
+
+			if (lblNetmask != null) {
+				lblNetmask.Dispose ();
+				lblNetmask = null;
 			}
 
 			if (lblProtocol != null) {
@@ -174,6 +172,11 @@ namespace IPList
 			if (lblTTL != null) {
 				lblTTL.Dispose ();
 				lblTTL = null;
+			}
+
+			if (lblVendor != null) {
+				lblVendor.Dispose ();
+				lblVendor = null;
 			}
 
 			if (portScanContextMenu != null) {

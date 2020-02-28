@@ -124,6 +124,8 @@ namespace IPList
             }
             tableView.ReloadData();
         }
+
+        
     }
 
     public class AddressEntryDelegate : NSTableViewDelegate

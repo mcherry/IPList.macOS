@@ -316,6 +316,11 @@ namespace IPList
             });
         }
 
+        partial void tblList_DoubleClick(NSObject sender)
+        {
+            mnuPortScan_Click(sender);
+        }
+
         partial void btnList(NSObject sender)
         {
             string errormsg = "";
