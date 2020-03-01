@@ -125,14 +125,15 @@ namespace IPList
             return view;
         }
 
-        public static string GetSelectedPort(nint index)
+        public static PortEntry GetSelectedRow(nint index)
         {
-            return DataSource.Ports[(int)index].Port;
-        }
+            PortEntry row = new PortEntry();
 
-        public static string GetSelectedData(nint index)
-        {
-            return DataSource.Ports[(int)index].Data.Trim();
+            row.Port = DataSource.Ports[(int)index].Port;
+            row.Service = DataSource.Ports[(int)index].Service;
+            row.Data = DataSource.Ports[(int)index].Data;
+
+            return row;
         }
 
         public override bool ShouldSelectRow(NSTableView tableView, nint row)

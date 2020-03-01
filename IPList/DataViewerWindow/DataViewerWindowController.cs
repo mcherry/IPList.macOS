@@ -20,11 +20,11 @@ namespace IPList
         {
         }
 
-        public DataViewerWindowController(nint portIndex, string ip) : base("DataViewerWindow")
+        public DataViewerWindowController(string ip, PortEntry row) : base("DataViewerWindow")
         {
-            portData = PortEntryDelegate.GetSelectedData(portIndex);
+            portData = row.Data;
             ipAddress = ip;
-            ipPort = PortEntryDelegate.GetSelectedPort(portIndex);
+            ipPort = row.Port;
         }
 
         public override void AwakeFromNib()

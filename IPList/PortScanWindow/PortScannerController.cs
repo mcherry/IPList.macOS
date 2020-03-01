@@ -14,8 +14,8 @@ namespace IPList
     {
         private bool hostUp = false;
         private bool stopScan = false;
-        private string ipAddress;
         private string protocol;
+        private AddressEntry hostInfo;
 
         private int runningTasks;
         private object locker = new object();
@@ -51,9 +51,9 @@ namespace IPList
             aboutWin.ShowWindow(this);
         }
 
-        public PortScannerController(nint ipIndex, string scanProtocol = "tcp") : base("PortScanner")
+        public PortScannerController(AddressEntry row, string scanProtocol = "tcp") : base("PortScanner")
         {
-            ipAddress = AddressEntryDelegate.GetSelectedIP(ipIndex);
+            hostInfo = row;
             protocol = scanProtocol;
         }
 
@@ -62,7 +62,7 @@ namespace IPList
             base.AwakeFromNib();
             cmbDelim.SelectItem(Settings.PortDelimiter);
 
-            PingReply reply = W.Ping(ipAddress);
+            PingReply reply = W.Ping(hostInfo.Address);
             if (reply.Status == IPStatus.Success)
             {
                 hostUp = true;
@@ -74,11 +74,11 @@ namespace IPList
                 setPingStatus("DOWN");
             }
 
-            IPNetwork ipnetwork = IPNetwork.Parse(ipAddress);
+            IPNetwork ipnetwork = IPNetwork.Parse(hostInfo.Address);
             lblNetmask.StringValue = ipnetwork.Netmask.ToString();
             lblBroadcast.StringValue = ipnetwork.Broadcast.ToString();
-            if (Settings.DNSCheck == 1) lblDNS.StringValue = W.DnsLookup(ipAddress);
-            lblMAC.StringValue = W.GetMAC(ipAddress);
+            lblDNS.StringValue = hostInfo.DNS;
+            lblMAC.StringValue = hostInfo.MAC;
 
             StartScan();
         }
@@ -96,7 +96,7 @@ namespace IPList
                     switch (protocol)
                     {
                         case "tcp":
-                            PortInfo scanner = W.PortCheck(ipAddress, port);
+                            PortInfo scanner = W.PortCheck(hostInfo.Address, port);
 
                             if (scanner.Open)
                             {
@@ -153,7 +153,7 @@ namespace IPList
         {
             InvokeOnMainThread(() =>
             {
-                Window.Title = protocol.ToUpper() + " Scanning " + ipAddress + " (" + status + ")";
+                Window.Title = protocol.ToUpper() + " Scanning " + hostInfo.Address + " (" + status + ")";
                 lblStat.StringValue = status;
                 if (status != "DOWN")
                 {
@@ -175,7 +175,7 @@ namespace IPList
                 if (enabled == true)
                 {
                     prgStatus.StopAnimation(this);
-                    Window.Title = protocol.ToUpper() + " Scanned " + ipAddress;
+                    Window.Title = protocol.ToUpper() + " Scanned " + hostInfo.Address;
                     btnStop.Enabled = false;
                     btnStop.Hidden = true;
                     btnStart.Hidden = false;
@@ -188,7 +188,7 @@ namespace IPList
                 else
                 {
                     prgStatus.StartAnimation(this);
-                    Window.Title = protocol.ToUpper() + " Scanning " + ipAddress;
+                    Window.Title = protocol.ToUpper() + " Scanning " + hostInfo.Address;
                     btnStart.Enabled = false;
                     btnStart.Hidden = true;
                     btnStop.Enabled = true;
@@ -206,7 +206,7 @@ namespace IPList
             ToggleGUI(false);
 
             stopScan = false;
-            lblIP.StringValue = ipAddress;
+            lblIP.StringValue = hostInfo.Address;
 
             PortEntryDelegate.DataSource = new PortEntryDataSource();
             tblPorts.Delegate = new PortEntryDelegate(PortEntryDelegate.DataSource);
@@ -261,25 +261,28 @@ namespace IPList
 
         partial void mnuCopyPort_Click(NSObject sender)
         {
-            if (tblPorts.SelectedRow != null && tblPorts.SelectedRow != -1)
+            PortEntry row = PortEntryDelegate.GetSelectedRow(tblPorts.SelectedRow);
+            if (row != null)
             {
-                W.CopyString(PortEntryDelegate.GetSelectedPort(tblPorts.SelectedRow));
+                W.CopyString(row.Port);
             }
         }
 
         partial void mnuCopyData_Click(NSObject sender)
         {
-            if (tblPorts.SelectedRow != null && tblPorts.SelectedRow != -1)
+            PortEntry row = PortEntryDelegate.GetSelectedRow(tblPorts.SelectedRow);
+            if (row != null)
             {
-                W.CopyString(PortEntryDelegate.GetSelectedData(tblPorts.SelectedRow));
+                W.CopyString(row.Data);
             }
         }
 
         partial void mnuViewData_Click(NSObject sender)
         {
-            if (tblPorts.SelectedRow != null && tblPorts.SelectedRow != -1)
+            PortEntry row = PortEntryDelegate.GetSelectedRow(tblPorts.SelectedRow);
+            if (row != null)
             {
-                DataViewerWindowController dataView = new DataViewerWindowController(tblPorts.SelectedRow, ipAddress);
+                DataViewerWindowController dataView = new DataViewerWindowController(hostInfo.Address, row);
                 dataView.ShowWindow(this);
             }
         }
@@ -287,6 +290,16 @@ namespace IPList
         partial void tblPorts_DoubleCliekc(NSObject sender)
         {
             mnuViewData_Click(sender);
+        }
+
+        private PortEntry GetSelectedRow()
+        {
+            if (tblPorts.SelectedRow != null && tblPorts.SelectedRow != -1)
+            {
+                return PortEntryDelegate.GetSelectedRow(tblPorts.SelectedRow);
+            }
+
+            return null;
         }
     }
 }

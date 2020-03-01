@@ -27,16 +27,6 @@ namespace IPList
         }
     }
 
-    public struct HostInfo
-    {
-        public string ip;
-
-        public HostInfo(string p1)
-        {
-            ip = p1;
-        }
-    }
-
     public class W
     {
         private static IDictionary<string, string> tcpServices = new Dictionary<string, string>();

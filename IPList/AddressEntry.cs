@@ -177,19 +177,19 @@ namespace IPList
             return view;
         }
 
-        public static string GetSelectedIP(nint index)
+        public static AddressEntry GetRow(nint index)
         {
-            return DataSource.AddressEntries[(int)index].Address;
-        }
+            AddressEntry row = new AddressEntry();
 
-        public static string GetSelectedDNS(nint index)
-        {
-            return DataSource.AddressEntries[(int)index].DNS;
-        }
 
-        public static string GetSelectedMAC(nint index)
-        {
-            return DataSource.AddressEntries[(int)index].MAC;
+            row.Address = DataSource.AddressEntries[(int)index].Address;
+            row.Status = DataSource.AddressEntries[(int)index].Status;
+            row.Latency = DataSource.AddressEntries[(int)index].Latency;
+            row.TTL = DataSource.AddressEntries[(int)index].TTL;
+            row.DNS = DataSource.AddressEntries[(int)index].DNS;
+            row.MAC = DataSource.AddressEntries[(int)index].MAC;
+
+            return row;
         }
 
         public override bool ShouldSelectRow(NSTableView tableView, nint row)

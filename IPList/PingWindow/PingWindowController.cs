@@ -43,9 +43,9 @@ namespace IPList
             aboutWin.ShowWindow(this);
         }
 
-        public PingWindowController(nint ipIndex) : base("PingWindow")
+        public PingWindowController(string ip) : base("PingWindow")
         {
-            ipAddress = AddressEntryDelegate.GetSelectedIP(ipIndex);
+            ipAddress = ip;
             Window.Title = "Pinging " + ipAddress;
         }
 
