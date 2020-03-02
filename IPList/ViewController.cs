@@ -262,17 +262,8 @@ namespace IPList
 
         partial void btnCopyAction(NSObject sender)
         {
-            string delim = "";
+            string delim = GetDelimiter();
             StringBuilder value = new StringBuilder();
-            
-
-            switch (cmbDelimiter.SelectedItem.Title)
-            {
-                case "Newline": delim = Environment.NewLine; break;
-                case "Comma":   delim = ",";  break;
-                case "Tab":     delim = "\t"; break;
-                case "Space":   delim = " ";  break;
-            }
 
             foreach (AddressEntry ip in DataSource.AddressEntries)
             {
@@ -444,6 +435,45 @@ namespace IPList
             }
 
             return null;
+        }
+
+        partial void mnuRow_Click(NSObject sender)
+        {
+            AddressEntry row = GetSelectedRow();
+            if (row != null)
+            {
+                string delim = GetDelimiter();
+                W.CopyString(
+                    row.Address + delim +
+                    row.Status + delim +
+                    row.Latency + delim +
+                    row.TTL + delim +
+                    row.DNS + delim +
+                    row.MAC);
+            }
+        }
+
+        partial void mnuMAC_Cick(NSObject sender)
+        {
+            AddressEntry row = GetSelectedRow();
+            if (row != null)
+            {
+                W.CopyString(row.MAC);
+            }
+        }
+
+        private string GetDelimiter()
+        {
+            string delim = "";
+            switch (cmbDelimiter.SelectedItem.Title)
+            {
+                case "Newline": delim = Environment.NewLine; break;
+                case "Comma": delim = ","; break;
+                case "Tab": delim = "\t"; break;
+                case "Space": delim = " "; break;
+            }
+
+            return delim;
         }
     }
 }

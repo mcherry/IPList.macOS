@@ -154,7 +154,7 @@ namespace IPList
 
             switch (tableColumn.Title)
             {
-                case "Address":
+                case "IP":
                     view.StringValue = DataSource.AddressEntries[(int)row].Address;
                     break;
                 case "Status":

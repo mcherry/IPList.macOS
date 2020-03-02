@@ -20,10 +20,10 @@ namespace IPList
         {
         }
 
-        public DataViewerWindowController(string ip, PortEntry row) : base("DataViewerWindow")
+        public DataViewerWindowController(AddressEntry host, PortEntry row) : base("DataViewerWindow")
         {
             portData = row.Data;
-            ipAddress = ip;
+            ipAddress = host.Address;
             ipPort = row.Port;
         }
 

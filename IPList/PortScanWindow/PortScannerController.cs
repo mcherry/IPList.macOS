@@ -238,16 +238,8 @@ namespace IPList
 
         partial void btnCopy_Click(NSObject sender)
         {
-            string delim = "";
+            string delim = GetDelimiter();
             StringBuilder value = new StringBuilder();
-            
-            switch (cmbDelim.SelectedItem.Title)
-            {
-                case "Newline": delim = Environment.NewLine; break;
-                case "Comma":   delim = ",";  break;
-                case "Tab":     delim = "\t"; break;
-                case "Space":   delim = " ";  break;
-            }
             
             foreach (PortEntry port in DataSource.Ports)
             {
@@ -255,6 +247,20 @@ namespace IPList
             }
 
             W.CopyString(value.ToString().TrimEnd());
+        }
+
+        private string GetDelimiter()
+        {
+            string delim = "";
+            switch (cmbDelim.SelectedItem.Title)
+            {
+                case "Newline": delim = Environment.NewLine; break;
+                case "Comma": delim = ","; break;
+                case "Tab": delim = "\t"; break;
+                case "Space": delim = " "; break;
+            }
+
+            return delim;
         }
 
         partial void cmbDelim_Click(NSObject sender)
@@ -285,7 +291,7 @@ namespace IPList
             PortEntry row = GetSelectedRow();
             if (row != null)
             {
-                DataViewerWindowController dataView = new DataViewerWindowController(HostInfo.Address, row);
+                DataViewerWindowController dataView = new DataViewerWindowController(HostInfo, row);
                 dataView.ShowWindow(this);
             }
         }
@@ -303,6 +309,39 @@ namespace IPList
             }
 
             return null;
+        }
+
+        partial void mnuDNS_Click(NSObject sender)
+        {
+            W.CopyString(HostInfo.DNS);
+        }
+
+        partial void mnuMAC_Click(NSObject sender)
+        {
+            W.CopyString(HostInfo.MAC);
+        }
+
+        partial void mnyRow_Click(NSObject sender)
+        {
+            PortEntry row = GetSelectedRow();
+            if (row != null)
+            {
+                string delim = GetDelimiter();
+
+                W.CopyString(
+                    row.Port + delim +
+                    row.Service + delim +
+                    row.Data);
+            }
+        }
+
+        partial void mnuService_Click(NSObject sender)
+        {
+            PortEntry row = GetSelectedRow();
+            if (row != null)
+            {
+                W.CopyString(row.Service);
+            }
         }
     }
 }

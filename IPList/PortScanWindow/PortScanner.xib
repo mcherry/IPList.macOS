@@ -125,7 +125,7 @@
                                     <tableColumns>
                                         <tableColumn width="139.5" minWidth="40" maxWidth="1000" id="nA0-jL-Lml">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Port">
-                                                <font key="font" metaFont="controlContent" size="11"/>
+                                                <font key="font" metaFont="message" size="11"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                             </tableHeaderCell>
@@ -159,7 +159,7 @@
                                         </tableColumn>
                                         <tableColumn width="99.5" minWidth="40" maxWidth="1000" id="IWv-tG-NhV">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Service">
-                                                <font key="font" metaFont="controlContent" size="11"/>
+                                                <font key="font" metaFont="message" size="11"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                             </tableHeaderCell>
@@ -172,11 +172,11 @@
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                             <prototypeCellViews>
                                                 <tableCellView id="OUT-5u-N3W">
-                                                    <rect key="frame" x="144" y="1" width="100" height="17"/>
+                                                    <rect key="frame" x="144" y="1" width="99" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lmk-bO-kpP">
-                                                            <rect key="frame" x="0.0" y="0.0" width="100" height="17"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="99" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="BEY-vR-MBQ">
                                                                 <font key="font" metaFont="system"/>
@@ -193,7 +193,7 @@
                                         </tableColumn>
                                         <tableColumn width="347" minWidth="10" maxWidth="3.4028234663852886e+38" id="ba0-1C-Oz8">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Data">
-                                                <font key="font" metaFont="controlContent" size="11"/>
+                                                <font key="font" metaFont="message" size="11"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </tableHeaderCell>
@@ -408,10 +408,35 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Copy" id="Ers-LG-p3E">
                         <items>
+                            <menuItem title="Row" id="AuG-Zk-7AK">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="mnyRow_Click:" target="-2" id="s8g-fN-oiy"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="UfL-Pp-lLf"/>
+                            <menuItem title="DNS" id="zyC-Bn-zZv">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="mnuDNS_Click:" target="-2" id="Dve-Y9-7Re"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="MAC" id="Ndl-vs-PCp">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="mnuMAC_Click:" target="-2" id="MKE-te-ko3"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Port" id="yml-3W-3Pt">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="mnuCopyPort_Click:" target="-2" id="7Ys-bg-yEt"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Service" id="ZRp-YU-IwV">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="mnuService_Click:" target="-2" id="EaR-Lf-QWg"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Data" id="HAg-f9-1eQ">

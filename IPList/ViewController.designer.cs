@@ -84,6 +84,9 @@ namespace IPList
 		[Action ("CopyMenuAction:")]
 		partial void CopyMenuAction (Foundation.NSObject sender);
 
+		[Action ("mnuMAC_Cick:")]
+		partial void mnuMAC_Cick (Foundation.NSObject sender);
+
 		[Action ("mnuNetstat_Click:")]
 		partial void mnuNetstat_Click (Foundation.NSObject sender);
 
@@ -92,6 +95,9 @@ namespace IPList
 
 		[Action ("mnuPortScan_Click:")]
 		partial void mnuPortScan_Click (Foundation.NSObject sender);
+
+		[Action ("mnuRow_Click:")]
+		partial void mnuRow_Click (Foundation.NSObject sender);
 
 		[Action ("mnuUDPScan:")]
 		partial void mnuUDPScan (Foundation.NSObject sender);

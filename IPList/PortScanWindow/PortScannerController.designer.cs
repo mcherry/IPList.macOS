@@ -96,8 +96,20 @@ namespace IPList
 		[Action ("mnuCopyPort_Click:")]
 		partial void mnuCopyPort_Click (Foundation.NSObject sender);
 
+		[Action ("mnuDNS_Click:")]
+		partial void mnuDNS_Click (Foundation.NSObject sender);
+
+		[Action ("mnuMAC_Click:")]
+		partial void mnuMAC_Click (Foundation.NSObject sender);
+
+		[Action ("mnuService_Click:")]
+		partial void mnuService_Click (Foundation.NSObject sender);
+
 		[Action ("mnuViewData_Click:")]
 		partial void mnuViewData_Click (Foundation.NSObject sender);
+
+		[Action ("mnyRow_Click:")]
+		partial void mnyRow_Click (Foundation.NSObject sender);
 
 		[Action ("tblPorts_DoubleCliekc:")]
 		partial void tblPorts_DoubleCliekc (Foundation.NSObject sender);

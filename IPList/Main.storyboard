@@ -183,7 +183,7 @@
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
                                                 <tableColumn editable="NO" width="124" minWidth="40" maxWidth="1000" id="5dL-d4-xfo">
-                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Address">
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="IP">
                                                         <font key="font" metaFont="label" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -533,6 +533,13 @@
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <menu key="submenu" id="g3R-sv-G9x">
                                 <items>
+                                    <menuItem title="Row" id="BsJ-r0-iwA">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="mnuRow_Click:" target="XfG-lQ-9wD" id="lNP-92-9cb"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem isSeparatorItem="YES" id="UAI-rW-as2"/>
                                     <menuItem title="IP" id="QBB-xk-jsv">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
@@ -545,6 +552,12 @@
                                             <action selector="mnyCopyDNS_Click:" target="XfG-lQ-9wD" id="wBy-Rf-l4J"/>
                                         </connections>
                                     </menuItem>
+                                    <menuItem title="MAC" id="xLY-OH-tie">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="mnuMAC_Cick:" target="XfG-lQ-9wD" id="1lv-yO-OBa"/>
+                                        </connections>
+                                    </menuItem>
                                 </items>
                             </menu>
                         </menuItem>
@@ -555,7 +568,7 @@
                                 <action selector="mnuPingAction:" target="XfG-lQ-9wD" id="OU4-s0-o0T"/>
                             </connections>
                         </menuItem>
-                        <menuItem title="TCP Scan" id="krb-gl-H2m">
+                        <menuItem title="Scan" id="krb-gl-H2m">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <connections>
                                 <action selector="mnuPortScan_Click:" target="XfG-lQ-9wD" id="deq-x5-e3N"/>
