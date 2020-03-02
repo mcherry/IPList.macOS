@@ -19,6 +19,9 @@ namespace IPList
         private int runningTasks = 0;
         private object locker = new object();
 
+        private AddressEntryDelegate Delegate;
+        private AddressEntryDataSource DataSource;
+
         public ViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
@@ -112,7 +115,7 @@ namespace IPList
                 if (pinger.Status == IPStatus.Success)
                 {
                     // successful ping, add details to tableview datasource
-                    AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(
+                    DataSource.AddressEntries.Add(new AddressEntry(
                         ip,
                         "UP",
                         pinger.RoundtripTime,
@@ -124,7 +127,7 @@ namespace IPList
                     if (listPingable != 1)
                     {
                         // listing unpingable hosts, add to tableview datasource
-                        AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip, "DOWN", 0, 0, hostname));
+                        DataSource.AddressEntries.Add(new AddressEntry(ip, "DOWN", 0, 0, hostname));
                     }
                 }
                 
@@ -171,7 +174,7 @@ namespace IPList
             lock (locker) while (runningTasks > 0) Monitor.Wait(locker);
 
             ReloadTable(true);
-            setStatus(AddressEntryDelegate.DataSource.AddressEntries.Count.ToString() + " IPs found");
+            setStatus(DataSource.AddressEntries.Count.ToString() + " IPs found");
 
             RefreshARP();
 
@@ -185,9 +188,9 @@ namespace IPList
         {
             int index = 0;
             W.LoadARPTable();
-            foreach (AddressEntry item in AddressEntryDelegate.DataSource.AddressEntries)
+            foreach (AddressEntry item in DataSource.AddressEntries)
             {
-                AddressEntryDelegate.DataSource.AddressEntries[index].MAC = W.GetMAC(item.Address);
+                DataSource.AddressEntries[index].MAC = W.GetMAC(item.Address);
                 index++;
             }
         }
@@ -201,7 +204,7 @@ namespace IPList
                     string hostname = "";
                     if (dnsCheck == 1) hostname = W.DnsLookup(ip.ToString());
 
-                    AddressEntryDelegate.DataSource.AddressEntries.Add(new AddressEntry(ip.ToString(), "", 0, 0, hostname));
+                    DataSource.AddressEntries.Add(new AddressEntry(ip.ToString(), "", 0, 0, hostname));
                     ReloadTable();
                 }
             }
@@ -218,7 +221,7 @@ namespace IPList
 
         private void ReloadTable(bool sort = false)
         {
-            if (sort) AddressEntryDelegate.DataSource.Sort("IP", true);
+            if (sort) DataSource.Sort("IP", sort);
             InvokeOnMainThread(() => { tblList.ReloadData(); });
         }
 
@@ -271,7 +274,7 @@ namespace IPList
                 case "Space":   delim = " ";  break;
             }
 
-            foreach (AddressEntry ip in AddressEntryDelegate.DataSource.AddressEntries)
+            foreach (AddressEntry ip in DataSource.AddressEntries)
             {
                 value.Append(ip.Address + delim);
             }
@@ -355,9 +358,10 @@ namespace IPList
                 {
                     ToggleGUI(false);
 
-                    AddressEntryDelegate.DataSource = new AddressEntryDataSource();
-                    tblList.Delegate = new AddressEntryDelegate(AddressEntryDelegate.DataSource);
-                    tblList.DataSource = AddressEntryDelegate.DataSource;
+                    DataSource = new AddressEntryDataSource();
+                    Delegate = new AddressEntryDelegate(DataSource);
+                    tblList.Delegate = Delegate;
+                    tblList.DataSource = DataSource;
                     ReloadTable();
 
                     List<string> subnetwork = new List<string>();
@@ -436,7 +440,7 @@ namespace IPList
         {
             if (tblList.SelectedRow != null && tblList.SelectedRow != -1)
             {
-                return AddressEntryDelegate.GetRow(tblList.SelectedRow);
+                return Delegate.GetRow(tblList.SelectedRow);
             }
 
             return null;

@@ -125,7 +125,7 @@ namespace IPList
             return view;
         }
 
-        public static PortEntry GetSelectedRow(nint index)
+        public PortEntry GetRow(nint index)
         {
             PortEntry row = new PortEntry();
 

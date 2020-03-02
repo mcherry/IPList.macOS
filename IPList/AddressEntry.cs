@@ -132,7 +132,7 @@ namespace IPList
     {
         private const string CellIdentifier = "AddressCell";
 
-        public static AddressEntryDataSource DataSource;
+        private AddressEntryDataSource DataSource;
 
         public AddressEntryDelegate(AddressEntryDataSource datasource)
         {
@@ -177,7 +177,7 @@ namespace IPList
             return view;
         }
 
-        public static AddressEntry GetRow(nint index)
+        public AddressEntry GetRow(nint index)
         {
             AddressEntry row = new AddressEntry();
 
