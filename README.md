@@ -44,4 +44,5 @@ In no particular order, here are some of the resources I used to hack this proje
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/0011.png?raw=true "Screenshot 3")
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/015.png?raw=true "Screenshot 4")
 ![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/016.png?raw=true "Screenshot 5")
-![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/014.png?raw=true "Screenshot 6")
+![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/017.png?raw=true "Screenshot 6")
+![Screenshot](https://github.com/mcherry/IPList.macOS/blob/master/Screenshots/014.png?raw=true "Screenshot 7")
