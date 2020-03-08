@@ -1,6 +1,7 @@
 ﻿using AppKit;
 using Foundation;
 using System;
+using System.Threading;
 
 namespace IPList
 {
@@ -29,10 +30,7 @@ namespace IPList
         public override void AwakeFromNib()
         {
             base.AwakeFromNib();
-            if (whoisHost != null)
-            {
-                txtHost.StringValue = whoisHost;
-            }
+            if (whoisHost != null) txtHost.StringValue = whoisHost;
         }
 
         public new WhoisWindow Window
@@ -42,35 +40,41 @@ namespace IPList
 
         partial void txtHost_Enter(NSObject sender)
         {
-            StartWhois();
+            btnLookup_Click(sender);
         }
 
         partial void btnLookup_Click(NSObject sender)
         {
-            StartWhois();
+            string host = txtHost.StringValue;
+            Thread launcher = new Thread(() => { StartWhois(host); });
+            launcher.Start();
         }
 
-        private void StartWhois()
+        private void StartWhois(string host)
         {
-            if (txtHost.StringValue != null && txtHost.StringValue != "")
+            if (host != null && host != "")
             {
                 ToggleGUI(false);
-                txtWhois.Value = W.Shell("whois", txtHost.StringValue);
+                InvokeOnMainThread(() => { txtWhois.Value = W.Shell("whois", host); });
                 ToggleGUI(true);
             }
         }
 
         private void ToggleGUI(bool enabled)
         {
-            if (enabled)
+            InvokeOnMainThread(() =>
             {
-                txtHost.Enabled = true;
-                btnLookup.Enabled = true;
-            } else
-            {
-                txtHost.Enabled = false;
-                btnLookup.Enabled = false;
-            }
+                if (enabled)
+                {
+                    txtHost.Enabled = true;
+                    btnLookup.Enabled = true;
+                }
+                else
+                {
+                    txtHost.Enabled = false;
+                    btnLookup.Enabled = false;
+                }
+            });
         }
     }
 }

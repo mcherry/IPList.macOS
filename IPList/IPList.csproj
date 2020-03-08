@@ -102,6 +102,7 @@
     <Folder Include="PortScanWindow\" />
     <Folder Include="PrefsWindow\" />
     <Folder Include="DataViewerWindow\" />
+    <Folder Include="WhoisWindow\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -160,12 +161,12 @@
     <Compile Include="DataViewerWindow\DataViewerWindowController.designer.cs">
       <DependentUpon>DataViewerWindowController.cs</DependentUpon>
     </Compile>
-    <Compile Include="WhoisWindow.cs" />
-    <Compile Include="WhoisWindow.designer.cs">
+    <Compile Include="WhoisWindow\WhoisWindow.cs" />
+    <Compile Include="WhoisWindow\WhoisWindow.designer.cs">
       <DependentUpon>WhoisWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="WhoisWindowController.cs" />
-    <Compile Include="WhoisWindowController.designer.cs">
+    <Compile Include="WhoisWindow\WhoisWindowController.cs" />
+    <Compile Include="WhoisWindow\WhoisWindowController.designer.cs">
       <DependentUpon>WhoisWindowController.cs</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -176,7 +177,7 @@
     <InterfaceDefinition Include="PortScanWindow\PortScanner.xib" />
     <InterfaceDefinition Include="PrefsWindow\PrefsWindow.xib" />
     <InterfaceDefinition Include="DataViewerWindow\DataViewerWindow.xib" />
-    <InterfaceDefinition Include="WhoisWindow.xib" />
+    <InterfaceDefinition Include="WhoisWindow\WhoisWindow.xib" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
