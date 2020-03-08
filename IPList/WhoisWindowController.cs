@@ -1,7 +1,6 @@
 ﻿using AppKit;
 using Foundation;
 using System;
-using System.Threading;
 
 namespace IPList
 {
