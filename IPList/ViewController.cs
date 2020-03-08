@@ -98,6 +98,13 @@ namespace IPList
             aboutWin.ShowWindow(this);
         }
 
+        [Action("mnuWhois:")]
+        public void mnuWhois_Click(NSObject sender)
+        {
+            WhoisWindowController whoisWin = new WhoisWindowController();
+            whoisWin.ShowWindow(this);
+        }
+
         private void PingThread(object state)
         {
             object[] arguments = state as object[];

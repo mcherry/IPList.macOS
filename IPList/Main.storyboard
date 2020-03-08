@@ -66,6 +66,28 @@
                                     </items>
                                 </menu>
                             </menuItem>
+                            <menuItem title="Tools" id="6Sn-AH-Ere">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Tools" id="Y1r-ui-gh8">
+                                    <items>
+                                        <menuItem title="Netstat" hidden="YES" keyEquivalent="n" id="ARg-kV-kHq">
+                                            <connections>
+                                                <action selector="mnuNetstat:" target="Ady-hI-5gd" id="6rD-GW-9Cq"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Traceroute" hidden="YES" keyEquivalent="t" id="WCq-i3-Ll9">
+                                            <connections>
+                                                <action selector="mnuTracert:" target="Ady-hI-5gd" id="iFT-ge-Jkq"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Whois" keyEquivalent="w" id="pjg-Ix-xcw">
+                                            <connections>
+                                                <action selector="mnuWhois:" target="Ady-hI-5gd" id="2g7-j2-p56"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
                             <menuItem title="Window" id="aUF-d1-5bR">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Window" systemMenu="window" id="Td7-aD-5lo">
@@ -184,7 +206,7 @@
                                             <tableColumns>
                                                 <tableColumn editable="NO" width="124" minWidth="40" maxWidth="1000" id="5dL-d4-xfo">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="IP">
-                                                        <font key="font" metaFont="label" size="11"/>
+                                                        <font key="font" metaFont="menu" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -218,7 +240,7 @@
                                                 </tableColumn>
                                                 <tableColumn editable="NO" width="42" minWidth="40" maxWidth="1000" id="qN9-Pm-5MA">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Status">
-                                                        <font key="font" metaFont="label" size="11"/>
+                                                        <font key="font" metaFont="menu" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -252,7 +274,7 @@
                                                 </tableColumn>
                                                 <tableColumn width="62" minWidth="10" maxWidth="3.4028234663852886e+38" id="Vs7-Hf-AfM">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Latency">
-                                                        <font key="font" metaFont="label" size="11"/>
+                                                        <font key="font" metaFont="menu" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </tableHeaderCell>
@@ -286,7 +308,7 @@
                                                 </tableColumn>
                                                 <tableColumn width="52" minWidth="10" maxWidth="3.4028234663852886e+38" id="CRA-Z4-10i">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="TTL">
-                                                        <font key="font" metaFont="label" size="11"/>
+                                                        <font key="font" metaFont="menu" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </tableHeaderCell>
@@ -320,7 +342,7 @@
                                                 </tableColumn>
                                                 <tableColumn width="161" minWidth="10" maxWidth="3.4028234663852886e+38" id="VEW-si-WtW">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="DNS">
-                                                        <font key="font" metaFont="label" size="11"/>
+                                                        <font key="font" metaFont="menu" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </tableHeaderCell>
@@ -354,7 +376,7 @@
                                                 </tableColumn>
                                                 <tableColumn width="173" minWidth="10" maxWidth="3.4028234663852886e+38" id="IwJ-IR-Kmw">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="MAC">
-                                                        <font key="font" metaFont="label" size="11"/>
+                                                        <font key="font" metaFont="menu" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </tableHeaderCell>

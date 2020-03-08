@@ -83,15 +83,7 @@ namespace IPList
 
         public static void LoadARPTable()
         {
-            Process p = new Process();
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.FileName = "arp";
-            p.StartInfo.Arguments = "-an";
-            p.Start();
-
-            string output = p.StandardOutput.ReadToEnd();
-            p.WaitForExit();
+            string output = Shell("arp", "-an");
 
             arpTable.Clear();
             foreach (string line in output.Split('\n'))
@@ -103,8 +95,22 @@ namespace IPList
                     arpTable[ip] = info[3];
                 }
             }
-            
+        }
+
+        public static string Shell(string command, string arguments)
+        {
+            Process p = new Process();
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.FileName = command;
+            p.StartInfo.Arguments = arguments;
+            p.Start();
+
+            string output = p.StandardOutput.ReadToEnd();
+            p.WaitForExit();
             p.Dispose();
+
+            return output;
         }
 
         public static string GetMAC(string ip)
